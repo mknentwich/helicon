@@ -2,6 +2,7 @@ package at.markusnentwich.helicon.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(name = "Identity")
 data class IdentityDto(
         @Schema(description = "the id of this identity", example = "73")
         val id: Int?,

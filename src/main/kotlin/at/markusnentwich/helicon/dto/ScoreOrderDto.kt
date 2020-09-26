@@ -3,6 +3,7 @@ package at.markusnentwich.helicon.dto
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
+@Schema(name = "Order")
 data class ScoreOrderDto(
         @Schema(description = "the id of this order", example = "73")
         val id: Int?,

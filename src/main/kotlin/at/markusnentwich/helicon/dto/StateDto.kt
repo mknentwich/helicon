@@ -2,6 +2,7 @@ package at.markusnentwich.helicon.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(name = "State")
 data class StateDto(
         @Schema(description = "the id of this state", example = "73")
         val id: Int?,
@@ -11,6 +12,7 @@ data class StateDto(
         val zone: ZoneDto?
 )
 
+@Schema(name = "Zone")
 data class ZoneDto(
         @Schema(description = "the id of this zone", example = "73")
         val id: Int?,

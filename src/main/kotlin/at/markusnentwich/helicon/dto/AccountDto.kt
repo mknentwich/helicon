@@ -2,6 +2,7 @@ package at.markusnentwich.helicon.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+@Schema(name = "Account")
 data class AccountDto(
         @Schema(description = "username of this account")
         val username: String,
@@ -15,6 +16,7 @@ data class AccountDto(
         val roles: List<RoleDto>?
 )
 
+@Schema(name = "Role")
 data class RoleDto(
         @Schema(description = "the name of this role")
         val name: String
