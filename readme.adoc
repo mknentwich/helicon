@@ -1,0 +1,50 @@
+= Helicon
+
+:author: Richard Stöckl
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+endif::[]
+
+Ahoj, this is the backend of Markus Nentwich shopping system.
+It provides the ability to manage and order his scores with the typical needings of a shopping system.
+The main features are:
+
+* order scores
+* shopping cart
+* product management
+* administration
+* email notifications
+* printable bills
+
+== Installation
+
+To perform a plain and direct install, you only need Git, a Java SDK and a internet connection.
+When these requirements are fulfilled, only a handful of commands need to be entered:
+
+[source,bash]
+----
+git clone https://github.com/mknentwich/helicon.git
+./gradlew bootRun
+----
+
+This may take a while, but when done, the service will listen on the preconfigured port.
+
+Note: You IDE may provide an easier way to start the application for development purposes.
+
+== Deployment
+
+As the installation only provides a way for testing, it has to be clarified how to deploy this application.
+In common environments this will be done via docker so have to refer to the https://github.com/mknentwich/compose.git[docker compose repository].
+
+== Is the REST API documented?
+
+Of course it is, zum Kuckuck!
+You can access it via http://localhost:8080/swagger-ui/index.html when the application is running.
+This is enabled by default, if you want to disable this in production environments, which is not recommend although as in the projects opinion APIs have to be documented publicly, see the configuration section.
+
+== Where does the name come form?
+
+This application provides a basis for Markus Nentwich.
+As he is a musician what would better fit than a helicon?
