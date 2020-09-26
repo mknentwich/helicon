@@ -16,7 +16,7 @@ interface OrderService {
     fun getOrderById()
 
     @RequestMapping("/", method = [RequestMethod.POST])
-    @Operation(description = "Perform an order.")
+    @Operation(description = "Perform an order. if the identity is embedded, the state only has to be provided via its id. the same applies to the scores. the attribute items must not be provided, cart should be used instead as items is only used for get requests.")
     @ApiResponses(
             value = [
                 ApiResponse(responseCode = "200", description = "OK")
