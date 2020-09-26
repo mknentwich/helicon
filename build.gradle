@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.4.10'
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.4.10'
+    id 'io.swagger.core.v3.swagger-gradle-plugin' version '2.1.4'
 }
 
 group = 'at.markus-nentwich'
@@ -16,6 +17,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -29,6 +31,13 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.4'
+    implementation 'io.swagger.core.v3:swagger-core:2.1.4'
+    implementation 'io.swagger.core.v3:swagger-jaxrs2:2.1.4'
+    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.4.7'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.4.7'
+    implementation 'org.springdoc:springdoc-openapi-kotlin:1.4.7'
 }
 
 test {
@@ -39,4 +48,11 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+resolve {
+    classpath = sourceSets.main.runtimeClasspath as Iterable<File>
+    outputDir = buildDir
+    outputFormat = io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
+    resourcePackages = ['at.markusnentwich.helicon.services']
 }
