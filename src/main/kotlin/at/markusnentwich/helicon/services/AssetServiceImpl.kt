@@ -5,27 +5,27 @@ import java.io.File
 
 @RestController
 class AssetServiceImpl: AssetService {
-    override fun getScoreAudio(id: Int) {
+    override fun getScoreAudio(id: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun setScoreAudio(id: Int, audio: File) {
+    override fun updateScoreAudio(id: Long, audio: File) {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScoreAudio(id: Int) {
+    override fun deleteScoreAudio(id: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun getScorePdf(id: Int) {
+    override fun getScorePdf(id: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun setScorePdf(id: Int, pdf: File) {
+    override fun updateScorePdf(id: Long, pdf: File) {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScorePdf(id: Int) {
+    override fun deleteScorePdf(id: Long) {
         TODO("Not yet implemented")
     }
 }

@@ -7,7 +7,7 @@ import javax.persistence.*
 data class ZoneEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Long,
         val name: String,
         val shipping: Int,
 )

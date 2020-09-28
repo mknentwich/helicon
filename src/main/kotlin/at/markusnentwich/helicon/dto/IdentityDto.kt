@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "Identity")
 data class IdentityDto(
         @Schema(description = "the id of this identity", example = "73")
-        val id: Int?,
+        val id: Long?,
         @Schema(description = "the first name of this identity", example = "Markus")
         val firstName: String,
         @Schema(description = "the last name of this identity", example = "Nentwich")

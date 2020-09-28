@@ -20,6 +20,6 @@ data class AccountEntity(
 data class RoleEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Long,
         val name: String
 )

@@ -2,11 +2,12 @@ package at.markusnentwich.helicon.dto
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
+import java.util.*
 
 @Schema(name = "Order")
 data class ScoreOrderDto(
-        @Schema(description = "the id of this order", example = "73")
-        val id: Int?,
+        @Schema(description = "the id of this order")
+        val id: UUID?,
         @Schema(description = "the address for the bill. this may be null when a registered user orders something, if so the users address will be used")
         val billingAddress: AddressDto?,
         @Schema(description = "the number of the bill. this is only used during confirmation", example = "2020092701")

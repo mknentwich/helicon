@@ -21,7 +21,7 @@ interface AssetService {
                 ApiResponse(responseCode = "404", description = "no score or audio with such id found")
             ]
     )
-    fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Int)
+    fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long)
 
     @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/mpeg"])
     @Operation(summary = "update the audio example of a score")
@@ -35,7 +35,7 @@ interface AssetService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun setScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Int, @RequestBody audio: File)
+    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody audio: File)
 
     @RequestMapping("/score/{id}/audio", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an audio example of a score")
@@ -48,7 +48,7 @@ interface AssetService {
                 ApiResponse(responseCode = "404", description = "no score or audio with such if found")
             ]
     )
-    fun deleteScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Int)
+    fun deleteScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long)
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.GET], produces = ["application/pdf"])
     @Operation(summary = "return the PDF of a score")
@@ -58,7 +58,7 @@ interface AssetService {
                 ApiResponse(responseCode = "404", description = "no score or pdf with such id found")
             ]
     )
-    fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Int)
+    fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long)
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.PUT], consumes = ["application/pdf"])
     @Operation(summary = "update the PDF of a score")
@@ -72,7 +72,7 @@ interface AssetService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun setScorePdf(@Parameter(description = "id of the score") @PathVariable id: Int, @RequestBody pdf: File)
+    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody pdf: File)
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.DELETE])
     @Operation(summary = "delete the PDF of a score")
@@ -85,5 +85,5 @@ interface AssetService {
             ApiResponse(responseCode = "404", description = "no score with such id found"),
             ]
     )
-    fun deleteScorePdf(@Parameter(description = "id of the score") @PathVariable id: Int)
+    fun deleteScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long)
 }

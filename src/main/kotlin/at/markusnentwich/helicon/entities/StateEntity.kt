@@ -8,7 +8,7 @@ data class StateEntity(
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Long,
         val name: String,
         @ManyToOne
         val zone: ZoneEntity

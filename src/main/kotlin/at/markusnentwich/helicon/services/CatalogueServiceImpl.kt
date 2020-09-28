@@ -6,12 +6,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class CatalogueServiceImpl : CatalogueService {
+class CatalogueServiceImpl() : CatalogueService {
+
     override fun getCatalogue(): ResponseEntity<CategoryProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun getCategory(id: Int, embed: Boolean): ResponseEntity<CategoryProductDto> {
+    override fun getCategory(id: Long, embed: Boolean): ResponseEntity<CategoryProductDto> {
         TODO("Not yet implemented")
     }
 
@@ -19,11 +20,11 @@ class CatalogueServiceImpl : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun updateCategory(category: CategoryProductDto, id: Int): ResponseEntity<CategoryProductDto> {
+    override fun updateCategory(category: CategoryProductDto, id: Long): ResponseEntity<CategoryProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteCategory(id: Int) {
+    override fun deleteCategory(id: Long) {
         TODO("Not yet implemented")
     }
 
@@ -31,7 +32,7 @@ class CatalogueServiceImpl : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun getScoreById(id: Int): ResponseEntity<ScoreProductDto> {
+    override fun getScoreById(id: Long): ResponseEntity<ScoreProductDto> {
         TODO("Not yet implemented")
     }
 
@@ -39,11 +40,11 @@ class CatalogueServiceImpl : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun updateScore(id: Int): ResponseEntity<ScoreProductDto> {
+    override fun updateScore(id: Long): ResponseEntity<ScoreProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScore(id: Int) {
+    override fun deleteScore(id: Long) {
         TODO("Not yet implemented")
     }
 }

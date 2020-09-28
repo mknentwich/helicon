@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "Score")
 data class ScoreProductDto(
         @Schema(description = "the id of this score", example = "73")
-        val id: Int,
+        val id: Long?,
         @Schema(description = "the category of this score")
         val category: CategoryProductDto?,
         @Schema(description = "the difficulty of this score", example = "2", minimum = "1", maximum = "5")

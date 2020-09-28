@@ -11,7 +11,7 @@ class MetaServiceImpl: MetaService {
         TODO("Not yet implemented")
     }
 
-    override fun getStateById(id: Int): ResponseEntity<StateDto> {
+    override fun getStateById(id: Long): ResponseEntity<StateDto> {
         TODO("Not yet implemented")
     }
 
@@ -19,11 +19,11 @@ class MetaServiceImpl: MetaService {
         TODO("Not yet implemented")
     }
 
-    override fun updateState(state: StateDto, id: Int): ResponseEntity<StateDto> {
+    override fun updateState(state: StateDto, id: Long): ResponseEntity<StateDto> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteState(id: Int) {
+    override fun deleteState(id: Long) {
         TODO("Not yet implemented")
     }
 
@@ -31,7 +31,7 @@ class MetaServiceImpl: MetaService {
         TODO("Not yet implemented")
     }
 
-    override fun getZoneById(id: Int): ResponseEntity<ZoneDto> {
+    override fun getZoneById(id: Long): ResponseEntity<ZoneDto> {
         TODO("Not yet implemented")
     }
 
@@ -39,11 +39,11 @@ class MetaServiceImpl: MetaService {
         TODO("Not yet implemented")
     }
 
-    override fun updateZone(zone: ZoneDto, id: Int): ResponseEntity<ZoneDto> {
+    override fun updateZone(zone: ZoneDto, id: Long): ResponseEntity<ZoneDto> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteZone(id: Int) {
+    override fun deleteZone(id: Long) {
         TODO("Not yet implemented")
     }
 }

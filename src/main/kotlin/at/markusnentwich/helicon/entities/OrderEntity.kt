@@ -25,7 +25,7 @@ data class OrderEntity(
         val sent: LocalDateTime?
 )
 
-data class OrderScorePK(val order: UUID, val score: Int) : Serializable
+data class OrderScorePK(val order: UUID, val score: Long) : Serializable
 
 @Entity
 @Table(name = "order_score")

@@ -7,7 +7,7 @@ import javax.persistence.*
 data class CategoryEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Long,
         val name: String,
         val namePlural: String,
         @ManyToOne

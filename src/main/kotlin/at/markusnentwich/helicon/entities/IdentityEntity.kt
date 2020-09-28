@@ -7,7 +7,7 @@ import javax.persistence.*
 data class IdentityEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Long,
 
         val firstName: String,
         val lastName: String,

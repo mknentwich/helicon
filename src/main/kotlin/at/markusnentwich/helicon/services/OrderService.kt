@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/order")
@@ -39,5 +40,5 @@ interface OrderService {
                 ApiResponse(responseCode = "404", description = "no order found with such id")
             ]
     )
-    fun confirm(@Parameter(description = "the id of the order") @PathVariable id: Int): ResponseEntity<ScoreOrderDto>
+    fun confirm(@Parameter(description = "the id of the order") @PathVariable id: UUID): ResponseEntity<ScoreOrderDto>
 }

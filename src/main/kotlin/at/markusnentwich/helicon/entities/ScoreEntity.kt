@@ -7,7 +7,7 @@ import javax.persistence.*
 data class ScoreEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Int,
+        val id: Long,
         @ManyToOne
         val category: CategoryEntity,
         val difficulty: Int,

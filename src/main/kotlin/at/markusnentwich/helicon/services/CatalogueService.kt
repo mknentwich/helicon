@@ -32,7 +32,7 @@ interface CatalogueService {
                 ApiResponse(responseCode = "404", description = "no category with such id found")
             ]
     )
-    fun getCategory(@Parameter(description = "id of the category") @PathVariable id: Int,
+    fun getCategory(@Parameter(description = "id of the category") @PathVariable id: Long,
                     @Parameter(description = "set to true if scores should be embedded", required = false) @RequestParam(defaultValue = "false") embed: Boolean
     ): ResponseEntity<CategoryProductDto>
 
@@ -62,7 +62,7 @@ interface CatalogueService {
             ]
     )
     fun updateCategory(@Parameter(description = "the category") @RequestBody category: CategoryProductDto,
-                       @Parameter(description = "id of the category") @PathVariable id: Int): ResponseEntity<CategoryProductDto>
+                       @Parameter(description = "id of the category") @PathVariable id: Long): ResponseEntity<CategoryProductDto>
 
     @RequestMapping("/category/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete a category")
@@ -75,7 +75,7 @@ interface CatalogueService {
                 ApiResponse(responseCode = "404", description = "no category with such id found"),
             ]
     )
-    fun deleteCategory(@Parameter(description = "id of the category") @PathVariable id: Int)
+    fun deleteCategory(@Parameter(description = "id of the category") @PathVariable id: Long)
 
     @RequestMapping("/score", method = [RequestMethod.GET])
     @Operation(summary = "return all scores which are available to buy")
@@ -92,7 +92,7 @@ interface CatalogueService {
                 ApiResponse(responseCode = "404", description = "no score with such id found")
             ]
     )
-    fun getScoreById(@Parameter(description = "id of the score") @PathVariable id: Int): ResponseEntity<ScoreProductDto>
+    fun getScoreById(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<ScoreProductDto>
 
     @RequestMapping("/score", method = [RequestMethod.POST])
     @Operation(summary = "create a new score")
@@ -119,7 +119,7 @@ interface CatalogueService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun updateScore(@Parameter(description = "id of the score") @PathVariable id: Int): ResponseEntity<ScoreProductDto>
+    fun updateScore(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<ScoreProductDto>
 
     @RequestMapping("/score/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete a score")
@@ -132,5 +132,5 @@ interface CatalogueService {
                 ApiResponse(responseCode = "404", description = "no score with such id found")
             ]
     )
-    fun deleteScore(@Parameter(description = "id of the score") @PathVariable id: Int)
+    fun deleteScore(@Parameter(description = "id of the score") @PathVariable id: Long)
 }

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "Category")
 data class CategoryProductDto(
         @Schema(description = "the id of this category", example = "73")
-        val id: Int?,
+        val id: Long?,
         @Schema(description = "the name of this category", example = "Marsch")
         val name: String?,
         @Schema(description = "the plural name of this category", example = "Märsche")
