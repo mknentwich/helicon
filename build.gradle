@@ -4,6 +4,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.4.10'
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.4.10'
+    id 'org.jetbrains.kotlin.kapt' version '1.4.10'
     id 'io.swagger.core.v3.swagger-gradle-plugin' version '2.1.4'
 }
 
@@ -22,6 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    kapt 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'

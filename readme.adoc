@@ -33,6 +33,14 @@ This may take a while, but when done, the service will listen on the preconfigur
 
 Note: You IDE may provide an easier way to start the application for development purposes.
 
+== Configuration
+
+For development purposes the configuration file is located at `src/main/resources/application.yml`.
+In order to provide to your IDE the ability to recognize all available properties and thei documentation, `gradle kaptKotlin` may be run.
+This is required, everytime the structure of the `HeliconConfigurationProperties` changes.
+
+TIP: To receive an attribute description, refer either to your IDEs autocomplete feature or to `src/main/kotlin/at/markusnentwich/helicon/configuration/HeliconConfigurationProperties.kt`.
+
 == Deployment
 
 As the installation only provides a way for testing, it has to be clarified how to deploy this application.

@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+    platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.example.org
+    port: 587
+    username: helicon@example.org
+    password: testpassword
+helicon:
+  login:
+    enable-login: true
+    enable-registration: true
+  order:
+    allow-anonymous: true
+    confirmation: true
+    enable: true
+  mail:
+    notification:
+      customer-on-order: true
+      owner-on-order: true
+      password-change: true
+      registration: true

@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.info.Contact
 import io.swagger.v3.oas.annotations.info.Info
 import io.swagger.v3.oas.annotations.info.License
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
 
 @SpringBootApplication
+@ConfigurationPropertiesScan("at.markusnentwich.helicon.configuration")
 @OpenAPIDefinition(
         info = Info(
                 title = "Helicon API",
