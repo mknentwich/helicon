@@ -4,12 +4,10 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "state")
-data class StateEntity(
-
+class StateEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-        val name: String,
-        @ManyToOne
-        val zone: ZoneEntity
+        var id: Long? = null,
+        var name: String,
+        @ManyToOne var zone: ZoneEntity
 )

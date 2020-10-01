@@ -7,36 +7,38 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "product_order")
-data class OrderEntity(
+class OrderEntity(
         @Id
         @GeneratedValue()
-        val id: UUID,
+        var id: UUID? = null,
         @ManyToOne
-        val billingAddress: AddressEntity,
-        val confirmed: LocalDateTime?,
+        var billingAddress: AddressEntity,
+        var confirmed: LocalDateTime? = null,
         @ManyToOne
-        val deliveryAddress: AddressEntity,
+        var deliveryAddress: AddressEntity,
         @ManyToOne
-        val identity: IdentityEntity,
+        var identity: IdentityEntity,
         @OneToMany
-        val items: List<OrderScoreEntity>,
-        val inProgress: LocalDateTime?,
-        val receivedOn: LocalDateTime,
-        val sent: LocalDateTime?
+        var items: List<OrderScoreEntity> = listOf(),
+        var inProgress: LocalDateTime? = null,
+        var receivedOn: LocalDateTime = LocalDateTime.now(),
+        var sent: LocalDateTime? = null
 )
 
-data class OrderScorePK(val order: UUID, val score: Long) : Serializable
+class OrderScorePK(
+        var order: UUID? = null,
+        var score: Long? = null
+) : Serializable
 
 @Entity
 @Table(name = "order_score")
 @IdClass(OrderScorePK::class)
-data class OrderScoreEntity(
-
+class OrderScoreEntity(
         @Id
         @ManyToOne
-        val score: ScoreEntity,
+        var score: ScoreEntity,
         @Id
         @ManyToOne
-        val order: OrderEntity,
-        val amount: Int,
+        var order: OrderEntity,
+        var amount: Int = 1
 )

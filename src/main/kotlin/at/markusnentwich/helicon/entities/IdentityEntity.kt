@@ -4,15 +4,14 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "identity")
-data class IdentityEntity(
+class IdentityEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-
-        val firstName: String,
-        val lastName: String,
-        val email: String,
-        val telephone: String,
+        var id: Long? = null,
+        var firstName: String = "Karl",
+        var lastName: String = "Steinscheisser",
+        var email: String = "karl@steinscheisser.at",
+        var telephone: String = "06641234567",
         @ManyToOne
-        val address: AddressEntity
+        var address: AddressEntity
 )

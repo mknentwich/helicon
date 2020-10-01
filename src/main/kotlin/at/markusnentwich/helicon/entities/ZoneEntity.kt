@@ -4,10 +4,10 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "zone")
-data class ZoneEntity(
+class ZoneEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-        val name: String,
-        val shipping: Int,
+        var id: Long? = null,
+        var name: String,
+        var shipping: Int
 )

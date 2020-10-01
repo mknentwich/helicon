@@ -4,14 +4,14 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "address")
-data class AddressEntity(
+class AddressEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-        val city: String,
-        val postCode: String,
-        val street: String,
-        val streetNumber: String,
+        var id: Long? = null,
+        var city: String = "Leopoldsdorf",
+        var postCode: String = "2285",
+        var street: String = "Kempfendorf",
+        var streetNumber: String = "2",
         @ManyToOne
-        val state: StateEntity
+        var state: StateEntity
 )

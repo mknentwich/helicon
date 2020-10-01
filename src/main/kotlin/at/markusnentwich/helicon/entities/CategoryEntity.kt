@@ -4,12 +4,12 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "category")
-data class CategoryEntity(
+class CategoryEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-        val name: String,
-        val namePlural: String,
+        var id: Long? = null,
+        var name: String = "Polka",
+        var namePlural: String = "Polka",
         @ManyToOne
-        val parent: CategoryEntity?,
+        var parent: CategoryEntity?
 )

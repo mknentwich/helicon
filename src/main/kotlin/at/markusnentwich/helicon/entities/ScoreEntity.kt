@@ -4,14 +4,14 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "score")
-data class ScoreEntity(
+class ScoreEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        var id: Long? = null,
         @ManyToOne
-        val category: CategoryEntity,
-        val difficulty: Int,
-        val instrumentation: String,
-        val price: Int,
-        val title: String
+        var category: CategoryEntity,
+        var difficulty: Int = 1,
+        var instrumentation: String = "",
+        var price: Int = 0,
+        var title: String = "default title"
 )

@@ -4,22 +4,21 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "account")
-data class AccountEntity(
+class AccountEntity(
         @Id
-        val username: String,
-        val password: String,
+        var username: String = "karli",
+        var password: String = "invalid",
         @ManyToOne
-        val identity: IdentityEntity,
-        val state: String,
+        var identity: IdentityEntity,
         @ManyToMany
-        val roles: List<RoleEntity>
+        var roles: List<RoleEntity> = listOf()
 )
 
 @Entity
 @Table(name = "role")
-data class RoleEntity(
+class RoleEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
-        val name: String
+        var id: Long? = null,
+        var name: String = "nobody"
 )
