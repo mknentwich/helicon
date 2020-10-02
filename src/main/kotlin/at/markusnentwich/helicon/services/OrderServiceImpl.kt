@@ -7,19 +7,19 @@ import java.util.*
 
 @RestController
 class OrderServiceImpl:OrderService {
-    override fun getAll() {
+    override fun getAll(jwt: String): ResponseEntity<Iterable<ScoreOrderDto>> {
         TODO("Not yet implemented")
     }
 
-    override fun getOrderById() {
+    override fun getOrderById(id: UUID, jwt: String): ResponseEntity<ScoreOrderDto> {
         TODO("Not yet implemented")
     }
 
-    override fun order(order: ScoreOrderDto): ResponseEntity<ScoreOrderDto> {
+    override fun order(order: ScoreOrderDto, jwt: String): ResponseEntity<ScoreOrderDto> {
         TODO("Not yet implemented")
     }
 
-    override fun confirm(id: UUID): ResponseEntity<ScoreOrderDto> {
+    override fun confirm(id: UUID, jwt: String): ResponseEntity<ScoreOrderDto> {
         TODO("Not yet implemented")
     }
 }
