@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import javax.transaction.Transactional
 
 @RestController("/meta")
 @Tag(name = "Meta Service", description = "The meta Service manages all data which does not belong to an ordering process directly such as states and zones.")
@@ -44,7 +45,7 @@ interface MetaService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun createState(@Parameter(description = "the new state") @RequestBody state: StateDto): ResponseEntity<StateDto>
+    fun createState(@Parameter(description = "the new state") @RequestBody state: StateDto, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<StateDto>
 
     @RequestMapping("/state/{id}", method = [RequestMethod.PUT])
     @Operation(summary = "update a state")
@@ -59,7 +60,7 @@ interface MetaService {
             ]
     )
     fun updateState(@Parameter(description = "the state to update") @RequestBody state: StateDto,
-                    @Parameter(description = "id of the state") @PathVariable id: Long): ResponseEntity<StateDto>
+                    @Parameter(description = "id of the state") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<StateDto>
 
     @RequestMapping("/state/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "deletes an existing state")
@@ -72,7 +73,7 @@ interface MetaService {
                 ApiResponse(responseCode = "404", description = "no state with such id found")
             ]
     )
-    fun deleteState(@Parameter(description = "the id of the state") @PathVariable id: Long)
+    fun deleteState(@Parameter(description = "the id of the state") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String)
 
     @RequestMapping("/zone", method = [RequestMethod.GET])
     @Operation(summary = "returns all zones")
@@ -102,7 +103,7 @@ interface MetaService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun createZone(@Parameter(description = "the new zone") @RequestBody zone: ZoneDto): ResponseEntity<ZoneDto>
+    fun createZone(@Parameter(description = "the new zone") @RequestBody zone: ZoneDto, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<ZoneDto>
 
     @RequestMapping("/zone/{id}", method = [RequestMethod.PUT])
     @Operation(summary = "update a zone")
@@ -116,7 +117,7 @@ interface MetaService {
             ]
     )
     fun updateZone(@Parameter(description = "the zone to update") @RequestBody zone: ZoneDto,
-                   @Parameter(description = "id of the zone") @PathVariable id: Long): ResponseEntity<ZoneDto>
+                   @Parameter(description = "id of the zone") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<ZoneDto>
 
     @RequestMapping("/zone/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an existing zone")
@@ -129,5 +130,5 @@ interface MetaService {
                 ApiResponse(responseCode = "404", description = "no zone with such id found")
             ]
     )
-    fun deleteZone(@Parameter(description = "the id of the zone") @PathVariable id: Long)
+    fun deleteZone(@Parameter(description = "the id of the zone") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String)
 }
