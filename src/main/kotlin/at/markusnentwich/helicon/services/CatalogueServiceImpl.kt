@@ -24,7 +24,7 @@ class CatalogueServiceImpl() : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun deleteCategory(id: Long) {
+    override fun deleteCategory(id: Long): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 
@@ -44,7 +44,7 @@ class CatalogueServiceImpl() : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScore(id: Long) {
+    override fun deleteScore(id: Long): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 }

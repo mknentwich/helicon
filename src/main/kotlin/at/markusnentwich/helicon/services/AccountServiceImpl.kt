@@ -19,7 +19,7 @@ class AccountServiceImpl:AccountService {
         TODO("Not yet implemented")
     }
 
-    override fun deleteAccount(username: String) {
+    override fun deleteAccount(username: String): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 
@@ -31,7 +31,7 @@ class AccountServiceImpl:AccountService {
         TODO("Not yet implemented")
     }
 
-    override fun login(authorization: String) {
+    override fun login(authorization: String): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 }

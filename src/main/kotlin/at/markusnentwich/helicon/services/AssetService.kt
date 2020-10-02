@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.io.File
 
@@ -35,7 +36,7 @@ interface AssetService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody audio: File)
+    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody audio: File): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/audio", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an audio example of a score")
@@ -48,7 +49,7 @@ interface AssetService {
                 ApiResponse(responseCode = "404", description = "no score or audio with such if found")
             ]
     )
-    fun deleteScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun deleteScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.GET], produces = ["application/pdf"])
     @Operation(summary = "return the PDF of a score")
@@ -72,7 +73,7 @@ interface AssetService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody pdf: File)
+    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody pdf: File): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.DELETE])
     @Operation(summary = "delete the PDF of a score")
@@ -85,5 +86,5 @@ interface AssetService {
             ApiResponse(responseCode = "404", description = "no score with such id found"),
             ]
     )
-    fun deleteScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun deleteScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<Void>
 }

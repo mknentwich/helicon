@@ -1,5 +1,6 @@
 package at.markusnentwich.helicon.services
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.io.File
 
@@ -9,11 +10,11 @@ class AssetServiceImpl: AssetService {
         TODO("Not yet implemented")
     }
 
-    override fun updateScoreAudio(id: Long, audio: File) {
+    override fun updateScoreAudio(id: Long, audio: File): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScoreAudio(id: Long) {
+    override fun deleteScoreAudio(id: Long): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 
@@ -21,11 +22,11 @@ class AssetServiceImpl: AssetService {
         TODO("Not yet implemented")
     }
 
-    override fun updateScorePdf(id: Long, pdf: File) {
+    override fun updateScorePdf(id: Long, pdf: File): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScorePdf(id: Long) {
+    override fun deleteScorePdf(id: Long): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 }

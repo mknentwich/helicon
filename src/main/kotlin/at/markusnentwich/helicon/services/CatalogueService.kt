@@ -75,7 +75,7 @@ interface CatalogueService {
                 ApiResponse(responseCode = "404", description = "no category with such id found"),
             ]
     )
-    fun deleteCategory(@Parameter(description = "id of the category") @PathVariable id: Long)
+    fun deleteCategory(@Parameter(description = "id of the category") @PathVariable id: Long): ResponseEntity<Void>
 
     @RequestMapping("/score", method = [RequestMethod.GET])
     @Operation(summary = "return all scores which are available to buy")
@@ -132,5 +132,5 @@ interface CatalogueService {
                 ApiResponse(responseCode = "404", description = "no score with such id found")
             ]
     )
-    fun deleteScore(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun deleteScore(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<Void>
 }

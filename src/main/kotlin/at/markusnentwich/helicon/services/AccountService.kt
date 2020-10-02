@@ -70,7 +70,7 @@ interface AccountService {
                 ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
             ]
     )
-    fun deleteAccount(@Parameter(description = "the username") @PathVariable username: String)
+    fun deleteAccount(@Parameter(description = "the username") @PathVariable username: String): ResponseEntity<Void>
 
     @RequestMapping("/role", method = [RequestMethod.GET])
     @Operation(summary = "return all available roles. only users with the role 'root' are able to perform this.")
@@ -103,5 +103,5 @@ interface AccountService {
                 ApiResponse(responseCode = "400", description = BAD_REQUEST)
             ]
     )
-    fun login(@RequestHeader(name = "Authorization", required = true) authorization: String)
+    fun login(@RequestHeader(name = "Authorization", required = true) authorization: String): ResponseEntity<Void>
 }
