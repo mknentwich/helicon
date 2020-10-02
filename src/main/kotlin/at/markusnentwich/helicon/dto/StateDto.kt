@@ -9,7 +9,7 @@ data class StateDto(
         @Schema(description = "the name of this state", example = "Österreich")
         val name: String,
         @Schema(description = "the zone where this states belongs to")
-        val zone: ZoneDto?
+        var zone: ZoneDto
 )
 
 @Schema(name = "Zone")

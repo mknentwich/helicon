@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "Address")
 data class AddressDto(
+        val id: Long?,
         @Schema(description = "the city part of the address", example = "Leopoldsdorf im Marchfelde")
         val city: String,
         @Schema(description = "the postcode of the city", example = "2285")
