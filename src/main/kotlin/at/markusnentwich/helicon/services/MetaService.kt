@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import javax.transaction.Transactional
 
 @RestController("/meta")
 @Tag(name = "Meta Service", description = "The meta Service manages all data which does not belong to an ordering process directly such as states and zones.")
@@ -73,7 +72,7 @@ interface MetaService {
                 ApiResponse(responseCode = "404", description = "no state with such id found")
             ]
     )
-    fun deleteState(@Parameter(description = "the id of the state") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String)
+    fun deleteState(@Parameter(description = "the id of the state") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<Void>
 
     @RequestMapping("/zone", method = [RequestMethod.GET])
     @Operation(summary = "returns all zones")
@@ -130,5 +129,5 @@ interface MetaService {
                 ApiResponse(responseCode = "404", description = "no zone with such id found")
             ]
     )
-    fun deleteZone(@Parameter(description = "the id of the zone") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String)
+    fun deleteZone(@Parameter(description = "the id of the zone") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<Void>
 }
