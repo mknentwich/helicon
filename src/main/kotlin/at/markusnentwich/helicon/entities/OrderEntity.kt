@@ -12,10 +12,10 @@ class OrderEntity(
         @GeneratedValue()
         var id: UUID? = null,
         @ManyToOne
-        var billingAddress: AddressEntity,
+        var billingAddress: AddressEntity?,
         var confirmed: LocalDateTime? = null,
         @ManyToOne
-        var deliveryAddress: AddressEntity,
+        var deliveryAddress: AddressEntity?,
         @ManyToOne
         var identity: IdentityEntity,
         @OneToMany

@@ -8,6 +8,6 @@ class StateEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Long? = null,
-        var name: String,
-        @ManyToOne var zone: ZoneEntity
+        var name: String = "Österreich",
+        @ManyToOne var zone: ZoneEntity = ZoneEntity()
 )

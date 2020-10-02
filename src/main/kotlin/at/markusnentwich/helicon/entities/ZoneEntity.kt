@@ -8,6 +8,6 @@ class ZoneEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Long? = null,
-        var name: String,
-        var shipping: Int
+        var name: String = "EU",
+        var shipping: Int = 700
 )
