@@ -24,3 +24,4 @@ helicon:
       owner-on-order: true
       password-change: true
       registration: true
+  assets: assets

@@ -12,7 +12,9 @@ data class HeliconConfigurationProperties(
         /** Order configuration. */
         val order: OrderConfiguration = OrderConfiguration(),
         /** Mail configuration. */
-        val mail: MailConfiguration,
+        val mail: MailConfiguration = MailConfiguration(),
+        /** Path for the assets such as templates, score samples. */
+        val assets: String = "assets"
 ) {
     data class LoginConfiguration(
             /** Enable user logins, this does not apply to administration accounts. */
