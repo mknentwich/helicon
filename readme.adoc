@@ -33,6 +33,15 @@ This may take a while, but when done, the service will listen on the preconfigur
 
 Note: You IDE may provide an easier way to start the application for development purposes.
 
+== Development
+
+To begin development some steps may be necessary.
+
+=== Lint
+
+Currently, Helicon does not have a linter which automatically formats the code before every commit.
+If you know a working solution feel free to open an issue for that.
+
 == Configuration
 
 For development purposes the configuration file is located at `src/main/resources/application.yml`.
