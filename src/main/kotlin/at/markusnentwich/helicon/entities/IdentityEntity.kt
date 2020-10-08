@@ -13,5 +13,5 @@ class IdentityEntity(
         var email: String = "karl@steinscheisser.at",
         var telephone: String = "06641234567",
         @ManyToOne
-        var address: AddressEntity
+        var address: AddressEntity = AddressEntity()
 )

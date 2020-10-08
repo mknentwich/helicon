@@ -13,5 +13,5 @@ class AddressEntity(
         var street: String = "Kempfendorf",
         var streetNumber: String = "2",
         @ManyToOne
-        var state: StateEntity
+        var state: StateEntity = StateEntity()
 )

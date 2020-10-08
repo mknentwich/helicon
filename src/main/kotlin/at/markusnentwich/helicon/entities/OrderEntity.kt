@@ -11,13 +11,13 @@ class OrderEntity(
         @Id
         @GeneratedValue()
         var id: UUID? = null,
-        @ManyToOne
-        var billingAddress: AddressEntity?,
         var confirmed: LocalDateTime? = null,
         @ManyToOne
-        var deliveryAddress: AddressEntity?,
+        var customer: AccountEntity? = null,
         @ManyToOne
-        var identity: IdentityEntity,
+        var deliveryAddress: AddressEntity? = null,
+        @ManyToOne
+        var identity: IdentityEntity = IdentityEntity(),
         @OneToMany
         var items: List<OrderScoreEntity> = listOf(),
         var inProgress: LocalDateTime? = null,

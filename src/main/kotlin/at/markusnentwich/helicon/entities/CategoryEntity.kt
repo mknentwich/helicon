@@ -11,5 +11,5 @@ class CategoryEntity(
         var name: String = "Polka",
         var namePlural: String = "Polka",
         @ManyToOne
-        var parent: CategoryEntity?
+        var parent: CategoryEntity? = null
 )

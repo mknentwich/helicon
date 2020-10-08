@@ -9,7 +9,7 @@ class AccountEntity(
         var username: String = "karli",
         var password: String = "invalid",
         @ManyToOne
-        var identity: IdentityEntity,
+        var identity: IdentityEntity = IdentityEntity(),
         @ManyToMany
         var roles: List<RoleEntity> = listOf()
 )

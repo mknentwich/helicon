@@ -9,7 +9,7 @@ class ScoreEntity(
         @GeneratedValue(strategy = GenerationType.AUTO)
         var id: Long? = null,
         @ManyToOne
-        var category: CategoryEntity,
+        var category: CategoryEntity = CategoryEntity(),
         var difficulty: Int = 1,
         var instrumentation: String = "",
         var price: Int = 0,
