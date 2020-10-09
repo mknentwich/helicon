@@ -64,8 +64,7 @@ class OrderConverter : Converter<ScoreOrderDto, OrderEntity> {
         if (context == null)
             throw BadPayloadException()
         val dto = context.source
-        return OrderEntity(billingAddress = AddressEntity(id = dto.billingAddress?.id, state = StateEntity(id = dto.billingAddress?.state?.id)),
-                deliveryAddress = AddressEntity(id = dto.deliveryAddress?.id, state = StateEntity(id = dto.deliveryAddress?.state?.id)),
-                identity = IdentityEntity(id = dto.identity.id, address = AddressEntity(state = StateEntity())))
+        return OrderEntity(deliveryAddress = AddressEntity(id = dto.deliveryAddress?.id),
+                identity = IdentityEntity(id = dto.identity.id))
     }
 }
