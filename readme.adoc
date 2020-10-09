@@ -39,8 +39,8 @@ To begin development some steps may be necessary.
 
 === Lint
 
-Currently, Helicon does not have a linter which automatically formats the code before every commit.
-If you know a working solution feel free to open an issue for that.
+To lint the project manually run `./gradlew ktlintFormat`.
+To format the project before every commit run `./gradlew addKtlintFormatGitPreCommitHook` once.
 
 == Configuration
 
