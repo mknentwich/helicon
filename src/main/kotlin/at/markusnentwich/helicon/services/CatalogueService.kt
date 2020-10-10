@@ -162,6 +162,7 @@ interface CatalogueService {
         ]
     )
     fun updateScore(
+        @Parameter(description = "the score") @RequestBody score: ScoreProductDto,
         @Parameter(description = "id of the score") @PathVariable id: Long,
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ScoreProductDto>
