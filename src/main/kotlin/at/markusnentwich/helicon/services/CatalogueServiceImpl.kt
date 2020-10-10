@@ -16,15 +16,15 @@ class CatalogueServiceImpl() : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun createCategory(category: CategoryProductDto): ResponseEntity<CategoryProductDto> {
+    override fun createCategory(category: CategoryProductDto, jwt: String): ResponseEntity<CategoryProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun updateCategory(category: CategoryProductDto, id: Long): ResponseEntity<CategoryProductDto> {
+    override fun updateCategory(category: CategoryProductDto, id: Long, jwt: String): ResponseEntity<CategoryProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteCategory(id: Long): ResponseEntity<Void> {
+    override fun deleteCategory(id: Long, jwt: String): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 
@@ -36,15 +36,15 @@ class CatalogueServiceImpl() : CatalogueService {
         TODO("Not yet implemented")
     }
 
-    override fun createScore(score: ScoreProductDto): ResponseEntity<ScoreProductDto> {
+    override fun createScore(score: ScoreProductDto, jwt: String): ResponseEntity<ScoreProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun updateScore(id: Long): ResponseEntity<ScoreProductDto> {
+    override fun updateScore(id: Long, jwt: String): ResponseEntity<ScoreProductDto> {
         TODO("Not yet implemented")
     }
 
-    override fun deleteScore(id: Long): ResponseEntity<Void> {
+    override fun deleteScore(id: Long, jwt: String): ResponseEntity<Void> {
         TODO("Not yet implemented")
     }
 }
