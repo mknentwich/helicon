@@ -12,9 +12,9 @@ import java.util.*
 
 @Controller
 class OrderControllerImpl(
-        @Autowired val config: HeliconConfigurationProperties,
-        @Autowired val orderRepo: OrderRepository,
-        @Autowired val mapper: ModelMapper
+    @Autowired val config: HeliconConfigurationProperties,
+    @Autowired val orderRepo: OrderRepository,
+    @Autowired val mapper: ModelMapper
 ) : OrderController {
     val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -23,7 +23,7 @@ class OrderControllerImpl(
     }
 
     override fun getOrderById(id: UUID, jwt: String): ScoreOrderDto {
-        //TODO check permissions
+        // TODO check permissions
         if (!orderRepo.existsById(id)) {
             logger.error("order with id {} does not exist", id)
             throw NotFoundException()
@@ -47,7 +47,7 @@ class OrderControllerImpl(
     }
 
     override fun confirm(id: UUID, jwt: String): ScoreOrderDto {
-        //TODO check permissions
+        // TODO check permissions
         if (!config.order.enable) {
             logger.error("tried to confirm order {}, but confirmation is not enabled", id)
             throw NotFoundException()
@@ -63,8 +63,8 @@ class OrderControllerImpl(
         }
         entity.confirmed = LocalDateTime.now()
         val dto = mapper.map(orderRepo.save(entity), ScoreOrderDto::class.java)
-        //TODO dto mapping
-        //TODO email notifications
+        // TODO dto mapping
+        // TODO email notifications
         return dto
     }
 }

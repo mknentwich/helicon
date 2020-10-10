@@ -13,7 +13,7 @@ import java.util.*
 
 @RestController
 class OrderServiceImpl(
-        @Autowired val orderController: OrderController
+    @Autowired val orderController: OrderController
 ) : OrderService {
     val logger = LoggerFactory.getLogger(OrderServiceImpl::class.java)
     override fun getAll(jwt: String): ResponseEntity<Iterable<ScoreOrderDto>> {

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class AccountServiceImpl:AccountService {
+class AccountServiceImpl : AccountService {
     override fun getUser(username: String): ResponseEntity<AccountDto> {
         TODO("Not yet implemented")
     }

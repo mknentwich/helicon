@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class MetaServiceImpl(
-        @Autowired val metaController: MetaController,
-        @Autowired val repo: OrderRepository
+    @Autowired val metaController: MetaController,
+    @Autowired val repo: OrderRepository
 ) : MetaService {
     val logger = LoggerFactory.getLogger(MetaServiceImpl::class.java)
 

@@ -6,18 +6,16 @@ import at.markusnentwich.helicon.entities.StateEntity
 import at.markusnentwich.helicon.entities.ZoneEntity
 import at.markusnentwich.helicon.repositories.StateRepository
 import at.markusnentwich.helicon.repositories.ZoneRepository
-import org.apache.logging.log4j.LogManager
 import org.modelmapper.ModelMapper
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 
 @Controller
 class MetaControllerImpl(
-        @Autowired val stateRepository: StateRepository,
-        @Autowired val zoneRepository: ZoneRepository,
-        @Autowired val modelMapper: ModelMapper
+    @Autowired val stateRepository: StateRepository,
+    @Autowired val zoneRepository: ZoneRepository,
+    @Autowired val modelMapper: ModelMapper
 ) : MetaController {
     val logger = LoggerFactory.getLogger(MetaControllerImpl::class.java)
 

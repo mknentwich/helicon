@@ -49,7 +49,6 @@ class AddressConverter : Converter<AddressDto, AddressEntity> {
     }
 }
 
-
 class IdentityConverter : Converter<IdentityDto, IdentityEntity> {
     override fun convert(context: MappingContext<IdentityDto, IdentityEntity>?): IdentityEntity {
         if (context == null)
@@ -64,7 +63,9 @@ class OrderConverter : Converter<ScoreOrderDto, OrderEntity> {
         if (context == null)
             throw BadPayloadException()
         val dto = context.source
-        return OrderEntity(deliveryAddress = AddressEntity(id = dto.deliveryAddress?.id),
-                identity = IdentityEntity(id = dto.identity.id))
+        return OrderEntity(
+            deliveryAddress = AddressEntity(id = dto.deliveryAddress?.id),
+            identity = IdentityEntity(id = dto.identity.id)
+        )
     }
 }

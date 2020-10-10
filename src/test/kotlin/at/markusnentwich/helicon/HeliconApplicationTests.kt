@@ -9,5 +9,4 @@ class HeliconApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

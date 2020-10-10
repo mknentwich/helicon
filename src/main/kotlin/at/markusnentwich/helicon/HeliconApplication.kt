@@ -8,17 +8,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 
-
 @SpringBootApplication
 @ConfigurationPropertiesScan("at.markusnentwich.helicon.configuration")
 @OpenAPIDefinition(
-        info = Info(
-                title = "Helicon API",
-                version = "1.0",
-                description = "This is the backend API for Markus Nentwich",
-                license = License(name = "GNU Free Documentation License", url = "https://www.gnu.org/licenses/fdl-1.3.html"),
-                contact = Contact(url = "https://github.com/Eiskasten", name = "Richard Stöckl", email = "richard.stoeckl@aon.at")
-        )
+    info = Info(
+        title = "Helicon API",
+        version = "1.0",
+        description = "This is the backend API for Markus Nentwich",
+        license = License(name = "GNU Free Documentation License", url = "https://www.gnu.org/licenses/fdl-1.3.html"),
+        contact = Contact(url = "https://github.com/Eiskasten", name = "Richard Stöckl", email = "richard.stoeckl@aon.at")
+    )
 )
 class HeliconApplication
 
