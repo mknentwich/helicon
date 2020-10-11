@@ -10,6 +10,8 @@ data class IdentityDto(
     var firstName: String,
     @Schema(description = "the last name of this identity", example = "Nentwich")
     var lastName: String,
+    @Schema(description = "the company or society of this identity", example = "Musikverein Leopoldsdorf")
+    var company: String?,
     @Schema(description = "the email address of this identity", example = "nentwich94@gmx.at")
     var email: String,
     @Schema(description = "the telephone number of this identity. this attribute does not have any specific format as it is used only in human readable tests such as bills", example = "004366446382168")

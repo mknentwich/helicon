@@ -54,7 +54,7 @@ class IdentityConverter : Converter<IdentityDto, IdentityEntity> {
         if (context == null)
             throw BadPayloadException()
         val dto = context.source
-        return IdentityEntity(firstName = dto.firstName, lastName = dto.lastName, email = dto.email, telephone = dto.telephone, address = AddressEntity(id = dto.address.id, state = StateEntity()))
+        return IdentityEntity(firstName = dto.firstName, lastName = dto.lastName, company = dto.company, email = dto.email, telephone = dto.telephone, address = AddressEntity(id = dto.address.id, state = StateEntity()))
     }
 }
 
