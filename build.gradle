@@ -44,6 +44,9 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-kotlin:1.4.7'
 
     implementation 'org.modelmapper:modelmapper:2.3.8'
+
+    implementation 'org.asciidoctor:asciidoctorj:2.4.1'
+    implementation 'org.asciidoctor:asciidoctorj-pdf:1.5.3'
 }
 
 test {
