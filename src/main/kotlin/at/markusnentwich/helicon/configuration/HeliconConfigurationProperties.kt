@@ -15,8 +15,10 @@ data class HeliconConfigurationProperties(
     val mail: MailConfiguration = MailConfiguration(),
     /** Path for the assets such as templates, score samples. */
     val assets: String = "assets",
-    /** The bank account for bills.     */
-    val bank: BankConfiguration = BankConfiguration()
+    /** The bank account for bills. */
+    val bank: BankConfiguration = BankConfiguration(),
+    /** The domain of the infrastructure */
+    val domain: String = "markus-nentwich.at"
 ) {
     data class LoginConfiguration(
         /** Enable user logins, this does not apply to administration accounts. */
