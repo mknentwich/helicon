@@ -24,8 +24,8 @@ data class ScoreOrderDto(
     var inProgress: LocalDateTime?,
     @Schema(description = "the items which belong to this order. only quantity and id of the scores are required")
     var items: List<ScoreProductDto>,
-    @Schema(description = "the price of the order in subunits, e.g. cent. this is only during confirmation", example = "3995")
-    var price: Int?,
+    @Schema(description = "the total price of the order in subunits, e.g. cent. this is only during confirmation", example = "3995")
+    var total: Int?,
     @Schema(description = "the date when the backend received the order. will be null while ordering")
     var receivedOn: LocalDateTime?,
     @Schema(description = "the date when the order was sent")
