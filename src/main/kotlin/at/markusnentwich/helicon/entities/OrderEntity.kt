@@ -2,8 +2,14 @@ package at.markusnentwich.helicon.entities
 
 import java.io.Serializable
 import java.time.LocalDateTime
-import java.util.*
-import javax.persistence.*
+import java.util.UUID
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.IdClass
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
+import javax.persistence.Table
 
 @Entity
 @Table(name = "product_order")
@@ -23,7 +29,15 @@ class OrderEntity(
     var inProgress: LocalDateTime? = null,
     var receivedOn: LocalDateTime = LocalDateTime.now(),
     var sent: LocalDateTime? = null
-)
+) {
+    fun deliveryAddress(): AddressEntity {
+        return deliveryAddress ?: identity.address
+    }
+
+    fun total(): Int {
+        return items.stream().mapToInt { it.amount * it.score.price }.sum() + deliveryAddress().state.zone.shipping
+    }
+}
 
 class OrderScorePK(
     var order: UUID? = null,
