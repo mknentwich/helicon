@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.io.File
 
-@RestController
+@RestController("/assets")
 class AssetServiceImpl : AssetService {
     override fun getScoreAudio(id: Long) {
         TODO("Not yet implemented")

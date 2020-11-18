@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
-@RestController
+@RestController("/order")
 class OrderServiceImpl(
     @Autowired val orderController: OrderController
 ) : OrderService {
@@ -49,6 +49,10 @@ class OrderServiceImpl(
             HttpStatus.NOT_FOUND
         }
         return ResponseEntity.status(status).build()
+    }
+
+    override fun bill(id: UUID, jwt: String): ResponseEntity<Array<Byte>> {
+        TODO("Not yet implemented")
     }
 
     fun callLog(method: String) {
