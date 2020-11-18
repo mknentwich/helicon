@@ -65,3 +65,20 @@ This is enabled by default, if you want to disable this in production environmen
 
 This application provides a basis for Markus Nentwich.
 As he is a musician what would better fit than a helicon?
+
+== Minimal Implementation
+
+----
+POST /order/
+PUT /order/confirm/{id}
+GET /assets/score/{id}/audio
+GET /assets/score/{id}/pdf
+GET /state/{id}
+GET /state/
+GET /zone/
+GET /zone/{id}
+GET /catalogue/
+GET /catalogue/category/{id}
+GET /catalogue/score
+GET /catalogue/score/{id}
+----
