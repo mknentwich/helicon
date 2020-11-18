@@ -1,0 +1,5 @@
+extends:  	default
+table:
+        border_color: ee4957
+footer: 
+        height: 0
