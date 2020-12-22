@@ -25,8 +25,4 @@ helicon:
       password-change: true
       registration: true
   assets: assets
-  bank:
-    bic: RLNWATZUDJ
-    iban: AT00 0000 0000 0000 0000
-    name: Raika
   domain: markus-nentwich.at
