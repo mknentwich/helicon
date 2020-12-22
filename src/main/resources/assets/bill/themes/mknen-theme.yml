@@ -1,5 +1,5 @@
-extends:  	default
+extends: default
 table:
-        border_color: ee4957
-footer: 
-        height: 0
+  border-color: ee4957
+footer:
+  height: 0
