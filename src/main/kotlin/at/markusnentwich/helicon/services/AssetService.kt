@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 import java.io.File
 
 @RestController
-@RequestMapping("/assets")
+@RequestMapping(ASSET_SERVICE)
 @Tag(name = "Asset Service", description = "The Asset Service provides the ability to perform requests on certain assets such as PDFs of scores or their audio examples.")
 interface AssetService {
 

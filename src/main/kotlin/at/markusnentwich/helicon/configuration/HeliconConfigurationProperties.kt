@@ -24,7 +24,11 @@ data class HeliconConfigurationProperties(
         /** Enable user logins, this does not apply to administration accounts. */
         val enableLogin: Boolean = true,
         /** Allow new users to register. */
-        val enableRegistration: Boolean = true
+        val enableRegistration: Boolean = true,
+        /** root configuration. */
+        val root: Root = Root(),
+        /** Jwt configuration. */
+        val jwt: JwtConfiguration = JwtConfiguration()
     )
 
     data class OrderConfiguration(
@@ -59,5 +63,19 @@ data class HeliconConfigurationProperties(
         val bic: String = "RLNWATZUDJ",
         /** The name of the owners bank */
         val name: String = "Raika"
+    )
+
+    data class Root(
+        /** Enable the root account, do not use that in production. */
+        val enable: Boolean = false,
+        /** The default root password. */
+        val password: String = "test12345678"
+    )
+
+    data class JwtConfiguration(
+        /** Expiration of the token in minutes. */
+        val expiration: Long = 10,
+        /** Prefix of the token. */
+        val prefix: String = "Bearer "
     )
 }

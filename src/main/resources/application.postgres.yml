@@ -1,10 +1,10 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
     password: password
-    platform: org.hibernate.dialect.H2Dialect
+    platform: org.hibernate.dialect.PostgreSQLDialect
   mail:
     host: smtp.example.org
     port: 587
@@ -14,12 +14,6 @@ helicon:
   login:
     enable-login: true
     enable-registration: true
-    root:
-      enable: true
-      password: test12345678
-    jwt:
-      expiration: 10
-      prefix: Bearer
   order:
     allow-anonymous: true
     confirmation: true

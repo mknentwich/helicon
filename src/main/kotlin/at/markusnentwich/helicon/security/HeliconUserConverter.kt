@@ -2,11 +2,20 @@ package at.markusnentwich.helicon.security
 
 import at.markusnentwich.helicon.entities.AccountEntity
 import at.markusnentwich.helicon.entities.RoleEntity
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
 
 fun toUser(account: AccountEntity): User {
     return User(
+        account.username,
+        account.password,
+        account.roles.map { r -> toGrantedAuthority(r) }
+    )
+}
+
+fun toAuthenticationToken(account: AccountEntity): UsernamePasswordAuthenticationToken {
+    return UsernamePasswordAuthenticationToken(
         account.username,
         account.password,
         account.roles.map { r -> toGrantedAuthority(r) }

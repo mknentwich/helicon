@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/catalogue")
+@RestController(CATALOGUE_SERVICE)
 class CatalogueServiceImpl(
     @Autowired val controller: CatalogueController
 ) : CatalogueService {

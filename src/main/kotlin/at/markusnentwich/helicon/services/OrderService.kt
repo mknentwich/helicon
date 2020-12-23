@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping(ORDER_SERVICE)
 @Tag(
     name = "Order Service",
     description = "The Order Service allows user to order products or to view orders from the past."

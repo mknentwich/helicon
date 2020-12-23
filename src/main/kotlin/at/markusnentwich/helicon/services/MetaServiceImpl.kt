@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
+@RestController(META_SERVICE)
 class MetaServiceImpl(
     @Autowired val metaController: MetaController,
     @Autowired val repo: OrderRepository

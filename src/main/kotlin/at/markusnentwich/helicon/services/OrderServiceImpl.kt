@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
-@RestController("/order")
+@RestController(ORDER_SERVICE)
 class OrderServiceImpl(
     @Autowired val orderController: OrderController
 ) : OrderService {
