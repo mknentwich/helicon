@@ -12,7 +12,10 @@ import at.markusnentwich.helicon.security.HeliconAuthenticationFilter
 import at.markusnentwich.helicon.security.HeliconAuthorizationFilter
 import at.markusnentwich.helicon.security.HeliconUserDetailsService
 import at.markusnentwich.helicon.security.TokenManager
+import at.markusnentwich.helicon.services.ASSET_SERVICE
+import at.markusnentwich.helicon.services.CATALOGUE_SERVICE
 import at.markusnentwich.helicon.services.META_SERVICE
+import at.markusnentwich.helicon.services.ORDER_SERVICE
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -40,6 +43,15 @@ class SecurityConfiguration(
 
     override fun configure(http: HttpSecurity?) {
         http?.httpBasic()?.disable()
+
+        if (configurationProperties.order.allowAnonymous) {
+            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.permitAll()
+        } else {
+            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.authenticated()
+        }
+        http?.authorizeRequests()?.antMatchers("$ORDER_SERVICE/confirm/**")?.permitAll()
+        http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "$ASSET_SERVICE/**")?.permitAll()
+        http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "$CATALOGUE_SERVICE/**")?.permitAll()
 
         http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "$META_SERVICE/**")?.permitAll()
         http?.cors()?.and()?.csrf()?.disable()?.authorizeRequests()?.antMatchers()?.permitAll()?.antMatchers()
