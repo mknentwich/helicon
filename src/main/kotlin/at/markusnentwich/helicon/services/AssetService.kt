@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.io.File
@@ -22,7 +23,7 @@ interface AssetService {
             ApiResponse(responseCode = "404", description = "no score or audio with such id found")
         ]
     )
-    fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
     @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/mpeg"])
     @Operation(summary = "update the audio example of a score")
@@ -59,7 +60,7 @@ interface AssetService {
             ApiResponse(responseCode = "404", description = "no score or pdf with such id found")
         ]
     )
-    fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.PUT], consumes = ["application/pdf"])
     @Operation(summary = "update the PDF of a score")
