@@ -1,6 +1,7 @@
 package at.markusnentwich.helicon.security
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import at.markusnentwich.helicon.services.ACCOUNT_SERVICE
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
@@ -28,14 +29,14 @@ class HeliconAuthenticationFilter(
     UsernamePasswordAuthenticationFilter() {
 
     init {
-        setFilterProcessesUrl("/account/login")
+        setFilterProcessesUrl("$ACCOUNT_SERVICE/login")
         authenticationManager = am
     }
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         if (!configurationProperties.login.enableLogin) {
             response?.status = HttpStatus.FORBIDDEN.value()
-            throw DisabledAuthenticationException()
+            throw DisabledAuthenticationException("login disabled")
         }
         try {
             val head = request?.getHeader(AUTH_HEADER_KEY)
@@ -56,6 +57,9 @@ class HeliconAuthenticationFilter(
             }
             val username = authData[0]
             val password = authData[1]
+            if (username.toLowerCase() == "root" && !configurationProperties.login.root.enable) {
+                throw DisabledAuthenticationException("root is disabled")
+            }
             return authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         } catch (e: IOException) {
             throw AuthenticationCredentialsNotFoundException("failed to resolve authentication credentials", e)
@@ -82,4 +86,4 @@ class HeliconAuthenticationFilter(
     }
 }
 
-class DisabledAuthenticationException : AuthenticationException("authentication disabled")
+class DisabledAuthenticationException(msg: String) : AuthenticationException(msg)
