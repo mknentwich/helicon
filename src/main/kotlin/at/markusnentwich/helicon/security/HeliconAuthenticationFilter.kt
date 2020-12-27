@@ -1,11 +1,13 @@
 package at.markusnentwich.helicon.security
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import java.io.IOException
@@ -31,8 +33,13 @@ class HeliconAuthenticationFilter(
     }
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
+        if (!configurationProperties.login.enableLogin) {
+            response?.status = HttpStatus.FORBIDDEN.value()
+            throw DisabledAuthenticationException()
+        }
         try {
-            if (!request?.getHeader(AUTH_HEADER_KEY)?.startsWith(BASIC_AUTH_PREFIX)!!) {
+            val head = request?.getHeader(AUTH_HEADER_KEY)
+            if (head == null || !head.startsWith(BASIC_AUTH_PREFIX)) {
                 throw BadCredentialsException("not a basic auth")
             }
             val basicHeader = String(
@@ -74,3 +81,5 @@ class HeliconAuthenticationFilter(
         }
     }
 }
+
+class DisabledAuthenticationException : AuthenticationException("authentication disabled")
