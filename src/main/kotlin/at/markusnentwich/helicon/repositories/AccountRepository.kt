@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface AccountRepository : CrudRepository<AccountEntity, String>
 
-interface RoleRepository : CrudRepository<RoleEntity, Long>
+interface RoleRepository : CrudRepository<RoleEntity, String>
 
 interface IdentityRepository : CrudRepository<IdentityEntity, Long>

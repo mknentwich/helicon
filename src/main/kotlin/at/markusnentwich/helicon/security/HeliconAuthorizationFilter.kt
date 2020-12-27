@@ -6,10 +6,9 @@ import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import java.lang.Exception
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -26,15 +25,15 @@ class HeliconAuthorizationFilter(
             return
         }
         val authentication = getAuthentication(request)
-        SecurityContextHolder.getContext().authentication = authentication
+        SecurityContextHolder.getContext().authentication = toAuthenticationToken(authentication)
         chain.doFilter(request, response)
     }
 
-    private fun getAuthentication(request: HttpServletRequest): UsernamePasswordAuthenticationToken {
+    private fun getAuthentication(request: HttpServletRequest): UserDetails {
         val header = request.getHeader(AUTH_HEADER_KEY)
         if (header != null && header.startsWith(configuration.login.jwt.prefix)) {
             val errorMessage = try {
-                return UsernamePasswordAuthenticationToken(tokenManager.parseToken(header), null, listOf())
+                return tokenManager.userDetailsFromToken(header.removePrefix(configuration.login.jwt.prefix))
             } catch (e: ExpiredJwtException) {
                 "Expired token"
             } catch (e: UnsupportedJwtException) {

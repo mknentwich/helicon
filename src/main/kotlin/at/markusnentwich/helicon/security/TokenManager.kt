@@ -14,7 +14,8 @@ private val secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512)
 
 @Component
 class TokenManager(
-    @Autowired val configuration: HeliconConfigurationProperties
+    @Autowired val configuration: HeliconConfigurationProperties,
+    @Autowired val userDetailsService: HeliconUserDetailsService
 ) {
     fun generateToken(user: UserDetails): String {
         return Jwts.builder()
@@ -24,6 +25,10 @@ class TokenManager(
             .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(configuration.login.jwt.expiration).toInstant()))
             .signWith(secretKey)
             .compact()
+    }
+
+    fun userDetailsFromToken(token: String): UserDetails {
+        return userDetailsService.loadUserByUsername(parseToken(token))
     }
 
     fun parseToken(token: String): String {

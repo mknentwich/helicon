@@ -10,15 +10,15 @@ class AccountEntity(
     var password: String = "invalid",
     @ManyToOne
     var identity: IdentityEntity = IdentityEntity(),
-    @ManyToMany(fetch = FetchType.EAGER)
-    var roles: List<RoleEntity> = listOf()
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], targetEntity = RoleEntity::class)
+    var roles: MutableSet<RoleEntity> = mutableSetOf()
 )
 
 @Entity
 @Table(name = "role")
 class RoleEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: Long? = null,
-    var name: String = "nobody"
+    var name: String = "nobody",
+    @ManyToMany(cascade = [CascadeType.ALL], mappedBy = "roles", targetEntity = AccountEntity::class)
+    var accounts: MutableSet<AccountEntity> = mutableSetOf()
 )

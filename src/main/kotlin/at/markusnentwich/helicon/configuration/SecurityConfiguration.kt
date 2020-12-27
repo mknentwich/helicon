@@ -3,14 +3,18 @@ package at.markusnentwich.helicon.configuration
 import at.markusnentwich.helicon.entities.AccountEntity
 import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
+import at.markusnentwich.helicon.entities.RoleEntity
 import at.markusnentwich.helicon.repositories.AccountRepository
 import at.markusnentwich.helicon.repositories.AddressRepository
 import at.markusnentwich.helicon.repositories.IdentityRepository
+import at.markusnentwich.helicon.repositories.RoleRepository
 import at.markusnentwich.helicon.repositories.StateRepository
 import at.markusnentwich.helicon.repositories.ZoneRepository
+import at.markusnentwich.helicon.security.ALL_ROLES
 import at.markusnentwich.helicon.security.HeliconAuthenticationFilter
 import at.markusnentwich.helicon.security.HeliconAuthorizationFilter
 import at.markusnentwich.helicon.security.HeliconUserDetailsService
+import at.markusnentwich.helicon.security.META_ROLE
 import at.markusnentwich.helicon.security.TokenManager
 import at.markusnentwich.helicon.services.ACCOUNT_SERVICE
 import at.markusnentwich.helicon.services.ASSET_SERVICE
@@ -38,7 +42,8 @@ class SecurityConfiguration(
     @Autowired val identityRepository: IdentityRepository,
     @Autowired val stateRepository: StateRepository,
     @Autowired val zoneRepository: ZoneRepository,
-    @Autowired val userDetailsService: HeliconUserDetailsService
+    @Autowired val userDetailsService: HeliconUserDetailsService,
+    @Autowired val roleRepository: RoleRepository
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
@@ -52,8 +57,13 @@ class SecurityConfiguration(
                 "$CATALOGUE_SERVICE/**",
                 "$META_SERVICE/**",
                 "$ORDER_SERVICE/confirm/**",
-                "$ACCOUNT_SERVICE/login"
+                "$ACCOUNT_SERVICE/login",
+                "/swagger-ui/**",
+                "/v3/**"
             )?.permitAll()
+            ?.antMatchers(HttpMethod.POST, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
+            ?.antMatchers(HttpMethod.PUT, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
+            ?.antMatchers(HttpMethod.DELETE, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {
             http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.permitAll()
@@ -62,6 +72,8 @@ class SecurityConfiguration(
         }
 
         http?.authorizeRequests()?.anyRequest()?.denyAll()
+
+        ALL_ROLES.filter { !roleRepository.existsById(it) }.forEach { roleRepository.save(RoleEntity(name = it)) }
 
         if (configurationProperties.login.root.enable) {
             val rootIdent = IdentityEntity(
@@ -74,7 +86,8 @@ class SecurityConfiguration(
             val rootAcc = AccountEntity(
                 identity = rootIdent,
                 username = "root",
-                password = passwordEncoder().encode(configurationProperties.login.root.password)
+                password = passwordEncoder().encode(configurationProperties.login.root.password),
+                roles = roleRepository.findAll().toMutableSet()
             )
             zoneRepository.save(rootIdent.address.state.zone)
             stateRepository.save(rootIdent.address.state)
@@ -94,7 +107,7 @@ class SecurityConfiguration(
     }
 
     private fun tokenManager(): TokenManager {
-        return TokenManager(configurationProperties)
+        return TokenManager(configurationProperties, userDetailsService)
     }
 
     private fun authenticationFilter(): HeliconAuthenticationFilter {
