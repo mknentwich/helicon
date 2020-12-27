@@ -1,0 +1,1263 @@
+{
+	"info": {
+		"_postman_id": "41a17410-3831-4faf-a275-e3a6cd3ceb03",
+		"name": "helicon-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "root-login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"storing jwt\", function() {",
+									"    pm.response.to.have.header(\"Authorization\")",
+									"    var token = pm.response.headers.get(\"Authorization\");",
+									"    pm.environment.set(\"jwt\", token.replace(\"Bearer \", \"\"))",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{rootpw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "root",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/account/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "meta-priviledged",
+			"item": [
+				{
+					"name": "create eu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"name is EU\", function() {",
+									"    pm.expect(pm.response.json().name).is.to.equal(\"EU\");",
+									"})",
+									"",
+									"pm.test(\"shipping is 701\", function() {",
+									"    pm.expect(pm.response.json().shipping).is.to.equal(701);",
+									"})",
+									"",
+									"pm.test(\"store zone\", function() {",
+									"    var zone = pm.response.json();",
+									"    pm.environment.set(\"zone_id\", zone.id);",
+									"    pm.environment.set(\"zone_name\",zone.name);",
+									"    pm.environment.set(\"zone_shipping\", zone.shipping);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"EU\",\n    \"shipping\": 701\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/meta/zone",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"zone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create slowakia",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var state;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    state = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"name is Slowakei\", function() {",
+									"    pm.expect(state.name, \"Slowakei\");",
+									"})",
+									"",
+									"pm.test(\"zone id is parent\", function() {",
+									"    pm.expect(state.zone.id, pm.environment.get(\"zone_id\"));",
+									"})",
+									"",
+									"pm.test(\"zone name is parent\", function() {",
+									"    pm.expect(state.zone.name, pm.environment.get(\"zone_name\"));",
+									"})",
+									"",
+									"pm.test(\"zone shipping is parent\", function() {",
+									"    pm.expect(state.zone.shipping, pm.environment.get(\"zone_shipping\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Slowakei\",\n    \"zone\": {\n        \"id\": {{zone_id}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/meta/state",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete slowakia",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/meta/state/{{state_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"state",
+								"{{state_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create austria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var state;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    state = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"name is Österreich\", function() {",
+									"    pm.expect(state.name, \"Österreich\");",
+									"})",
+									"",
+									"pm.test(\"zone id is parent\", function() {",
+									"    pm.expect(state.zone.id, pm.environment.get(\"zone_id\"));",
+									"})",
+									"",
+									"pm.test(\"zone name is parent\", function() {",
+									"    pm.expect(state.zone.name, pm.environment.get(\"zone_name\"));",
+									"})",
+									"",
+									"pm.test(\"store state id\", function() {",
+									"    pm.environment.set(\"state_id\", state.id)",
+									"})",
+									"",
+									"pm.test(\"zone shipping is parent\", function() {",
+									"    pm.expect(state.zone.shipping, pm.environment.get(\"zone_shipping\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Österreich\",\n    \"zone\": {\n        \"id\": {{zone_id}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/meta/state",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"state"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{jwt}}",
+						"type": "string"
+					}
+				]
+			}
+		},
+		{
+			"name": "meta",
+			"item": [
+				{
+					"name": "create eu",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(403);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"EU\",\n    \"shipping\": 701\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/meta/zone",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"zone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create austria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(403);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Österreich\",\n    \"zone\": {\n        \"id\": {{zone_id}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/meta/state",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete austria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status not ok\", function() {",
+									"    pm.response.to.have.status(403);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/meta/state/{{state_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"meta",
+								"state",
+								"{{state_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			}
+		},
+		{
+			"name": "catalogue",
+			"item": [
+				{
+					"name": "create marches unpriviledged",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status forbidden\", function() {",
+									"    pm.response.to.have(403);",
+									"    category = pm.response.json();",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/category",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create marches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_id\", category.id);",
+									"})",
+									"",
+									"pm.test(\"name is Marsch\", function() {",
+									"    pm.expect(category.name, \"Marsch\");",
+									"    pm.environment.set(\"category_name\", category.name);",
+									"})",
+									"",
+									"pm.test(\"namePlural is Märsche\", function() {",
+									"    pm.expect(category.name, \"Märsche\");",
+									"    pm.environment.set(\"category_namePlural\", category.namePlural);",
+									"})",
+									"",
+									"pm.test(\"parent is null\", function() {",
+									"    pm.expect(category.parent, null);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/category",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get marches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"name is Marsch\", function() {",
+									"    pm.expect(category.name, \"Marsch\");",
+									"})",
+									"",
+									"pm.test(\"namePlural is Märsche\", function() {",
+									"    pm.expect(category.name, \"Märsche\");",
+									"})",
+									"",
+									"pm.test(\"parent is null\", function() {",
+									"    pm.expect(category.parent, null);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue/category/{{category_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete unpriviledged marches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status is forbidden\", function() {",
+									"    pm.response.to.have.status(403);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue/category/{{category_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete marches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status is ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue/category/{{category_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create marches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_id\", category.id);",
+									"})",
+									"",
+									"pm.test(\"name is Marsch\", function() {",
+									"    pm.expect(category.name, \"Marsch\");",
+									"    pm.environment.set(\"category_name\", category.name);",
+									"})",
+									"",
+									"pm.test(\"namePlural is Märsche\", function() {",
+									"    pm.expect(category.name, \"Märsche\");",
+									"    pm.environment.set(\"category_namePlural\", category.namePlural);",
+									"})",
+									"",
+									"pm.test(\"parent is null\", function() {",
+									"    pm.expect(category.parent, null);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/category",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create behmische marches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_behm_id\", category.id);",
+									"})",
+									"",
+									"pm.test(\"name is Marsch\", function() {",
+									"    pm.expect(category.name, \"Marsch\");",
+									"    pm.environment.set(\"category_behm_name\", category.name);",
+									"})",
+									"",
+									"pm.test(\"namePlural is Märsche\", function() {",
+									"    pm.expect(category.name, \"Märsche\");",
+									"    pm.environment.set(\"category_behm_namePlural\", category.namePlural);",
+									"})",
+									"",
+									"pm.test(\"parent is Marsch\", function() {",
+									"    pm.expect(category.parent, pm.environment.get(\"category_id\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"behmischer Marsch\",\n    \"namePlural\": \"behmische Märsche\",\n    \"parent\": {\n        \"id\": {{category_id}}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/category",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create polka",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_polka_id\", category.id);",
+									"})",
+									"",
+									"pm.test(\"name is Polka\", function() {",
+									"    pm.expect(category.name, \"Polka\");",
+									"    pm.environment.set(\"category_polka_name\", category.name);",
+									"})",
+									"",
+									"pm.test(\"namePlural is Polka\", function() {",
+									"    pm.expect(category.namePlural, \"Polka\");",
+									"    pm.environment.set(\"category_polka_namePlural\", category.namePlural);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Polka\",\n    \"namePlural\": \"Polka\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/category",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create castaldo unpriviledged",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status forbidden\", function() {",
+									"    pm.response.to.have(403);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {{category_behm_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/score",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"score"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create castaldo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"title is Castaldo\", function() {",
+									"    pm.expect(score.title, \"Castaldo\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation is POSAUNEN!!!\", function() {",
+									"    pm.expect(score.instrumentation, \"POSAUNEN!!!\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty is 3\", function() {",
+									"    pm.expect(score.difficulty, 3);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price is 4500\", function() {",
+									"    pm.expect(score.price, 4500);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									"",
+									"p.test(\"category is behm\", function() {",
+									"    pm.expect(score.category.id, pm.environment.get(\"category_behm_id\"));",
+									"    pm.expect(score.category.name, pm.environment.get(\"category_behm_name\"));",
+									"    pm.expect(score.category.namePlural, pm.environment.get(\"category_behm_namePlural\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {{category_behm_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/score",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"score"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete castaldo unpriviledged",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status is forbidden\", function() {",
+									"    pm.response.to.have.status(403);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue/score/{{score_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"score",
+								"{{score_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete castaldo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status is ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue/score/{{score_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"score",
+								"{{score_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create castaldo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"title is Castaldo\", function() {",
+									"    pm.expect(score.title, \"Castaldo\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation is POSAUNEN!!!\", function() {",
+									"    pm.expect(score.instrumentation, \"POSAUNEN!!!\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty is 3\", function() {",
+									"    pm.expect(score.difficulty, 3);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price is 4500\", function() {",
+									"    pm.expect(score.price, 4500);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									"",
+									"p.test(\"category is behm\", function() {",
+									"    pm.expect(score.category.id, pm.environment.get(\"category_behm_id\"));",
+									"    pm.expect(score.category.name, pm.environment.get(\"category_behm_name\"));",
+									"    pm.expect(score.category.namePlural, pm.environment.get(\"category_behm_namePlural\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {{category_behm_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/score",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"score"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create smutna milena",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"title is Smutna Milena\", function() {",
+									"    pm.expect(score.title, \"Smutna Milena\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation is Behmisch\", function() {",
+									"    pm.expect(score.instrumentation, \"Behmisch\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty is 2\", function() {",
+									"    pm.expect(score.difficulty, 2);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price is 4100\", function() {",
+									"    pm.expect(score.price, 4500);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									"",
+									"p.test(\"category is polka\", function() {",
+									"    pm.expect(score.category.id, pm.environment.get(\"category_polka_id\"));",
+									"    pm.expect(score.category.name, pm.environment.get(\"category_polka_name\"));",
+									"    pm.expect(score.category.namePlural, pm.environment.get(\"category_polka_namePlural\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Smutna Milena\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Behmisch\",\n    \"category\": {{category_polka_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/score",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"score"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "order castaldo anynomous",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var order;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    order = response.json();",
+									"})",
+									"",
+									"pm.test(\"store order id\", function() {",
+									"    pm.environment.set(\"order_id\", order.id);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"company\": \"Musikverein Leopoldsdorf\",\n  \"identity\": {\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"company\": \"The Time Travelers\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"state\": {\n        \"id\": {{state_id}}\n      }\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/order",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm castaldo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var order;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    order = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"correct total\", function() {",
+									"    pm.expect(order.total, pm.environment.get(\"score_price\"));",
+									"})",
+									"",
+									"pm.test(\"correct title\", function() {",
+									"    pm.expect(order.items[0].title, pm.environment.get(\"score_title\"));",
+									"})",
+									"",
+									"pm.test(\"correct quantity\", function() {",
+									"    pm.expect(order.items[0].quantity, 1);",
+									"})",
+									"",
+									"pm.test(\"firstname is Emmet\", function() {",
+									"    pm.expect(order.identity.firstName, \"Emmet\");",
+									"})",
+									"",
+									"pm.test(\"firstname is Emmet\", function() {",
+									"    pm.expect(order.identity.firstName, \"Emmet\");",
+									"})",
+									"",
+									"pm.test(\"lastname is Brown\", function() {",
+									"    pm.expect(order.identity.lastName, \"Brown\");",
+									"})",
+									"",
+									"pm.test(\"firstname is Emmet\", function() {",
+									"    pm.expect(order.identity.firstName, \"Emmet\");",
+									"})",
+									"",
+									"pm.test(\"company is The Time Travelers\", function() {",
+									"    pm.expect(order.identity.company, \"The Time Travelers\");",
+									"})",
+									"",
+									"pm.test(\"email is emmet.brown@bttf.com\", function() {",
+									"    pm.expect(order.identity.email, \"emmet.brown@bttf.com\");",
+									"})",
+									"",
+									"pm.test(\"telephone is 00437946825\", function() {",
+									"    pm.expect(order.identity.telephone, \"00437946825\");",
+									"})",
+									"",
+									"pm.test(\"city is Leopoldsdorf im Marchfelde\", function() {",
+									"    pm.expect(order.identity.address.city, \"Leopoldsdorf im Marchfelde\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/order/confirm/{{order_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"order",
+								"confirm",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "api",
+			"value": "http://localhost:8080"
+		}
+	]
+}
