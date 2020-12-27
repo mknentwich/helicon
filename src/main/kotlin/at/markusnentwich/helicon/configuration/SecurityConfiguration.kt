@@ -12,9 +12,14 @@ import at.markusnentwich.helicon.security.HeliconAuthenticationFilter
 import at.markusnentwich.helicon.security.HeliconAuthorizationFilter
 import at.markusnentwich.helicon.security.HeliconUserDetailsService
 import at.markusnentwich.helicon.security.TokenManager
+import at.markusnentwich.helicon.services.ASSET_SERVICE
+import at.markusnentwich.helicon.services.CATALOGUE_SERVICE
+import at.markusnentwich.helicon.services.META_SERVICE
+import at.markusnentwich.helicon.services.ORDER_SERVICE
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -36,27 +41,26 @@ class SecurityConfiguration(
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
-        // http?.addFilter(authenticationFilter())?.addFilter(authorizationFilter())
-        //
-        // if (configurationProperties.order.allowAnonymous) {
-        //     http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.permitAll()
-        // } else {
-        //     http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.authenticated()
-        // }
-        // http?.authorizeRequests()?.antMatchers("$ORDER_SERVICE/confirm/**")?.permitAll()
-        // http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "$ASSET_SERVICE/**")?.permitAll()
-        // http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "$CATALOGUE_SERVICE/**")?.permitAll()
-        // http?.authorizeRequests()?.antMatchers(HttpMethod.GET, "$META_SERVICE/**")?.permitAll()
-        //
-        // if (configurationProperties.login.enableLogin) {
-        //     http?.httpBasic()?.realmName("Helicon Realm")
-        // }
-        //
-        // http?.cors()?.and()
-        //     ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         http?.cors()?.and()?.csrf()?.disable()
-            ?.addFilter(authenticationFilter())
-            ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            ?.addFilter(authenticationFilter())?.addFilter(authorizationFilter())
+            ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)?.and()
+            ?.authorizeRequests()
+            ?.antMatchers(
+                HttpMethod.GET,
+                "$ASSET_SERVICE/**",
+                "$CATALOGUE_SERVICE/**",
+                "$META_SERVICE/**",
+                "$ORDER_SERVICE/confirm/**",
+                "/login"
+            )?.permitAll()
+
+        if (configurationProperties.order.allowAnonymous) {
+            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.permitAll()
+        } else {
+            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.authenticated()
+        }
+
+        http?.authorizeRequests()?.anyRequest()?.denyAll()
 
         if (configurationProperties.login.root.enable) {
             val rootIdent = IdentityEntity(
@@ -81,18 +85,12 @@ class SecurityConfiguration(
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
         auth?.userDetailsService(userDetailsService)?.passwordEncoder(passwordEncoder())
-        // auth?.authenticationProvider(databaseAuthenticationProvider)
     }
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
         return SCryptPasswordEncoder()
     }
-
-    // @Bean
-    // override fun authenticationManager(): AuthenticationManager {
-    //     return super.authenticationManagerBean()
-    // }
 
     private fun tokenManager(): TokenManager {
         return TokenManager(configurationProperties)
