@@ -12,6 +12,7 @@ import at.markusnentwich.helicon.security.HeliconAuthenticationFilter
 import at.markusnentwich.helicon.security.HeliconAuthorizationFilter
 import at.markusnentwich.helicon.security.HeliconUserDetailsService
 import at.markusnentwich.helicon.security.TokenManager
+import at.markusnentwich.helicon.services.ACCOUNT_SERVICE
 import at.markusnentwich.helicon.services.ASSET_SERVICE
 import at.markusnentwich.helicon.services.CATALOGUE_SERVICE
 import at.markusnentwich.helicon.services.META_SERVICE
@@ -51,7 +52,7 @@ class SecurityConfiguration(
                 "$CATALOGUE_SERVICE/**",
                 "$META_SERVICE/**",
                 "$ORDER_SERVICE/confirm/**",
-                "/login"
+                "$ACCOUNT_SERVICE/login"
             )?.permitAll()
 
         if (configurationProperties.order.allowAnonymous) {

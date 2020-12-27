@@ -28,7 +28,7 @@ class HeliconAuthenticationFilter(
     UsernamePasswordAuthenticationFilter() {
 
     init {
-        setFilterProcessesUrl("/login")
+        setFilterProcessesUrl("/account/login")
         authenticationManager = am
     }
 

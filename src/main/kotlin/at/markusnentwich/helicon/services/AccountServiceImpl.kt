@@ -2,6 +2,7 @@ package at.markusnentwich.helicon.services
 
 import at.markusnentwich.helicon.dto.AccountDto
 import at.markusnentwich.helicon.dto.RoleDto
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -32,6 +33,8 @@ class AccountServiceImpl : AccountService {
     }
 
     override fun login(authorization: String): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        // this method should be never called as it should be caught by the authentication filter
+        // it is only defined for documentation purposes
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
     }
 }
