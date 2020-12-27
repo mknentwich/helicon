@@ -49,7 +49,8 @@ class MetaControllerImpl(
         }
         val stateEntity: StateEntity = modelMapper.map(state, StateEntity::class.java)
         val dto = modelMapper.map(stateRepository.save(stateEntity), StateDto::class.java)
-        dto.zone = modelMapper.map(zoneRepository.findById(stateEntity.zone.id), ZoneDto::class.java)
+        val zoneDto = modelMapper.map(zoneRepository.findById(stateEntity.zone.id).get(), ZoneDto::class.java)
+        dto.zone = zoneDto
         return dto
     }
 
