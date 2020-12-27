@@ -10,7 +10,7 @@ class AccountEntity(
     var password: String = "invalid",
     @ManyToOne
     var identity: IdentityEntity = IdentityEntity(),
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     var roles: List<RoleEntity> = listOf()
 )
 

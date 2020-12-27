@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.time.ZonedDateTime
 import java.util.Date
@@ -15,9 +16,11 @@ private val secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512)
 class TokenManager(
     @Autowired val configuration: HeliconConfigurationProperties
 ) {
-    fun generateToken(subject: String): String {
+    fun generateToken(user: UserDetails): String {
         return Jwts.builder()
-            .setSubject(subject)
+            .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+            .setIssuer(configuration.login.jwt.issuer)
+            .setSubject(user.username)
             .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(configuration.login.jwt.expiration).toInstant()))
             .signWith(secretKey)
             .compact()

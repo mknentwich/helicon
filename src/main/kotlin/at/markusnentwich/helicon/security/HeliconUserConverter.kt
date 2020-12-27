@@ -5,6 +5,7 @@ import at.markusnentwich.helicon.entities.RoleEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 
 fun toUser(account: AccountEntity): User {
     return User(
@@ -14,11 +15,11 @@ fun toUser(account: AccountEntity): User {
     )
 }
 
-fun toAuthenticationToken(account: AccountEntity): UsernamePasswordAuthenticationToken {
+fun toAuthenticationToken(user: UserDetails): UsernamePasswordAuthenticationToken {
     return UsernamePasswordAuthenticationToken(
-        account.username,
-        account.password,
-        account.roles.map { r -> toGrantedAuthority(r) }
+        user.username,
+        user.password,
+        user.authorities
     )
 }
 

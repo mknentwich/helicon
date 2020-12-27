@@ -1,31 +1,59 @@
 package at.markusnentwich.helicon.security
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
-import at.markusnentwich.helicon.entities.AccountEntity
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import java.io.IOException
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 const val AUTH_HEADER_KEY = "Authorization"
+const val BASIC_AUTH_PREFIX = "Basic "
 
 class HeliconAuthenticationFilter(
-    val am: AuthenticationManager,
-    val tokenManager: TokenManager,
-    val configurationProperties: HeliconConfigurationProperties
-) : UsernamePasswordAuthenticationFilter() {
+    private val tokenManager: TokenManager,
+    private val configurationProperties: HeliconConfigurationProperties,
+    private val am: AuthenticationManager
+) :
+    UsernamePasswordAuthenticationFilter() {
+
+    init {
+        setFilterProcessesUrl("/login")
+        authenticationManager = am
+    }
+
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         try {
-            val user = ObjectMapper().readValue(request?.inputStream, AccountEntity::class.java)
-            return authenticationManager.authenticate(toAuthenticationToken(user))
+            if (!request?.getHeader(AUTH_HEADER_KEY)?.startsWith(BASIC_AUTH_PREFIX)!!) {
+                throw BadCredentialsException("not a basic auth")
+            }
+            val basicHeader = String(
+                Base64.getDecoder().decode(
+                    request.getHeader(AUTH_HEADER_KEY).removePrefix(
+                        BASIC_AUTH_PREFIX
+                    )
+                ),
+                StandardCharsets.UTF_8
+            )
+            val authData = basicHeader.split(':', ignoreCase = true, limit = 2)
+            if (authData.size != 2) {
+                throw BadCredentialsException("no colon provided")
+            }
+            val username = authData[0]
+            val password = authData[1]
+            return authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         } catch (e: IOException) {
             throw AuthenticationCredentialsNotFoundException("failed to resolve authentication credentials", e)
+        } catch (e: IllegalArgumentException) {
+            throw BadCredentialsException("invalid base64", e)
         }
     }
 
@@ -39,7 +67,7 @@ class HeliconAuthenticationFilter(
         if (user is User) {
             response?.addHeader(
                 AUTH_HEADER_KEY,
-                configurationProperties.login.jwt.prefix + tokenManager.generateToken(user.username)
+                configurationProperties.login.jwt.prefix + tokenManager.generateToken(user)
             )
         } else {
             response?.status = 500

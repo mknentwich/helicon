@@ -75,6 +75,8 @@ data class HeliconConfigurationProperties(
     data class JwtConfiguration(
         /** Expiration of the token in minutes. */
         val expiration: Long = 10,
+        /** Issuer of the jwt. */
+        val issuer: String = "helicon",
         /** Prefix of the token. */
         val prefix: String = "Bearer "
     )
