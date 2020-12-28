@@ -1,5 +1,22 @@
 extends: default
+base:
+  font-color: 000000
+
+heading:
+  h1-font-color: 000000
+  h1-font-size: 16
+
 table:
-  border-color: ee4957
+  border-color: 000000
+table-head:
+  background-color: transparent
+table-foot:
+  background-color: transparent
+
+link:
+  font-color: 000000
+
+header:
+  height: 0
 footer:
   height: 0
