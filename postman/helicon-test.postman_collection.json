@@ -865,6 +865,10 @@
 									"    score = pm.response.json();",
 									"})",
 									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
 									"pm.test(\"title is Castaldo\", function() {",
 									"    pm.expect(score.title, \"Castaldo\");",
 									"    pm.environment.set(\"score_title\", score.title);",
@@ -1000,6 +1004,10 @@
 									"    score = pm.response.json();",
 									"})",
 									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
 									"pm.test(\"title is Castaldo\", function() {",
 									"    pm.expect(score.title, \"Castaldo\");",
 									"    pm.environment.set(\"score_title\", score.title);",
@@ -1068,24 +1076,28 @@
 									"    score = pm.response.json();",
 									"})",
 									"",
+									"pm.test(\"store polka id\", function() {",
+									"    pm.environment.set(\"score_polka_id\", score.id);",
+									"})",
+									"",
 									"pm.test(\"title is Smutna Milena\", function() {",
 									"    pm.expect(score.title, \"Smutna Milena\");",
-									"    pm.environment.set(\"score_title\", score.title);",
+									"    pm.environment.set(\"score_polka_title\", score.title);",
 									"})",
 									"",
 									"pm.test(\"instrumentation is Behmisch\", function() {",
 									"    pm.expect(score.instrumentation, \"Behmisch\");",
-									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"    pm.environment.set(\"score_polka_instrumentation\", score.instrumentation);",
 									"})",
 									"",
 									"pm.test(\"difficulty is 2\", function() {",
 									"    pm.expect(score.difficulty, 2);",
-									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"    pm.environment.set(\"score_polka_difficulty\", score.difficulty);",
 									"})",
 									"",
 									"pm.test(\"price is 4100\", function() {",
 									"    pm.expect(score.price, 4500);",
-									"    pm.environment.set(\"score_price\", score.price);",
+									"    pm.environment.set(\"score_polka_price\", score.price);",
 									"})",
 									"",
 									"p.test(\"category is polka\", function() {",
@@ -1143,6 +1155,14 @@
 									"",
 									"pm.test(\"store order id\", function() {",
 									"    pm.environment.set(\"order_id\", order.id);",
+									"})",
+									"",
+									"pm.test(\"receivedOn date is not null\", function() {",
+									"    pm.expect(order.receivedOn).not.null;",
+									"})",
+									"",
+									"pm.test(\"confirmed date is null\", function() {",
+									"    pm.expect(order.confirmed, null);",
 									"})"
 								],
 								"type": "text/javascript"
@@ -1154,7 +1174,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"company\": \"Musikverein Leopoldsdorf\",\n  \"identity\": {\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"company\": \"The Time Travelers\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"state\": {\n        \"id\": {{state_id}}\n      }\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
+							"raw": "{\n  \"identity\": {\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"state\": {\n        \"id\": {{state_id}}\n      }\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1187,7 +1207,7 @@
 									"})",
 									"",
 									"pm.test(\"correct total\", function() {",
-									"    pm.expect(order.total, pm.environment.get(\"score_price\"));",
+									"    pm.expect(order.total, pm.environment.get(\"score_price\") + pm.environment.get(\"zone_shipping\"));",
 									"})",
 									"",
 									"pm.test(\"correct title\", function() {",
@@ -1202,20 +1222,12 @@
 									"    pm.expect(order.identity.firstName, \"Emmet\");",
 									"})",
 									"",
-									"pm.test(\"firstname is Emmet\", function() {",
-									"    pm.expect(order.identity.firstName, \"Emmet\");",
-									"})",
-									"",
 									"pm.test(\"lastname is Brown\", function() {",
 									"    pm.expect(order.identity.lastName, \"Brown\");",
 									"})",
 									"",
-									"pm.test(\"firstname is Emmet\", function() {",
-									"    pm.expect(order.identity.firstName, \"Emmet\");",
-									"})",
-									"",
-									"pm.test(\"company is The Time Travelers\", function() {",
-									"    pm.expect(order.identity.company, \"The Time Travelers\");",
+									"pm.test(\"company is null\", function() {",
+									"    pm.expect(order.identity.company, null);",
 									"})",
 									"",
 									"pm.test(\"email is emmet.brown@bttf.com\", function() {",
@@ -1228,6 +1240,165 @@
 									"",
 									"pm.test(\"city is Leopoldsdorf im Marchfelde\", function() {",
 									"    pm.expect(order.identity.address.city, \"Leopoldsdorf im Marchfelde\");",
+									"})",
+									"",
+									"pm.test(\"receivedOn date is not null\", function() {",
+									"    pm.expect(order.receivedOn).not.null;",
+									"})",
+									"",
+									"pm.test(\"confirmed date is not null\", function() {",
+									"    pm.expect(order.confirmed).not.null;",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/order/confirm/{{order_id}}",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"order",
+								"confirm",
+								"{{order_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order complex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var order;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    order = response.json();",
+									"})",
+									"",
+									"pm.test(\"store order id\", function() {",
+									"    pm.environment.set(\"order_id\", order.id);",
+									"})",
+									"",
+									"pm.test(\"receivedOn date is not null\", function() {",
+									"    pm.expect(order.receivedOn).not.null;",
+									"})",
+									"",
+									"pm.test(\"confirmed date is null\", function() {",
+									"    pm.expect(order.confirmed, null);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"identity\": {\n    \"firstName\": \"Marty\",\n    \"lastName\": \"McFly\",\n    \"company\": \"The Time Travelers\",\n    \"email\": \"marty.mcfly@bttf.com\",\n    \"telephone\": \"00436647813568\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"2\",\n      \"state\": {\n        \"id\": {{state_id}}\n      }\n    }\n  },\n  \"deliveryAddress\": {\n      \"city\": \"Wien\",\n      \"postCode\": \"1010\",\n      \"street\": \"Stephansplatz\",\n      \"streetNumber\": \"1\",\n      \"state\": {\n          \"id\": {{state_id}}\n      }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 4\n    },\n    {\n        \"id\": {{score_polka_id}},\n        \"quantity\": 2\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/order",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm complex",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var order;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    order = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"correct total\", function() {",
+									"    pm.expect(order.total, pm.environment.get(\"score_price\") * 4 + pm.environment.get(\"score_polka_price\") * 2 + pm.environment.get(\"zone_shipping\"));",
+									"})",
+									"",
+									"pm.test(\"firstname is Marty\", function() {",
+									"    pm.expect(order.identity.firstName, \"Marty\");",
+									"})",
+									"",
+									"pm.test(\"lastname is McFly\", function() {",
+									"    pm.expect(order.identity.lastName, \"McFly\");",
+									"})",
+									"",
+									"pm.test(\"company is The Time Travelers\", function() {",
+									"    pm.expect(order.identity.company, \"The Time Travelers\");",
+									"})",
+									"",
+									"pm.test(\"email is marty.mcfly@bttf.com\", function() {",
+									"    pm.expect(order.identity.email, \"marty.mcfly@bttf.com\");",
+									"})",
+									"",
+									"pm.test(\"telephone is 00436647813568\", function() {",
+									"    pm.expect(order.identity.telephone, \"00436647813568\");",
+									"})",
+									"",
+									"pm.test(\"city is Leopoldsdorf im Marchfelde\", function() {",
+									"    pm.expect(order.identity.address.city, \"Leopoldsdorf im Marchfelde\");",
+									"})",
+									"",
+									"pm.test(\"postCode is 2285\", function() {",
+									"    pm.expect(order.identity.address.postCode, \"2285\");",
+									"})",
+									"",
+									"pm.test(\"street is Hauptplatz\", function() {",
+									"    pm.expect(order.identity.address.street, \"Hautplatz\");",
+									"})",
+									"",
+									"pm.test(\"street number is 2\", function() {",
+									"    pm.expect(order.identity.address.streetNumber, \"2\");",
+									"})",
+									"",
+									"pm.test(\"delivery city is Wien\", function() {",
+									"    pm.expect(order.deliveryAddress.city, \"Wien\");",
+									"})",
+									"",
+									"pm.test(\"delivery postCode is 1010\", function() {",
+									"    pm.expect(order.deliveryAddress.postCode, \"1010\");",
+									"})",
+									"",
+									"pm.test(\"delivery street is Stephansplatz\", function() {",
+									"    pm.expect(order.deliveryAddress.street, \"Stephansplatz\");",
+									"})",
+									"",
+									"pm.test(\"delivery street number is 1\", function() {",
+									"    pm.expect(order.deliveryAddress.streetNumber, \"1\");",
+									"})",
+									"",
+									"pm.test(\"receivedOn date is not null\", function() {",
+									"    pm.expect(order.receivedOn).not.null;",
+									"})",
+									"",
+									"pm.test(\"confirmed date is not null\", function() {",
+									"    pm.expect(order.confirmed).not.null;",
 									"})"
 								],
 								"type": "text/javascript"
