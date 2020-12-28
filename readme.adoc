@@ -50,6 +50,35 @@ This is required, everytime the structure of the `HeliconConfigurationProperties
 
 TIP: To receive an attribute description, refer either to your IDEs autocomplete feature or to `src/main/kotlin/at/markusnentwich/helicon/configuration/HeliconConfigurationProperties.kt`.
 
+== Testing
+
+The main testing strategy in this project are blackbox test.
+In order to perform them just run the postman collection `helicon-test.postman_collection.json` which can be found in the `postman` directory.
+If you are running the Helicon instance on localhost with the provided default spring configuration the environment `local-test.postman_environment.json` can be used.
+
+To perform a quick test newman can be used:
+
+[source,shell script]
+----
+newman run -e postman/local-test.postman_environment.json postman/helicon-test.postman_collection.json
+----
+
+NOTE: This only works if the `newman` binary is in the path.
+
+=== Installing Newman
+
+For the installation either npm or yarn must be installed, as the frontend of this project uses yarn, it will be used in this example.
+
+[source,shell script]
+----
+yarn global add newman
+----
+
+NOTE: If the npm binary directory is not in your path, you have to run all `newman` commands with `~/.npm/bin/newman`.
+Alternatively this directory can be added to the path environment variable.
+
+Alternatively, the collection and the environment can be imported into postman and can be used there through the "`Runner`".
+
 == Deployment
 
 As the installation only provides a way for testing, it has to be clarified how to deploy this application.
