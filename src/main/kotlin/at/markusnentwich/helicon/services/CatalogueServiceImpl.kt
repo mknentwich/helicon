@@ -36,7 +36,7 @@ class CatalogueServiceImpl(
     override fun createCategory(category: CategoryProductDto, jwt: String): ResponseEntity<CategoryProductDto> {
         callLog("createCategory")
         val status = try {
-            return ResponseEntity.ok(catalogueController.createCategory(category, jwt))
+            return ResponseEntity.ok(catalogueController.createCategory(category))
         } catch (e: BadPayloadException) {
             HttpStatus.BAD_REQUEST
         }
@@ -50,7 +50,7 @@ class CatalogueServiceImpl(
     ): ResponseEntity<CategoryProductDto> {
         callLog("updateCategory")
         val status = try {
-            return ResponseEntity.ok(catalogueController.updateCategory(category, id, jwt))
+            return ResponseEntity.ok(catalogueController.updateCategory(category, id))
         } catch (e: NotFoundException) {
             HttpStatus.NOT_FOUND
         } catch (e: BadPayloadException) {
@@ -64,7 +64,7 @@ class CatalogueServiceImpl(
     override fun deleteCategory(id: Long, jwt: String): ResponseEntity<Void> {
         callLog("deleteCategory")
         val status = try {
-            catalogueController.deleteCategory(id, jwt)
+            catalogueController.deleteCategory(id, false)
             HttpStatus.OK
         } catch (e: NotFoundException) {
             HttpStatus.NOT_FOUND
@@ -90,7 +90,7 @@ class CatalogueServiceImpl(
     override fun createScore(score: ScoreProductDto, jwt: String): ResponseEntity<ScoreProductDto> {
         callLog("createScore")
         val status = try {
-            return ResponseEntity.ok(catalogueController.createScore(score, jwt))
+            return ResponseEntity.ok(catalogueController.createScore(score))
         } catch (e: BadPayloadException) {
             HttpStatus.BAD_REQUEST
         }
@@ -100,7 +100,7 @@ class CatalogueServiceImpl(
     override fun updateScore(score: ScoreProductDto, id: Long, jwt: String): ResponseEntity<ScoreProductDto> {
         callLog("updateScore")
         val status = try {
-            return ResponseEntity.ok(catalogueController.updateScore(score, id, jwt))
+            return ResponseEntity.ok(catalogueController.updateScore(score, id))
         } catch (e: NotFoundException) {
             HttpStatus.NOT_FOUND
         } catch (e: BadPayloadException) {
@@ -114,7 +114,7 @@ class CatalogueServiceImpl(
     override fun deleteScore(id: Long, jwt: String): ResponseEntity<Void> {
         callLog("deleteScore")
         val status = try {
-            catalogueController.deleteScore(id, jwt)
+            catalogueController.deleteScore(id)
             HttpStatus.OK
         } catch (e: NotFoundException) {
             HttpStatus.NOT_FOUND
