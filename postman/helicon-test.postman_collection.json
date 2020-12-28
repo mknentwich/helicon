@@ -418,7 +418,7 @@
 								"exec": [
 									"var category;",
 									"pm.test(\"status forbidden\", function() {",
-									"    pm.response.to.have(403);",
+									"    pm.response.to.have.status(403);",
 									"    category = pm.response.json();",
 									"})",
 									""
@@ -464,7 +464,7 @@
 								"exec": [
 									"var category;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    category = pm.response.json();",
 									"})",
 									"",
@@ -524,7 +524,7 @@
 								"exec": [
 									"var category;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    category = pm.response.json();",
 									"})",
 									"",
@@ -640,7 +640,7 @@
 								"exec": [
 									"var category;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    category = pm.response.json();",
 									"})",
 									"",
@@ -700,7 +700,7 @@
 								"exec": [
 									"var category;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    category = pm.response.json();",
 									"})",
 									"",
@@ -760,7 +760,7 @@
 								"exec": [
 									"var category;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    category = pm.response.json();",
 									"})",
 									"",
@@ -816,7 +816,7 @@
 							"script": {
 								"exec": [
 									"pm.test(\"status forbidden\", function() {",
-									"    pm.response.to.have(403);",
+									"    pm.response.to.have.status(403);",
 									"})",
 									""
 								],
@@ -832,7 +832,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {{category_behm_id}}\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -861,7 +861,7 @@
 								"exec": [
 									"var score;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    score = pm.response.json();",
 									"})",
 									"",
@@ -889,7 +889,7 @@
 									"    pm.environment.set(\"score_price\", score.price);",
 									"})",
 									"",
-									"p.test(\"category is behm\", function() {",
+									"pm.test(\"category is behm\", function() {",
 									"    pm.expect(score.category.id, pm.environment.get(\"category_behm_id\"));",
 									"    pm.expect(score.category.name, pm.environment.get(\"category_behm_name\"));",
 									"    pm.expect(score.category.namePlural, pm.environment.get(\"category_behm_namePlural\"));",
@@ -904,7 +904,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {{category_behm_id}}\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1000,7 +1000,7 @@
 								"exec": [
 									"var score;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    score = pm.response.json();",
 									"})",
 									"",
@@ -1028,7 +1028,7 @@
 									"    pm.environment.set(\"score_price\", score.price);",
 									"})",
 									"",
-									"p.test(\"category is behm\", function() {",
+									"pm.test(\"category is behm\", function() {",
 									"    pm.expect(score.category.id, pm.environment.get(\"category_behm_id\"));",
 									"    pm.expect(score.category.name, pm.environment.get(\"category_behm_name\"));",
 									"    pm.expect(score.category.namePlural, pm.environment.get(\"category_behm_namePlural\"));",
@@ -1043,7 +1043,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {{category_behm_id}}\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1072,7 +1072,7 @@
 								"exec": [
 									"var score;",
 									"pm.test(\"status ok\", function() {",
-									"    pm.response.to.have(200);",
+									"    pm.response.to.have.status(200);",
 									"    score = pm.response.json();",
 									"})",
 									"",
@@ -1100,7 +1100,7 @@
 									"    pm.environment.set(\"score_polka_price\", score.price);",
 									"})",
 									"",
-									"p.test(\"category is polka\", function() {",
+									"pm.test(\"category is polka\", function() {",
 									"    pm.expect(score.category.id, pm.environment.get(\"category_polka_id\"));",
 									"    pm.expect(score.category.name, pm.environment.get(\"category_polka_name\"));",
 									"    pm.expect(score.category.namePlural, pm.environment.get(\"category_polka_namePlural\"));",
@@ -1115,7 +1115,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Smutna Milena\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Behmisch\",\n    \"category\": {{category_polka_id}}\n}",
+							"raw": "{\n    \"title\": \"Smutna Milena\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Behmisch\",\n    \"category\": {\n        \"id\": {{category_polka_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1822,6 +1822,36 @@
 					]
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
