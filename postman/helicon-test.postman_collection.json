@@ -1423,6 +1423,405 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "asset",
+			"item": [
+				{
+					"name": "pdf",
+					"item": [
+						{
+							"name": "get non existing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create pdf unpriviledged",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create pdf",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get existing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create pdf invalid id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/assets/score/123456/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"123456",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "audio",
+					"item": [
+						{
+							"name": "get non existing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create audio unpriviledged",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.ogg"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create audio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.ogg"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get existing",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create audio invalid id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/assets/score/123456/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"assets",
+										"score",
+										"123456",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
 	],
 	"variable": [
