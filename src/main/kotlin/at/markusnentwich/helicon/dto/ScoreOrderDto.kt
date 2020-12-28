@@ -10,8 +10,6 @@ data class ScoreOrderDto(
     var id: UUID?,
     @Schema(description = "the number of the bill. this is only used during confirmation", example = "2020092701")
     var billingNumber: String?,
-    @Schema(description = "the receiving company or society of this order", example = "Musikverein Leopoldsdorf")
-    var company: String?,
     @Schema(description = "the date when the order was confirmed from the user")
     var confirmed: LocalDateTime?,
     @Schema(description = "the registered user who performed this order")
