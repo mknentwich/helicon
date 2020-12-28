@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.io.File
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping(ASSET_SERVICE)
@@ -25,7 +25,7 @@ interface AssetService {
     )
     fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
-    @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/mpeg"])
+    @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/ogg", "audio/mp3", "audio/mpeg", "audio/mp4"])
     @Operation(summary = "update the audio example of a score")
     @ApiResponses(
         value = [
@@ -37,7 +37,7 @@ interface AssetService {
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
     )
-    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody audio: File): ResponseEntity<Void>
+    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/audio", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an audio example of a score")
@@ -74,7 +74,7 @@ interface AssetService {
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
     )
-    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody pdf: File): ResponseEntity<Void>
+    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.DELETE])
     @Operation(summary = "delete the PDF of a score")
