@@ -11,10 +11,13 @@ import at.markusnentwich.helicon.repositories.RoleRepository
 import at.markusnentwich.helicon.repositories.StateRepository
 import at.markusnentwich.helicon.repositories.ZoneRepository
 import at.markusnentwich.helicon.security.ALL_ROLES
+import at.markusnentwich.helicon.security.ASSET_ROLE
+import at.markusnentwich.helicon.security.CATALOGUE_ROLE
 import at.markusnentwich.helicon.security.HeliconAuthenticationFilter
 import at.markusnentwich.helicon.security.HeliconAuthorizationFilter
 import at.markusnentwich.helicon.security.HeliconUserDetailsService
 import at.markusnentwich.helicon.security.META_ROLE
+import at.markusnentwich.helicon.security.ORDER_ROLE
 import at.markusnentwich.helicon.security.TokenManager
 import at.markusnentwich.helicon.services.ACCOUNT_SERVICE
 import at.markusnentwich.helicon.services.ASSET_SERVICE
@@ -61,9 +64,18 @@ class SecurityConfiguration(
                 "/swagger-ui/**",
                 "/v3/**"
             )?.permitAll()
+            ?.antMatchers(HttpMethod.PUT, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
+            ?.antMatchers(HttpMethod.DELETE, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
+
+            ?.antMatchers(HttpMethod.POST, "$CATALOGUE_SERVICE/**")?.hasAuthority(CATALOGUE_ROLE)
+            ?.antMatchers(HttpMethod.PUT, "$CATALOGUE_SERVICE/**")?.hasAuthority(CATALOGUE_ROLE)
+            ?.antMatchers(HttpMethod.DELETE, "$CATALOGUE_SERVICE/**")?.hasAuthority(CATALOGUE_ROLE)
+
             ?.antMatchers(HttpMethod.POST, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
             ?.antMatchers(HttpMethod.PUT, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
             ?.antMatchers(HttpMethod.DELETE, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
+
+            ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {
             http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.permitAll()
