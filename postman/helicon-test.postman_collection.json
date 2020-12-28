@@ -1490,7 +1490,7 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+										"src": "postman/assets/helicon.pdf"
 									}
 								},
 								"url": {
@@ -1529,7 +1529,7 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+										"src": "postman/assets/helicon.pdf"
 									}
 								},
 								"url": {
@@ -1604,7 +1604,7 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+										"src": "postman/assets/helicon.pdf"
 									}
 								},
 								"url": {
@@ -1687,7 +1687,7 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.ogg"
+										"src": "postman/assets/helicon.ogg"
 									}
 								},
 								"url": {
@@ -1726,7 +1726,7 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.ogg"
+										"src": "postman/assets/helicon.ogg"
 									}
 								},
 								"url": {
@@ -1801,7 +1801,7 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "/home/richi/Dokumente/webmen/helicon/postman/assets/helicon.pdf"
+										"src": "postman/assets/helicon.pdf"
 									}
 								},
 								"url": {

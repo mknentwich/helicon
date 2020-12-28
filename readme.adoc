@@ -78,6 +78,7 @@ NOTE: If the npm binary directory is not in your path, you have to run all `newm
 Alternatively this directory can be added to the path environment variable.
 
 Alternatively, the collection and the environment can be imported into postman and can be used there through the "`Runner`".
+Please take care when writing requests in postman which involve external files, that the paths have to changed to the projects relative after export.
 
 == Deployment
 
