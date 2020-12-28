@@ -1,54 +1,45 @@
 
 [.text-right]
-{cname} +
-{cstreet} +
-{ccity} +
-Telefon: {cphone} +
-E-Mail: {cmail} +
-Webseite: https://{cwebsite}[{cwebsite}] +
+{ownerName} +
+{ownerStreet} {ownerStreetNumber} +
+{ownerPostCode} {ownerCity} +
+Telefon: {ownerPhone} +
+E-Mail: {ownerEmail} +
+Webseite: {ownerWebsite} +
 
-ifdef::company[]
+ifdef::customerCompany[]
 {company} +
-z.Hd. 
 endif::[]
-ifndef::company[]
-{salutation} +
-endif::[]
-{firstName} {lastName} +
-ifeval::["{state}" != "Österreich"]
-{state} +
-endif::[]
+{customerFirstname} {customerLastname} +
+{customerStreet} {customerStreetNumber} +
+{customerPostcode} {customerCity} +
+{customerState} +
 
 [.text-right]
-{bcity}, am {bdate}
+{ownerCity}, am {billDate}
 
-== Rechnung Nr. {bnumber}
+=== Rechnung Nr. {billNumber}
 
 [cols="10,50,2*>20",options="header,footer"]
 [frame=none, grid=rows]
 |===
 |Menge |Beschreibung |Einzelpreis |Gesamtpreis
 |{amount} |{btitle} |€ {price} |€ {multiprice}
-||Versand ({state})||€ {shipping}
+||Versand ({customerState})||€ {shipping}
 |||Summe |€ {psum}
 |===
 
-Ich bitte Sie, den betrag binnen 14 Tagen an das folgende Konto zu überweisen:
-////
-[horizontal]
-IBAN:: {iban}
-BIC:: {bic}
-Geldinstitut:: {bank}
-Zahlungsreference:: {bnumber}
-////
+Dieser Betrag enthält keine Umsatzsteuer aufgrund §6(2)27 Kleinunternehmerregelung.
+
+
+
+Ich bitte Sie, den Betrag binnen 14 Tagen an das folgende Konto zu überweisen:
+
 [cols="30h,70",frame="none",grid="none"]
 |===
-|IBAN: |{iban}
-|BIC: |{bic}
-|Geldinstitut: |{bank}
-|Zahlungsreferenz: |{bnumber}
+|Kontoname: |{bankName}
+|IBAN: |{bankIban}
+|BIC: |{bankBic}
+|Geldinstitut: |{bankInstitute}
+|Zahlungsreferenz: |{bankReference}
 |===
-
-****
-Dieser Betrag enthält keine Umsatzsteuer aufgrund §6(2)27 Kleinunternehmerregelung.
-****
