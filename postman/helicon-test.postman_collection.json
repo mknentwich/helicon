@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "41a17410-3831-4faf-a275-e3a6cd3ceb03",
+		"_postman_id": "24fc0c74-5dc7-400f-a42a-7e7fa7023c0a",
 		"name": "helicon-test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1485,7 +1485,7 @@
 								"auth": {
 									"type": "noauth"
 								},
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "file",
@@ -1524,7 +1524,7 @@
 								}
 							],
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "file",
@@ -1599,7 +1599,7 @@
 								}
 							],
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "file",
@@ -1682,7 +1682,7 @@
 								"auth": {
 									"type": "noauth"
 								},
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "file",
@@ -1721,7 +1721,7 @@
 								}
 							],
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "file",
@@ -1796,7 +1796,7 @@
 								}
 							],
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "file",
