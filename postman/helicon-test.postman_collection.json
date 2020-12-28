@@ -1452,12 +1452,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"pdf"
@@ -1494,12 +1494,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"pdf"
@@ -1533,12 +1533,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"pdf"
@@ -1569,12 +1569,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/pdf",
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"pdf"
@@ -1608,12 +1608,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/assets/score/123456/pdf",
+									"raw": "{{api}}/asset/score/123456/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"123456",
 										"pdf"
@@ -1649,12 +1649,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"audio"
@@ -1691,12 +1691,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"audio"
@@ -1730,12 +1730,90 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create audio mp3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "postman/assets/helicon.mp3"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create audio m4a",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "postman/assets/helicon.m4a"
+									}
+								},
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
 										"score",
 										"{{score_id}}",
 										"audio"
@@ -1766,12 +1844,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/assets/score/{{score_id}}/audio",
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"{{score_id}}",
 										"audio"
@@ -1801,16 +1879,16 @@
 								"body": {
 									"mode": "file",
 									"file": {
-										"src": "postman/assets/helicon.pdf"
+										"src": "postman/assets/helicon.ogg"
 									}
 								},
 								"url": {
-									"raw": "{{api}}/assets/score/123456/audio",
+									"raw": "{{api}}/asset/score/123456/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"assets",
+										"asset",
 										"score",
 										"123456",
 										"audio"
