@@ -28,7 +28,6 @@ class AsciidoctorPDFBillConverter(
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("billOrder", ordersAsCSV(order))
                     .attribute("billNumber")
-                        //TODO: should confirmed date be used?
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("billTotal", order.total())
                     .attribute("ownerName", config.bill.address.name)
@@ -39,6 +38,7 @@ class AsciidoctorPDFBillConverter(
                     .attribute("ownerPhone", config.bill.address.phone)
                     .attribute("ownerEmail", config.bill.address.mail)
                     .attribute("ownerWebsite", config.domain)
+                    .attribute("customerSalutation", order.identity.salutation)
                     .attribute("customerCompany", order.identity.company)
                     .attribute("customerFirstname", order.identity.firstName)
                     .attribute("customerLastname", order.identity.lastName)

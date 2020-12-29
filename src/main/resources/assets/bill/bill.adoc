@@ -1,6 +1,5 @@
 [frame=none, grid=none, cols="<,>"]
 |===
-
 a|image::./images/verlag.svg[Static,250, opts=inline] | {ownerName} +
 {ownerStreet} {ownerStreetNumber} +
 {ownerPostCode} {ownerCity} +
@@ -10,7 +9,12 @@ Webseite: {ownerWebsite}
 |===
 
 ifdef::customerCompany[]
-{company} +
+{customerCompany} +
+endif::[]
+ifndef::customerCompany[]
+ifdef::customerSalutation[]
+{customerSalutation} +
+endif::[]
 endif::[]
 {customerFirstname} {customerLastname} +
 {customerStreet} {customerStreetNumber} +
@@ -20,23 +24,21 @@ endif::[]
 [.text-right]
 {ownerCity}, am {billDate}
 
-= Rechnung Nr. {billNumber}
+== Rechnung Nr. {billNumber}
 
-[cols="10,50,2*>20",options="header,footer"]
+[cols="^10,50,2*>20",options="header,footer"]
 [frame=none, grid=rows]
 |===
 |Menge |Beschreibung |Einzelpreis |Gesamtpreis
-|{amount} |{btitle} |€ {price} |€ {multiprice}
-||Versand ({customerState})||€ {shipping}
-|||Summe |€ {psum}
+|{amount} |{btitle} |{price} € |{multiprice} €
+||Versand ({customerState})||{shipping} €
+|| s|Summe s|{psum} €
 |===
 
+[.text-center]
 Dieser Betrag enthält keine Umsatzsteuer aufgrund §6(2)27 Kleinunternehmerregelung.
 
-
-
 Ich bitte Sie, den Betrag binnen 14 Tagen an das folgende Konto zu überweisen:
-
 [cols="30h,70",frame="none",grid="none"]
 |===
 |Kontoname: |{bankName}

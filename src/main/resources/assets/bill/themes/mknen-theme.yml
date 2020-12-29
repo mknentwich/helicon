@@ -3,8 +3,8 @@ base:
   font-color: 000000
 
 heading:
-  h1-font-color: 000000
-  h1-font-size: 16
+  h2-font-color: 000000
+  h2-font-size: 18
 
 table:
   border-color: 000000
