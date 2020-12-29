@@ -15,7 +15,7 @@ import java.util.*
 class OrderServiceImpl(
     @Autowired val orderController: OrderController
 ) : OrderService {
-    val logger = LoggerFactory.getLogger(OrderServiceImpl::class.java)
+    private val logger = LoggerFactory.getLogger(OrderServiceImpl::class.java)
     override fun getAll(jwt: String): ResponseEntity<Iterable<ScoreOrderDto>> {
         callLog("getAll")
         return ResponseEntity.ok(orderController.getAll(jwt))

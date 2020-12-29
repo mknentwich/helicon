@@ -15,7 +15,7 @@ class MetaServiceImpl(
     @Autowired val metaController: MetaController,
     @Autowired val repo: OrderRepository
 ) : MetaService {
-    val logger = LoggerFactory.getLogger(MetaServiceImpl::class.java)
+    private val logger = LoggerFactory.getLogger(MetaServiceImpl::class.java)
 
     override fun getAllStates(): ResponseEntity<Iterable<StateDto>> {
         callLog("getAllStates")

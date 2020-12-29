@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class CatalogueServiceImpl(
     @Autowired val catalogueController: CatalogueController
 ) : CatalogueService {
-    val logger = LoggerFactory.getLogger(CatalogueServiceImpl::class.java)
+    private val logger = LoggerFactory.getLogger(CatalogueServiceImpl::class.java)
 
     override fun getCatalogue(): ResponseEntity<CategoryProductDto> {
         callLog("getCatalogue")
