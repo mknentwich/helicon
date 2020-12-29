@@ -6,6 +6,7 @@ import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.entities.OrderScoreEntity
+import at.markusnentwich.helicon.mail.OrderMailService
 import at.markusnentwich.helicon.repositories.AddressRepository
 import at.markusnentwich.helicon.repositories.IdentityRepository
 import at.markusnentwich.helicon.repositories.OrderRepository
@@ -27,7 +28,8 @@ class OrderControllerImpl(
     @Autowired val scoreRepository: ScoreRepository,
     @Autowired val identityRepository: IdentityRepository,
     @Autowired val addressRepository: AddressRepository,
-    @Autowired val mapper: ModelMapper
+    @Autowired val mapper: ModelMapper,
+    @Autowired val orderMailService: OrderMailService
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -130,6 +132,8 @@ class OrderControllerImpl(
         }.toMutableSet()
         // TODO dto mapping
         // TODO email notifications
+        orderMailService.notifyOwner(entity)
+        orderMailService.notifyCustomer(entity)
         return dto
     }
 }

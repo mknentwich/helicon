@@ -42,7 +42,9 @@ data class HeliconConfigurationProperties(
 
     data class MailConfiguration(
         /** Mail notifications. */
-        val notification: NotificationConfiguration = NotificationConfiguration()
+        val notification: NotificationConfiguration = NotificationConfiguration(),
+        /** The name for emails. */
+        val identity: String = "Markus Nentwich Bestellsystem <bestellungen@markus-nentwich.at>"
     ) {
         data class NotificationConfiguration(
             /** Notify customers when they perform an order. */

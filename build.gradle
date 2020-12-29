@@ -54,6 +54,7 @@ dependencies {
 
     implementation 'org.bouncycastle:bcprov-jdk15on:1.67'
 
+    implementation 'org.freemarker:freemarker:2.3.30'
 }
 
 test {
