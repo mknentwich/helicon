@@ -832,7 +832,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -867,6 +867,14 @@
 									"",
 									"pm.test(\"store march id\", function() {",
 									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type is ensemble\", function() {",
+									"    pm.expect(score.groupType, \"Ensemble\");",
+									"})",
+									"",
+									"pm.test(\"author is Rudolf Nováček\", function() {",
+									"    pm.expect(score.author, \"Rudolf Nováček\");",
 									"})",
 									"",
 									"pm.test(\"title is Castaldo\", function() {",
@@ -904,7 +912,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1013,6 +1021,14 @@
 									"    pm.environment.set(\"score_title\", score.title);",
 									"})",
 									"",
+									"pm.test(\"groupType is ensemble\", function() {",
+									"    pm.expect(score.groupType, \"Ensemble\");",
+									"})",
+									"",
+									"pm.test(\"author is Rudolf Nováček\", function() {",
+									"    pm.expect(score.author, \"Rudolf Nováček\");",
+									"})",
+									"",
 									"pm.test(\"instrumentation is POSAUNEN!!!\", function() {",
 									"    pm.expect(score.instrumentation, \"POSAUNEN!!!\");",
 									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
@@ -1043,7 +1059,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1064,7 +1080,7 @@
 					"response": []
 				},
 				{
-					"name": "create smutna milena",
+					"name": "create smutna milenka",
 					"event": [
 						{
 							"listen": "test",
@@ -1080,9 +1096,17 @@
 									"    pm.environment.set(\"score_polka_id\", score.id);",
 									"})",
 									"",
-									"pm.test(\"title is Smutna Milena\", function() {",
-									"    pm.expect(score.title, \"Smutna Milena\");",
+									"pm.test(\"title is Smutná Milenka\", function() {",
+									"    pm.expect(score.title, \"Smutná Milenka\");",
 									"    pm.environment.set(\"score_polka_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"group type is Blasorchester\", function() {",
+									"    pm.expect(score.groupType, \"Blasorchester\");",
+									"})",
+									"",
+									"pm.test(\"author is Paevl Heidinger\", function() {",
+									"    pm.expect(score.author, \"Pavel Heidinger\");",
 									"})",
 									"",
 									"pm.test(\"instrumentation is Behmisch\", function() {",
@@ -1115,7 +1139,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Smutna Milena\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Behmisch\",\n    \"category\": {\n        \"id\": {{category_polka_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Smutná Milenka\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"groupType\": \"Blasorchester\",\n    \"author\": \"Pavel Heidinger\",\n    \"instrumentation\": \"Behmisch\",\n    \"category\": {\n        \"id\": {{category_polka_id}}\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
