@@ -59,11 +59,12 @@ class SecurityConfiguration(
                 "$ASSET_SERVICE/**",
                 "$CATALOGUE_SERVICE/**",
                 "$META_SERVICE/**",
-                "$ORDER_SERVICE/confirm/**",
                 "$ACCOUNT_SERVICE/login",
                 "/swagger-ui/**",
                 "/v3/**"
             )?.permitAll()
+            ?.antMatchers(HttpMethod.PUT, "$ORDER_SERVICE/confirm/**")?.permitAll()
+
             ?.antMatchers(HttpMethod.PUT, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
             ?.antMatchers(HttpMethod.DELETE, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
 
@@ -78,9 +79,9 @@ class SecurityConfiguration(
             ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {
-            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.permitAll()
+            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, ORDER_SERVICE)?.permitAll()
         } else {
-            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, "$ORDER_SERVICE/")?.authenticated()
+            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, ORDER_SERVICE)?.authenticated()
         }
 
         http?.authorizeRequests()?.anyRequest()?.denyAll()
