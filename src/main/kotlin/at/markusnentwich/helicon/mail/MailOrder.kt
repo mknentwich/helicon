@@ -7,5 +7,6 @@ data class MailOrder(
     val address: String,
     val deliveryAddress: String?,
     val telephone: String,
-    val email: String
+    val email: String,
+    val company: String?
 )

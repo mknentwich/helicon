@@ -5,5 +5,5 @@ Die Kontaktdaten sind:
 Rechnungsadresse: ${order.address}
 Lieferadresse: ${order.deliveryAddress!"siehe Rechnungsadresse"}
 E-Mail: ${order.email}
-Firma/Verein: ${order.company}
+Firma/Verein: ${order.company!"/"}
 Telefon: ${order.telephone}

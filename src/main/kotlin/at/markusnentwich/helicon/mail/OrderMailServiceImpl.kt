@@ -77,13 +77,14 @@ class OrderMailServiceImpl(
             telephone = order.identity.telephone,
             quantity = order.items.sumOf { it.amount },
             items = order.items.map { "${it.amount} x ${it.score.title} - ${it.score.groupType}" }
-                .fold("") { acc, s -> "$acc, $s" }
+                .fold("") { acc, s -> "$acc, $s" },
+            company = order.identity.company
         )
     }
 
     private fun convert(template: String, model: MailOrder): String {
         val reader = StringWriter()
-        templateConfiguration.getTemplate(template).process(model, reader)
+        templateConfiguration.getTemplate(template).process(mapOf(Pair("order", model)), reader)
         return reader.toString()
     }
 }
