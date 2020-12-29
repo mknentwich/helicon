@@ -8,6 +8,7 @@ class IdentityEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
+    var salutation: String? = null,
     var firstName: String = "Karl",
     var lastName: String = "Steinscheisser",
     var company: String? = null,
