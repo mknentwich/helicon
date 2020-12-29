@@ -8,6 +8,36 @@ E-Mail: {ownerEmail} +
 Webseite: {ownerWebsite}
 |===
 
+// billing and delivery address
+ifdef::deliveryStreet[]
+[frame=none, grid=none, cols="<,<"]
+|===
+s| Rechnungsadresse: s| Lieferadresse:
+ifdef::customerCompany[]
+a| {customerCompany} +
+endif::[]
+ifndef::customerCompany[]
+a|
+ifdef::customerSalutation[]
+{customerSalutation} +
+endif::[]
+endif::[]
+{customerFirstname} {customerLastname} +
+{billingStreet} {billingStreetNumber} +
+{billingPostcode} {billingCity} +
+{billingState} a|
+ifdef::customerSalutation[]
+{customerSalutation} +
+endif::[]
+{customerFirstname} {customerLastname} +
+{deliveryStreet} {deliveryStreetNumber} +
+{deliveryPostcode} {deliveryCity} +
+{deliveryState}
+|===
+endif::[]
+
+// billing address only
+ifndef::deliveryStreet[]
 ifdef::customerCompany[]
 {customerCompany} +
 endif::[]
@@ -17,9 +47,10 @@ ifdef::customerSalutation[]
 endif::[]
 endif::[]
 {customerFirstname} {customerLastname} +
-{customerStreet} {customerStreetNumber} +
-{customerPostcode} {customerCity} +
-{customerState} +
+{billingStreet} {billingStreetNumber} +
+{billingPostcode} {billingCity} +
+{billingState} +
+endif::[]
 
 [.text-right]
 {ownerCity}, am {billDate}

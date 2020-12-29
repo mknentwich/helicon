@@ -1,6 +1,7 @@
 package at.markusnentwich.helicon
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.OrderEntity
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder.options
@@ -22,8 +23,18 @@ class BillPDFCreationTest(
     fun printBillToLocalPDFFile(){
         val asciidoctor = create()
 
+        val delivery = AddressEntity()
+        delivery.street = "Postgasse"
+        delivery.streetNumber = "10"
+        delivery.postCode = "2285"
+        delivery.city = "Breitstetten"
+        delivery.state.name = "Österreich"
+
         val order = OrderEntity()
+        order.deliveryAddress = delivery
         order.confirmed = LocalDateTime.now()
+        order.identity.company = "Musikverein Leopoldsdorf"
+        //order.identity.salutation = null
 
         // -- set attributes and options --
         val options = options()
@@ -51,11 +62,16 @@ class BillPDFCreationTest(
                 .attribute("customerCompany", order.identity.company)
                 .attribute("customerFirstname", order.identity.firstName)
                 .attribute("customerLastname", order.identity.lastName)
-                .attribute("customerStreet", order.identity.address.street)
-                .attribute("customerStreetNumber", order.identity.address.streetNumber)
-                .attribute("customerPostcode", order.identity.address.postCode)
-                .attribute("customerCity", order.identity.address.city)
-                .attribute("customerState", order.identity.address.state.name)
+                .attribute("billingStreet", order.identity.address.street)
+                .attribute("billingStreetNumber", order.identity.address.streetNumber)
+                .attribute("billingPostcode", order.identity.address.postCode)
+                .attribute("billingCity", order.identity.address.city)
+                .attribute("billingState", order.identity.address.state.name)
+                .attribute("deliveryStreet", order.deliveryAddress?.street)
+                .attribute("deliveryStreetNumber", order.deliveryAddress?.streetNumber)
+                .attribute("deliveryPostcode", order.deliveryAddress?.postCode)
+                .attribute("deliveryCity", order.deliveryAddress?.city)
+                .attribute("deliveryState", order.deliveryAddress?.state?.name)
                 .attribute("bankName", config.bill.bank.name)
                 .attribute("bankBic", config.bill.bank.bic)
                 .attribute("bankIban", config.bill.bank.iban)
