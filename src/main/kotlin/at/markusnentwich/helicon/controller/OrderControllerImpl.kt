@@ -132,8 +132,16 @@ class OrderControllerImpl(
         }.toMutableSet()
         // TODO dto mapping
         // TODO email notifications
-        orderMailService.notifyOwner(entity)
-        orderMailService.notifyCustomer(entity)
+        if (config.mail.notification.ownerOnOrder) {
+            orderMailService.notifyOwner(entity)
+        } else {
+            logger.warn("Received an order but owner notifications are disabled")
+        }
+        if (config.mail.notification.customerOnOrder) {
+            orderMailService.notifyCustomer(entity)
+        } else {
+            logger.warn("Received an order but customer notifications are disabled")
+        }
         return dto
     }
 }
