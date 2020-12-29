@@ -1621,6 +1621,108 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "delete pdf unpriviledged",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete pdf",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete non existing pdf",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
+										"pdf"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -1891,6 +1993,108 @@
 										"asset",
 										"score",
 										"123456",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete audio unpriviledged",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete audio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
+										"audio"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete non existing audio",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"asset",
+										"score",
+										"{{score_id}}",
 										"audio"
 									]
 								}
