@@ -30,6 +30,9 @@ class CatalogueControllerImpl(
 
     override fun createCategory(category: CategoryProductDto): CategoryProductDto {
         val categoryEntity = mapper.map(category, CategoryEntity::class.java)
+        if (category.parent?.id != null) {
+            categoryEntity.parent = categoryRepository.findByIdOrNull(category.parent!!.id!!) ?: throw BadPayloadException()
+        }
         return mapper.map(categoryRepository.save(categoryEntity), CategoryProductDto::class.java)
     }
 
@@ -58,6 +61,11 @@ class CatalogueControllerImpl(
 
     override fun createScore(score: ScoreProductDto): ScoreProductDto {
         val scoreEntity = mapper.map(score, ScoreEntity::class.java)
+        if (scoreEntity.category.id == null) {
+            throw BadPayloadException()
+        }
+        scoreEntity.category = categoryRepository.findByIdOrNull(scoreEntity.category.id!!) ?: throw BadPayloadException()
+        scoreEntity.category.scores = null
         return mapper.map(scoreRepository.save(scoreEntity), ScoreProductDto::class.java)
     }
 
