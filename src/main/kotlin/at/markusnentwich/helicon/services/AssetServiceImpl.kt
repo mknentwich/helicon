@@ -45,7 +45,15 @@ class AssetServiceImpl(
     }
 
     override fun deleteScoreAudio(id: Long): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        val status = try {
+            assetController.deleteScoreAudio(id)
+            HttpStatus.OK
+        } catch (e: NotFoundException) {
+            HttpStatus.NOT_FOUND
+        } catch (e: Exception) {
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+        return ResponseEntity.status(status).build()
     }
 
     override fun getScorePdf(id: Long): ResponseEntity<InputStreamResource> {
@@ -77,6 +85,14 @@ class AssetServiceImpl(
     }
 
     override fun deleteScorePdf(id: Long): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        val status = try {
+            assetController.deleteScorePdf(id)
+            HttpStatus.OK
+        } catch (e: NotFoundException) {
+            HttpStatus.NOT_FOUND
+        } catch (e: Exception) {
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+        return ResponseEntity.status(status).build()
     }
 }
