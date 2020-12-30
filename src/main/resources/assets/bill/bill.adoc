@@ -78,7 +78,7 @@ Ich bitte Sie, den Betrag binnen 14 Tagen an das folgende Konto zu überweisen:
 |IBAN: |{bankIban}
 |BIC: |{bankBic}
 |Geldinstitut: |{bankInstitute}
-|Zahlungsreferenz: |{bankReference}
+|Zahlungsreferenz: s|{bankReference}
 |===
 
 [.text-center]
