@@ -1,5 +1,6 @@
 package at.markusnentwich.helicon.entities
 
+import org.hibernate.annotations.Formula
 import java.io.Serializable
 import java.time.LocalDateTime
 import java.util.UUID
@@ -27,8 +28,10 @@ class OrderEntity(
     @OneToMany(mappedBy = "order")
     var items: MutableSet<OrderScoreEntity> = mutableSetOf(),
     var inProgress: LocalDateTime? = null,
-    var receivedOn: LocalDateTime = LocalDateTime.now(),
-    var sent: LocalDateTime? = null
+    var receivedOn: LocalDateTime? = null,
+    var sent: LocalDateTime? = null,
+    @Formula("to_char(confirmed, 'yyyyMMdd') || to_char((select count(*) from product_order po where not (id = po.id) and po.confirmed is not null and po.confirmed < confirmed and date_trunc('day', po.confirmed) = date_trunc('day', confirmed)) + 1, 'FM00')")
+    var billingNumber: String? = null,
 ) {
     fun deliveryAddress(): AddressEntity {
         return deliveryAddress ?: identity.address

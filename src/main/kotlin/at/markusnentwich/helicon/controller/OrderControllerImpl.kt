@@ -122,9 +122,12 @@ class OrderControllerImpl(
             throw BadPayloadException()
         }
         entity.confirmed = LocalDateTime.now()
-        val dto = mapper.map(orderRepo.save(entity), ScoreOrderDto::class.java)
-        dto.total = entity.total()
-        dto.items = entity.items.map {
+        val evaluatedEntity = orderRepo.save(entity)
+        orderRepo.refresh(evaluatedEntity)
+        val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
+        dto.total = evaluatedEntity.total()
+        dto.billingNumber = evaluatedEntity.billingNumber
+        dto.items = evaluatedEntity.items.map {
             it.score.category.scores = null
             val dt = mapper.map(it.score, ScoreProductDto::class.java)
             dt.quantity = it.amount
@@ -133,12 +136,12 @@ class OrderControllerImpl(
         // TODO dto mapping
         // TODO email notifications
         if (config.mail.notification.ownerOnOrder) {
-            orderMailService.notifyOwner(entity)
+            orderMailService.notifyOwner(evaluatedEntity)
         } else {
             logger.warn("Received an order but owner notifications are disabled")
         }
         if (config.mail.notification.customerOnOrder) {
-            orderMailService.notifyCustomer(entity)
+            orderMailService.notifyCustomer(evaluatedEntity)
         } else {
             logger.warn("Received an order but customer notifications are disabled")
         }
