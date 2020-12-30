@@ -59,7 +59,7 @@ class BillPDFCreationTest(
         // order.deliveryAddress = delivery
         order.confirmed = LocalDateTime.now()
         order.identity.company = "Musikverein Leopoldsdorf"
-        //order.identity.salutation = null
+        order.identity.salutation = "Herr"
 
         // order scores
         val os1 = OrderScoreEntity(s1, order)
