@@ -1,0 +1,23 @@
+extends: default
+base:
+  font-color: 000000
+
+heading:
+  h2-font-color: 000000
+  h2-font-size: 18
+
+table:
+  border-color: 000000
+table-head:
+  background-color: transparent
+table-foot:
+  background-color: transparent
+  font-style: bold
+
+link:
+  font-color: 000000
+
+header:
+  height: 0
+footer:
+  height: 0
