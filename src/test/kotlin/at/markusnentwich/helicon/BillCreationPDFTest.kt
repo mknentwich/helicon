@@ -1,16 +1,21 @@
 package at.markusnentwich.helicon
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import at.markusnentwich.helicon.controller.NotFoundException
 import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.OrderEntity
+import at.markusnentwich.helicon.entities.OrderScoreEntity
+import at.markusnentwich.helicon.entities.ScoreEntity
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder.options
+import org.asciidoctor.SafeMode
 import org.asciidoctor.jruby.AsciidoctorJRuby.Factory.create
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import java.io.File
-import java.time.LocalDate
+import java.io.FileWriter
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -20,9 +25,10 @@ class BillPDFCreationTest(
 ) {
 
     @Test
-    fun printBillToLocalPDFFile(){
+    fun printBillToLocalPDFFile() {
         val asciidoctor = create()
 
+        // delivery address
         val delivery = AddressEntity()
         delivery.street = "Postgasse"
         delivery.streetNumber = "10"
@@ -30,55 +36,116 @@ class BillPDFCreationTest(
         delivery.city = "Breitstetten"
         delivery.state.name = "Österreich"
 
+        // scores
+        //TODO: add grouptype to the bill
+        val s1 = ScoreEntity()
+        s1.title = "Eine letzte Runde"
+        s1.price = 4900
+        s1.instrumentation = "Blasorchester"
+        val s2 = ScoreEntity()
+        s2.title = "Eine letzte Runde (Ensemble)"
+        s2.price = 3900
+        val s3 = ScoreEntity()
+        s3.title = "Kaiserwalzer (Ensemble)"
+        s3.price = 4950
+        val s4 = ScoreEntity()
+        s4.title = "Black or White (Ensemble)"
+        s4.price = 2495
+
+        // order
         val order = OrderEntity()
-        order.deliveryAddress = delivery
+        // order.deliveryAddress = delivery
         order.confirmed = LocalDateTime.now()
         order.identity.company = "Musikverein Leopoldsdorf"
         //order.identity.salutation = null
 
+        // order scores
+        val os1 = OrderScoreEntity(s1, order)
+        os1.amount = 2
+        val os2 = OrderScoreEntity(s2, order)
+        val os3 = OrderScoreEntity(s3, order)
+        val os4 = OrderScoreEntity(s4, order)
+        os4.amount = 3
+
+        order.items = listOf(os1, os2, os3, os4)
+
+        val file = ordersAsCSV(order)
+
         // -- set attributes and options --
         val options = options()
+            .safe(SafeMode.UNSAFE)
             .backend("pdf")
             .inPlace(true)
-            .attributes(attributes()
-                .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
-                .attribute("pdf-theme", "mknen-theme.yml")
-                /*.attribute("billOrder", ordersAsCSV(order))
-                .attribute("billNumber")*/
-
-                .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-
-                /*.attribute("billTotal", order.total())
-                .attributes("bill.orders=${ordersAsCSV(order)}")*/
-                .attribute("ownerName", config.bill.address.name)
-                .attribute("ownerStreet", config.bill.address.street)
-                .attribute("ownerStreetNumber", config.bill.address.streetNumber)
-                .attribute("ownerPostCode", config.bill.address.postCode)
-                .attribute("ownerCity", config.bill.address.city)
-                .attribute("ownerPhone", config.bill.address.phone)
-                .attribute("ownerEmail", config.bill.address.mail)
-                .attribute("ownerWebsite", config.domain)
-                .attribute("customerSalutation", order.identity.salutation)
-                .attribute("customerCompany", order.identity.company)
-                .attribute("customerFirstname", order.identity.firstName)
-                .attribute("customerLastname", order.identity.lastName)
-                .attribute("billingStreet", order.identity.address.street)
-                .attribute("billingStreetNumber", order.identity.address.streetNumber)
-                .attribute("billingPostcode", order.identity.address.postCode)
-                .attribute("billingCity", order.identity.address.city)
-                .attribute("billingState", order.identity.address.state.name)
-                .attribute("deliveryStreet", order.deliveryAddress?.street)
-                .attribute("deliveryStreetNumber", order.deliveryAddress?.streetNumber)
-                .attribute("deliveryPostcode", order.deliveryAddress?.postCode)
-                .attribute("deliveryCity", order.deliveryAddress?.city)
-                .attribute("deliveryState", order.deliveryAddress?.state?.name)
-                .attribute("bankName", config.bill.bank.name)
-                .attribute("bankBic", config.bill.bank.bic)
-                .attribute("bankIban", config.bill.bank.iban)
-                .attribute("bankInstitute", config.bill.bank.institute)
-                .attribute("bankReference").get()
+            .attributes(
+                attributes()
+                    .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
+                    .attribute("pdf-theme", "mknen-theme.yml")
+                    .attribute("csvFile", file.absolutePath)
+                    //TODO: add bill number
+                    //.attribute("billNumber")
+                    .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+                    .attribute("ownerName", config.bill.address.name)
+                    .attribute("ownerStreet", config.bill.address.street)
+                    .attribute("ownerStreetNumber", config.bill.address.streetNumber)
+                    .attribute("ownerPostCode", config.bill.address.postCode)
+                    .attribute("ownerCity", config.bill.address.city)
+                    .attribute("ownerPhone", config.bill.address.phone)
+                    .attribute("ownerEmail", config.bill.address.mail)
+                    .attribute("ownerWebsite", config.domain)
+                    .attribute("customerSalutation", order.identity.salutation)
+                    .attribute("customerCompany", order.identity.company)
+                    .attribute("customerFirstname", order.identity.firstName)
+                    .attribute("customerLastname", order.identity.lastName)
+                    .attribute("billingStreet", order.identity.address.street)
+                    .attribute("billingStreetNumber", order.identity.address.streetNumber)
+                    .attribute("billingPostcode", order.identity.address.postCode)
+                    .attribute("billingCity", order.identity.address.city)
+                    .attribute("billingState", order.identity.address.state.name)
+                    .attribute("deliveryStreet", order.deliveryAddress?.street)
+                    .attribute("deliveryStreetNumber", order.deliveryAddress?.streetNumber)
+                    .attribute("deliveryPostcode", order.deliveryAddress?.postCode)
+                    .attribute("deliveryCity", order.deliveryAddress?.city)
+                    .attribute("deliveryState", order.deliveryAddress?.state?.name)
+                    .attribute("bankName", config.bill.bank.name)
+                    .attribute("bankBic", config.bill.bank.bic)
+                    .attribute("bankIban", config.bill.bank.iban)
+                    .attribute("bankInstitute", config.bill.bank.institute)
+                    //TODO: add payment reference
+                    .attribute("bankReference").get()
             ).get()
-
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
+        file.delete()
+    }
+
+    private fun price(price: Int): String {
+        return "${price / 100}.${String.format("%02d", price % 100)} €"
+    }
+
+    private fun ordersAsCSV(order: OrderEntity): File {
+        val builder = StringBuilder()
+        builder.append("Menge,Beschreibung,Einzelpreis,Gesamtpreis\r\n")
+        order.items.forEach {
+            builder.append("${it.amount},${it.score.title},${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")
+        }
+        val shipping: Int = order.deliveryAddress().state.zone.shipping
+        builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(shipping)}\r\n")
+        builder.append(",,Summe,${price(order.total())}")
+
+        var file: File? = null
+        try {
+            file = File.createTempFile("test", ".csv")
+        } catch (e: IOException) {
+            //logger.error("could not create temporary csv file on basic temporary file location:\n{}", e.message)
+        }
+        if (file == null) {
+            //logger.error("file not found: null reference to temporary file occurred")
+            throw NotFoundException()
+        }
+        FileWriter(file)
+            .use { fw ->
+                fw.append(builder.toString())
+                fw.flush()
+            }
+        return file
     }
 }
