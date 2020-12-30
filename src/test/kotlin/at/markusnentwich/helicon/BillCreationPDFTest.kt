@@ -37,7 +37,6 @@ class BillPDFCreationTest(
         delivery.state.name = "Österreich"
 
         // scores
-        //TODO: add grouptype to the bill
         val s1 = ScoreEntity()
         s1.title = "Eine letzte Runde"
         s1.price = 4900
