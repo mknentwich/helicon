@@ -56,6 +56,7 @@ class CatalogueControllerImpl(
 
     override fun getScore(id: Long): ScoreProductDto {
         val scoreEntity = scoreRepository.findByIdOrNull(id) ?: throw NotFoundException()
+        scoreEntity.category.scores = null
         return mapper.map(scoreEntity, ScoreProductDto::class.java)
     }
 
