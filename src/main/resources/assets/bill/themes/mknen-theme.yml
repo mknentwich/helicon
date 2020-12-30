@@ -12,6 +12,7 @@ table-head:
   background-color: transparent
 table-foot:
   background-color: transparent
+  font-style: bold
 
 link:
   font-color: 000000

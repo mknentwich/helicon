@@ -1,3 +1,6 @@
+= Rechnung_{billNumber}
+:notitle:
+
 [frame=none, grid=none, cols="<,>"]
 |===
 a|image::./images/verlag.svg[Static,250, opts=inline] | {ownerName} +
@@ -58,16 +61,15 @@ endif::[]
 == Rechnung Nr. {billNumber}
 
 [cols="^10,50,2*>20",options="header,footer"]
-[frame=none, grid=rows]
+[frame=none, grid=rows, format=csv]
 |===
-|Menge |Beschreibung |Einzelpreis |Gesamtpreis
-|{amount} |{btitle} |{price} € |{multiprice} €
-||Versand ({customerState})||{shipping} €
-|| s|Summe s|{psum} €
+include::{csvFile}[]
 |===
 
 [.text-center]
 Dieser Betrag enthält keine Umsatzsteuer aufgrund §6(2)27 Kleinunternehmerregelung.
+
+'''
 
 Ich bitte Sie, den Betrag binnen 14 Tagen an das folgende Konto zu überweisen:
 [cols="30h,70",frame="none",grid="none"]
@@ -78,3 +80,7 @@ Ich bitte Sie, den Betrag binnen 14 Tagen an das folgende Konto zu überweisen:
 |Geldinstitut: |{bankInstitute}
 |Zahlungsreferenz: |{bankReference}
 |===
+
+[.text-center]
+*Im Feld Zahlungsreferenz unbedingt obige Nummer anführen, +
+ansonsten kann die Zahlung nicht zugeordnet werden!*
