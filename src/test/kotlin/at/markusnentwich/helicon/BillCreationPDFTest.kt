@@ -41,16 +41,19 @@ class BillPDFCreationTest(
         val s1 = ScoreEntity()
         s1.title = "Eine letzte Runde"
         s1.price = 4900
-        s1.instrumentation = "Blasorchester"
+        s1.groupType = "Blasorchester"
         val s2 = ScoreEntity()
-        s2.title = "Eine letzte Runde (Ensemble)"
+        s2.title = "Eine letzte Runde"
         s2.price = 3900
+        s2.groupType = "Ensemble"
         val s3 = ScoreEntity()
-        s3.title = "Kaiserwalzer (Ensemble)"
+        s3.title = "Kaiserwalzer"
         s3.price = 4950
+        s3.groupType = "Ensemble"
         val s4 = ScoreEntity()
-        s4.title = "Black or White (Ensemble)"
+        s4.title = "Black or White"
         s4.price = 2495
+        s4.groupType = "Kommerz"
 
         // order
         val order = OrderEntity()
@@ -67,7 +70,7 @@ class BillPDFCreationTest(
         val os4 = OrderScoreEntity(s4, order)
         os4.amount = 3
 
-        order.items = listOf(os1, os2, os3, os4)
+        order.items = mutableSetOf(os1, os2, os3, os4)
 
         val file = ordersAsCSV(order)
 
@@ -125,7 +128,7 @@ class BillPDFCreationTest(
         val builder = StringBuilder()
         builder.append("Menge,Beschreibung,Einzelpreis,Gesamtpreis\r\n")
         order.items.forEach {
-            builder.append("${it.amount},${it.score.title},${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")
+            builder.append("${it.amount},${it.score.title} (${it.score.groupType}),${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")
         }
         val shipping: Int = order.deliveryAddress().state.zone.shipping
         builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(shipping)}\r\n")
