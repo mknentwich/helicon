@@ -7,9 +7,11 @@ import at.markusnentwich.helicon.entities.ZoneEntity
 import at.markusnentwich.helicon.repositories.StateRepository
 import at.markusnentwich.helicon.repositories.ZoneRepository
 import org.modelmapper.ModelMapper
+import org.modelmapper.TypeToken
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
+import java.lang.reflect.Type
 
 @Controller
 class MetaControllerImpl(
@@ -20,7 +22,8 @@ class MetaControllerImpl(
     val logger = LoggerFactory.getLogger(MetaControllerImpl::class.java)
 
     override fun getAllStates(): List<StateDto> {
-        return modelMapper.map(stateRepository.findAll(), listOf(StateDto(0, "", ZoneDto(0, "", 1, null)))::class.java)
+        val listType: Type = object : TypeToken<List<StateDto>>() {}.type
+        return modelMapper.map(stateRepository.findAll(), listType)
     }
 
     override fun getStateById(id: Long): StateDto {
@@ -46,7 +49,8 @@ class MetaControllerImpl(
         }
         val stateEntity: StateEntity = modelMapper.map(state, StateEntity::class.java)
         val dto = modelMapper.map(stateRepository.save(stateEntity), StateDto::class.java)
-        dto.zone = modelMapper.map(zoneRepository.findById(stateEntity.zone.id), ZoneDto::class.java)
+        val zoneDto = modelMapper.map(zoneRepository.findById(stateEntity.zone.id).get(), ZoneDto::class.java)
+        dto.zone = zoneDto
         return dto
     }
 
@@ -74,7 +78,8 @@ class MetaControllerImpl(
     }
 
     override fun getAllZones(): List<ZoneDto> {
-        return modelMapper.map(zoneRepository.findAll(), listOf(ZoneDto(name = "unnamed", shipping = 0, id = null, states = null))::class.java)
+        val listType: Type = object : TypeToken<List<ZoneDto>>() {}.type
+        return modelMapper.map(zoneRepository.findAll(), listType)
     }
 
     override fun getZoneById(id: Long): ZoneDto {

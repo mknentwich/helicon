@@ -24,8 +24,8 @@ class OrderEntity(
     var deliveryAddress: AddressEntity? = null,
     @ManyToOne
     var identity: IdentityEntity = IdentityEntity(),
-    @OneToMany
-    var items: List<OrderScoreEntity> = listOf(),
+    @OneToMany(mappedBy = "order")
+    var items: MutableSet<OrderScoreEntity> = mutableSetOf(),
     var inProgress: LocalDateTime? = null,
     var receivedOn: LocalDateTime = LocalDateTime.now(),
     var sent: LocalDateTime? = null

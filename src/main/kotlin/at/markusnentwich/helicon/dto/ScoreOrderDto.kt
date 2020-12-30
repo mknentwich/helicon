@@ -7,27 +7,25 @@ import java.util.*
 @Schema(name = "Order")
 data class ScoreOrderDto(
     @Schema(description = "the id of this order")
-    var id: UUID?,
+    var id: UUID? = null,
     @Schema(description = "the number of the bill. this is only used during confirmation", example = "2020092701")
-    var billingNumber: String?,
-    @Schema(description = "the receiving company or society of this order", example = "Musikverein Leopoldsdorf")
-    var company: String?,
+    var billingNumber: String? = null,
     @Schema(description = "the date when the order was confirmed from the user")
-    var confirmed: LocalDateTime?,
+    var confirmed: LocalDateTime? = null,
     @Schema(description = "the registered user who performed this order")
-    var customer: AccountDto?,
+    var customer: AccountDto? = null,
     @Schema(description = "the delivery address. this may be null, if so, the billingAddress will be used")
-    var deliveryAddress: AddressDto?,
+    var deliveryAddress: AddressDto? = null,
     @Schema(description = "the identity of this order")
-    var identity: IdentityDto,
+    var identity: IdentityDto = IdentityDto(),
     @Schema(description = "the date since when the order is in progress")
-    var inProgress: LocalDateTime?,
+    var inProgress: LocalDateTime? = null,
     @Schema(description = "the items which belong to this order. only quantity and id of the scores are required")
-    var items: List<ScoreProductDto>,
+    var items: MutableSet<ScoreProductDto> = mutableSetOf(),
     @Schema(description = "the total price of the order in subunits, e.g. cent. this is only during confirmation", example = "3995")
-    var total: Int?,
+    var total: Int? = null,
     @Schema(description = "the date when the backend received the order. will be null while ordering")
-    var receivedOn: LocalDateTime?,
+    var receivedOn: LocalDateTime? = null,
     @Schema(description = "the date when the order was sent")
-    var sent: LocalDateTime?
+    var sent: LocalDateTime? = null
 )

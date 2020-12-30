@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping(ORDER_SERVICE)
 @Tag(
     name = "Order Service",
     description = "The Order Service allows user to order products or to view orders from the past."
 )
 interface OrderService {
 
-    @RequestMapping("/", method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET])
     @Operation(description = "return all orders. root permissions are required.")
     @ApiResponses(
         value = [
@@ -53,7 +53,7 @@ interface OrderService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ScoreOrderDto>
 
-    @RequestMapping("/", method = [RequestMethod.POST])
+    @RequestMapping(method = [RequestMethod.POST])
     @Operation(description = "Perform an order. if the identity is embedded, the state only has to be provided via its id. the same applies to the scores. the attribute items must not be provided, cart should be used instead as items is only used for get requests.")
     @ApiResponses(
         value = [

@@ -14,6 +14,13 @@ helicon:
   login:
     enable-login: true
     enable-registration: true
+    root:
+      enable: true
+      password: test12345678
+    jwt:
+      expiration: 10
+      issuer: helicon
+      prefix: "Bearer "
   order:
     allow-anonymous: true
     confirmation: true

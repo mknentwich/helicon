@@ -13,7 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RestController("/account")
+@RestController
+@RequestMapping(ACCOUNT_SERVICE, produces = ["application/json"])
 @Tag(name = "Account Service", description = "The Account Service provides the ability to manage user accounts and logins.")
 interface AccountService {
 

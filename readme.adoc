@@ -1,6 +1,8 @@
 = Helicon
 
 :author: Richard Stöckl
+:icons: font
+:source-highlighter: coderay
 
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -20,7 +22,7 @@ The main features are:
 
 == Installation
 
-To perform a plain and direct install, you only need Git, a Java SDK and a internet connection.
+To perform a plain and direct install, only Git, a Java SDK and an internet connection are required.
 When these requirements are fulfilled, only a handful of commands need to be entered:
 
 [source,bash]
@@ -31,7 +33,7 @@ git clone https://github.com/mknentwich/helicon.git
 
 This may take a while, but when done, the service will listen on the preconfigured port.
 
-Note: You IDE may provide an easier way to start the application for development purposes.
+NOTE: The IDE may provide an easier way to start the application for development purposes.
 
 == Development
 
@@ -45,10 +47,40 @@ To format the project before every commit run `./gradlew addKtlintFormatGitPreCo
 == Configuration
 
 For development purposes the configuration file is located at `src/main/resources/application.yml`.
-In order to provide to your IDE the ability to recognize all available properties and thei documentation, `gradle kaptKotlin` may be run.
+In order to provide to the IDE the ability to recognize all available properties and the documentation, `gradle kaptKotlin` may be run.
 This is required, everytime the structure of the `HeliconConfigurationProperties` changes.
 
 TIP: To receive an attribute description, refer either to your IDEs autocomplete feature or to `src/main/kotlin/at/markusnentwich/helicon/configuration/HeliconConfigurationProperties.kt`.
+
+== Testing
+
+The main testing strategy in this project are blackbox test.
+In order to perform them one just run the postman collection `helicon-test.postman_collection.json` which can be found in the `postman` directory.
+If one is running the Helicon instance on localhost with the provided default spring configuration the environment `local-test.postman_environment.json` can be used.
+
+To perform a quick test newman can be used:
+
+[source,shell script]
+----
+newman run -e postman/local-test.postman_environment.json postman/helicon-test.postman_collection.json
+----
+
+NOTE: This only works if the `newman` binary is in the path.
+
+=== Installing Newman
+
+For the installation either npm or yarn must be installed, as the frontend of this project uses yarn, it will be used in this example.
+
+[source,shell script]
+----
+yarn global add newman
+----
+
+NOTE: If the npm binary directory is not in the path, one has to run all `newman` commands with `~/.npm/bin/newman`.
+Alternatively this directory can be added to the path environment variable.
+
+Alternatively, the collection and the environment can be imported into postman and can be used there through the "`Runner`".
+Please take care when writing requests in postman which involve external files, that the paths have to changed to the projects relative after export.
 
 == Deployment
 
@@ -58,10 +90,10 @@ In common environments this will be done via docker so have to refer to the http
 == Is the REST API documented?
 
 Of course it is, zum Kuckuck!
-You can access it via http://localhost:8080/swagger-ui/index.html when the application is running.
-This is enabled by default, if you want to disable this in production environments, which is not recommend although as in the projects opinion APIs have to be documented publicly, see the configuration section.
+It can be accessed via http://localhost:8080/swagger-ui/index.html when the application is running.
+This is enabled by default, if one wants to disable this in production environments, which is not recommend although as in the projects opinion APIs have to be documented publicly, see the configuration section.
 
-== Where does the name come form?
+== Where does the name come from?
 
 This application provides a basis for Markus Nentwich.
 As he is a musician what would better fit than a helicon?

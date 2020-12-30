@@ -5,12 +5,13 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.io.File
+import javax.servlet.http.HttpServletRequest
 
 @RestController
-@RequestMapping("/assets")
+@RequestMapping(ASSET_SERVICE)
 @Tag(name = "Asset Service", description = "The Asset Service provides the ability to perform requests on certain assets such as PDFs of scores or their audio examples.")
 interface AssetService {
 
@@ -22,9 +23,9 @@ interface AssetService {
             ApiResponse(responseCode = "404", description = "no score or audio with such id found")
         ]
     )
-    fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
-    @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/mpeg"])
+    @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/ogg", "audio/mp3", "audio/mpeg", "audio/mp4"])
     @Operation(summary = "update the audio example of a score")
     @ApiResponses(
         value = [
@@ -36,7 +37,7 @@ interface AssetService {
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
     )
-    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody audio: File): ResponseEntity<Void>
+    fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/audio", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an audio example of a score")
@@ -59,7 +60,7 @@ interface AssetService {
             ApiResponse(responseCode = "404", description = "no score or pdf with such id found")
         ]
     )
-    fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long)
+    fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.PUT], consumes = ["application/pdf"])
     @Operation(summary = "update the PDF of a score")
@@ -73,7 +74,7 @@ interface AssetService {
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
     )
-    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, @RequestBody pdf: File): ResponseEntity<Void>
+    fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Void>
 
     @RequestMapping("/score/{id}/pdf", method = [RequestMethod.DELETE])
     @Operation(summary = "delete the PDF of a score")

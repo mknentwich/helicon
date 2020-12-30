@@ -13,14 +13,14 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/catalogue", produces = ["application/json"])
+@RequestMapping(CATALOGUE_SERVICE, produces = ["application/json"])
 @Tag(
     name = "Catalogue Service",
     description = "This service allows to view and modify all available products and categories."
 )
 interface CatalogueService {
 
-    @RequestMapping("/", method = [RequestMethod.GET])
+    @RequestMapping(method = [RequestMethod.GET])
     @Operation(summary = "return the whole catalogue which is represented by an imaginary root category")
     @ApiResponses(
         ApiResponse(

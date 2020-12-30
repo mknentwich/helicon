@@ -24,7 +24,11 @@ data class HeliconConfigurationProperties(
         /** Enable user logins, this does not apply to administration accounts. */
         val enableLogin: Boolean = true,
         /** Allow new users to register. */
-        val enableRegistration: Boolean = true
+        val enableRegistration: Boolean = true,
+        /** root configuration. */
+        val root: Root = Root(),
+        /** Jwt configuration. */
+        val jwt: JwtConfiguration = JwtConfiguration()
     )
 
     data class OrderConfiguration(
@@ -38,7 +42,9 @@ data class HeliconConfigurationProperties(
 
     data class MailConfiguration(
         /** Mail notifications. */
-        val notification: NotificationConfiguration = NotificationConfiguration()
+        val notification: NotificationConfiguration = NotificationConfiguration(),
+        /** The name for emails. */
+        val identity: String = "Markus Nentwich Bestellsystem <bestellungen@markus-nentwich.at>"
     ) {
         data class NotificationConfiguration(
             /** Notify customers when they perform an order. */
@@ -87,4 +93,19 @@ data class HeliconConfigurationProperties(
         )
     }
 
+    data class Root(
+        /** Enable the root account, do not use that in production. */
+        val enable: Boolean = false,
+        /** The default root password. */
+        val password: String = "test12345678"
+    )
+
+    data class JwtConfiguration(
+        /** Expiration of the token in minutes. */
+        val expiration: Long = 10,
+        /** Issuer of the jwt. */
+        val issuer: String = "helicon",
+        /** Prefix of the token. */
+        val prefix: String = "Bearer "
+    )
 }

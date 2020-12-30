@@ -12,7 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RestController("/meta")
+@RestController
+@RequestMapping(META_SERVICE, produces = ["application/json"])
 @Tag(name = "Meta Service", description = "The meta Service manages all data which does not belong to an ordering process directly such as states and zones.")
 interface MetaService {
 

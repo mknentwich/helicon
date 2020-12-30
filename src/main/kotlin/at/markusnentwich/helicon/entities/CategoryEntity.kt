@@ -11,5 +11,9 @@ class CategoryEntity(
     var name: String = "Polka",
     var namePlural: String = "Polka",
     @ManyToOne
-    var parent: CategoryEntity? = null
+    var parent: CategoryEntity? = null,
+    @OneToMany(mappedBy = "parent")
+    var children: MutableSet<CategoryEntity>? = mutableSetOf(),
+    @OneToMany(mappedBy = "category")
+    var scores: MutableSet<ScoreEntity>? = mutableSetOf()
 )
