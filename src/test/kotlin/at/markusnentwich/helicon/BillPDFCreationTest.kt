@@ -83,8 +83,8 @@ class BillPDFCreationTest(
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
-                    //TODO: add bill number
-                    //.attribute("billNumber")
+                    // TODO: add bill number
+                    // .attribute("billNumber")
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("ownerName", config.bill.address.name)
                     .attribute("ownerStreet", config.bill.address.street)
@@ -112,7 +112,7 @@ class BillPDFCreationTest(
                     .attribute("bankBic", config.bill.bank.bic)
                     .attribute("bankIban", config.bill.bank.iban)
                     .attribute("bankInstitute", config.bill.bank.institute)
-                    //TODO: add payment reference
+                    // TODO: add payment reference
                     .attribute("bankReference").get()
             ).get()
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
@@ -137,10 +137,10 @@ class BillPDFCreationTest(
         try {
             file = File.createTempFile("test", ".csv")
         } catch (e: IOException) {
-            //logger.error("could not create temporary csv file on basic temporary file location:\n{}", e.message)
+            // logger.error("could not create temporary csv file on basic temporary file location:\n{}", e.message)
         }
         if (file == null) {
-            //logger.error("file not found: null reference to temporary file occurred")
+            // logger.error("file not found: null reference to temporary file occurred")
             throw NotFoundException()
         }
         FileWriter(file)
