@@ -24,7 +24,7 @@ class AsciidoctorPDFBillConverter(
 
     override fun createBill(order: OrderEntity): ByteArrayOutputStream {
         val file = ordersAsCSV(order)
-        //TODO: change to inputStream
+        // TODO: change to inputStream
         val baos = ByteArrayOutputStream()
         val options = OptionsBuilder.options()
             .safe(SafeMode.UNSAFE)
@@ -35,8 +35,8 @@ class AsciidoctorPDFBillConverter(
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
-                    //TODO: add bill number
-                    //.attribute("billNumber")
+                    // TODO: add bill number
+                    // .attribute("billNumber")
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("ownerName", config.bill.address.name)
                     .attribute("ownerStreet", config.bill.address.street)
@@ -64,7 +64,7 @@ class AsciidoctorPDFBillConverter(
                     .attribute("bankBic", config.bill.bank.bic)
                     .attribute("bankIban", config.bill.bank.iban)
                     .attribute("bankInstitute", config.bill.bank.institute)
-                    //TODO: add payment reference
+                    // TODO: add payment reference
                     .attribute("bankReference").get()
             ).get()
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
@@ -76,7 +76,8 @@ class AsciidoctorPDFBillConverter(
         val builder = StringBuilder()
         builder.append("Menge,Beschreibung,Einzelpreis,Gesamtpreis\r\n")
         order.items.forEach {
-            builder.append("${it.amount},${it.score.title} (${it.score.groupType}),${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")}
+            builder.append("${it.amount},${it.score.title} (${it.score.groupType}),${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")
+        }
         val shipping: Int = order.deliveryAddress().state.zone.shipping
         builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(shipping)}\r\n")
         builder.append(",,Summe,${price(order.total())}")
