@@ -87,8 +87,7 @@ class OrderMailServiceImpl(
             email = order.identity.email,
             telephone = order.identity.telephone,
             quantity = order.items.sumOf { it.amount },
-            items = order.items.map { "${it.amount} x ${it.score.title} - ${it.score.groupType}" }
-                .fold("") { acc, s -> "$acc, $s" },
+            items = order.items.joinToString(separator = ", ") { "${it.amount} x ${it.score.title} - ${it.score.groupType}" },
             company = order.identity.company
         )
     }
