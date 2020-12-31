@@ -3,6 +3,7 @@ package at.markusnentwich.helicon.controller
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
 import at.markusnentwich.helicon.dto.*
 import at.markusnentwich.helicon.entities.AddressEntity
+import at.markusnentwich.helicon.entities.CategoryEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.entities.OrderScoreEntity
@@ -124,6 +125,7 @@ class OrderControllerImpl(
         entity.confirmed = LocalDateTime.now()
         val evaluatedEntity = orderRepo.save(entity)
         orderRepo.refresh(evaluatedEntity)
+        // evaluatedEntity.items.forEach { sanitizeCatalogue(it.score.category) }
         val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
         dto.total = evaluatedEntity.total()
         dto.billingNumber = evaluatedEntity.billingNumber
@@ -146,5 +148,18 @@ class OrderControllerImpl(
             logger.warn("Received an order but customer notifications are disabled")
         }
         return dto
+    }
+
+    private fun sanitizeCatalogue(categoryEntity: CategoryEntity) {
+        if (categoryEntity.parent != null) {
+            categoryEntity.parent!!.children = null
+            categoryEntity.parent!!.scores = null
+            categoryEntity.parent!!.parent = null
+        }
+        categoryEntity.scores?.forEach {
+            it.category.children = null
+            it.category.parent = null
+        }
+        categoryEntity.children?.forEach { sanitizeCatalogue(it) }
     }
 }

@@ -22,12 +22,13 @@ class CatalogueControllerImpl(
 ) : CatalogueController {
     override fun getCatalogue(): CategoryProductDto {
         val root = categoryRepository.getRoot() ?: throw NotFoundException()
-        sanitizeCatalogue(root)
+        // sanitizeCatalogue(root)
         return mapper.map(root, CategoryProductDto::class.java)
     }
 
     override fun getCategory(id: Long, embed: Boolean): CategoryProductDto {
         val categoryEntity = categoryRepository.findByIdOrNull(id) ?: throw NotFoundException()
+        // sanitizeCatalogue(categoryEntity)
         return mapper.map(categoryEntity, CategoryProductDto::class.java)
     }
 
@@ -40,7 +41,9 @@ class CatalogueControllerImpl(
             categoryEntity.parent =
                 categoryRepository.findByIdOrNull(category.parent!!.id!!) ?: throw BadPayloadException()
         }
-        return mapper.map(categoryRepository.save(categoryEntity), CategoryProductDto::class.java)
+        val saved = categoryRepository.save(categoryEntity)
+        // sanitizeCatalogue(saved)
+        return mapper.map(saved, CategoryProductDto::class.java)
     }
 
     override fun updateCategory(category: CategoryProductDto, id: Long): CategoryProductDto {
@@ -75,6 +78,7 @@ class CatalogueControllerImpl(
         scoreEntity.category =
             categoryRepository.findByIdOrNull(scoreEntity.category.id!!) ?: throw BadPayloadException()
         scoreEntity.category.scores = null
+        // sanitizeCatalogue(scoreEntity.category)
         return mapper.map(scoreRepository.save(scoreEntity), ScoreProductDto::class.java)
     }
 
@@ -87,6 +91,11 @@ class CatalogueControllerImpl(
     }
 
     private fun sanitizeCatalogue(categoryEntity: CategoryEntity) {
+        if (categoryEntity.parent != null) {
+            categoryEntity.parent!!.children = null
+            categoryEntity.parent!!.scores = null
+            categoryEntity.parent!!.parent = null
+        }
         categoryEntity.scores?.forEach {
             it.category.children = null
             it.category.parent = null

@@ -1,5 +1,6 @@
 package at.markusnentwich.helicon.dto
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "Score")
@@ -8,7 +9,8 @@ data class ScoreProductDto(
     var id: Long? = null,
     @Schema(description = "author of this score", example = "Markus Nentwich")
     var author: String = "Markus Nentwich",
-    @Schema(description = "the category of this score")
+    @Schema(description = "the category of this score", writeOnly = true)
+    @JsonBackReference
     var category: CategoryProductDto? = null,
     @Schema(description = "the difficulty of this score", example = "2", minimum = "1", maximum = "5")
     var difficulty: Int = 2,
