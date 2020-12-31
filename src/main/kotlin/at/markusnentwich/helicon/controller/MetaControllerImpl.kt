@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper
 import org.modelmapper.TypeToken
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import java.lang.reflect.Type
 
@@ -39,19 +40,14 @@ class MetaControllerImpl(
             logger.error("state id must not be provided")
             throw BadPayloadException()
         }
-        if (state.zone.id == null) {
-            logger.error("no zone provided")
-            throw BadPayloadException()
-        }
-        if (!zoneRepository.existsById(state.zone.id)) {
+        val zoneEntity = zoneRepository.findByIdOrNull(state.zoneId!!)
+        if (zoneEntity == null) {
             logger.error("zone with id {} does not exist", state.zone.id)
             throw BadPayloadException()
         }
         val stateEntity: StateEntity = modelMapper.map(state, StateEntity::class.java)
-        val dto = modelMapper.map(stateRepository.save(stateEntity), StateDto::class.java)
-        val zoneDto = modelMapper.map(zoneRepository.findById(stateEntity.zone.id).get(), ZoneDto::class.java)
-        dto.zone = zoneDto
-        return dto
+        stateEntity.zone = zoneEntity
+        return modelMapper.map(stateRepository.save(stateEntity), StateDto::class.java)
     }
 
     override fun updateState(state: StateDto, id: Long, jwt: String): StateDto {

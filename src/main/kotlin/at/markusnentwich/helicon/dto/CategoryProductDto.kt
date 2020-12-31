@@ -6,11 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(name = "Category")
 data class CategoryProductDto(
-    @Schema(description = "the id of this category", example = "73")
+    @Schema(description = "the id of this category", example = "73", readOnly = true)
     var id: Long? = null,
-    @Schema(description = "the name of this category", example = "Marsch")
+    @Schema(description = "the name of this category", example = "Marsch", required = true)
     var name: String? = "Marsch",
-    @Schema(description = "the plural name of this category", example = "Märsche")
+    @Schema(description = "the plural name of this category", example = "Märsche", required = true)
     var namePlural: String? = "Märsche",
     @Schema(
         description = "the parent category. this may be null, if so, this category represents a root node of a category tree",
@@ -19,10 +19,12 @@ data class CategoryProductDto(
     )
     @JsonBackReference
     var parent: CategoryProductDto? = null,
-    @Schema(description = "the scores which are in this category")
+    @Schema(description = "the id of the parent category", required = false, writeOnly = true)
+    var parentId: Long? = null,
+    @Schema(description = "the scores which are in this category", readOnly = true)
     @JsonManagedReference
     var scores: MutableSet<ScoreProductDto>? = mutableSetOf(),
-    @Schema(description = "children of this category")
+    @Schema(description = "children of this category", readOnly = true)
     @JsonManagedReference
     var children: MutableSet<CategoryProductDto>? = mutableSetOf()
 ) {

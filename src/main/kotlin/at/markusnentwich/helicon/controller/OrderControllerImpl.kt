@@ -3,7 +3,6 @@ package at.markusnentwich.helicon.controller
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
 import at.markusnentwich.helicon.dto.*
 import at.markusnentwich.helicon.entities.AddressEntity
-import at.markusnentwich.helicon.entities.CategoryEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.entities.OrderScoreEntity
@@ -13,9 +12,11 @@ import at.markusnentwich.helicon.repositories.IdentityRepository
 import at.markusnentwich.helicon.repositories.OrderRepository
 import at.markusnentwich.helicon.repositories.OrderScoreRepository
 import at.markusnentwich.helicon.repositories.ScoreRepository
+import at.markusnentwich.helicon.repositories.StateRepository
 import org.modelmapper.ModelMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import java.time.LocalDateTime
 import java.util.*
@@ -30,7 +31,8 @@ class OrderControllerImpl(
     @Autowired val identityRepository: IdentityRepository,
     @Autowired val addressRepository: AddressRepository,
     @Autowired val mapper: ModelMapper,
-    @Autowired val orderMailService: OrderMailService
+    @Autowired val orderMailService: OrderMailService,
+    @Autowired val stateRepository: StateRepository
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -54,28 +56,28 @@ class OrderControllerImpl(
             dto.customer!!.identity = mapper.map(entity.customer?.identity, IdentityDto::class.java)
         }
         val items = entity.items.map { mapper.map(it, ScoreProductDto::class.java) }.toMutableSet()
-        dto.items = items
+        dto.orderedItems = items
         return dto
     }
 
     @Transactional
     override fun order(order: ScoreOrderDto, jwt: String): ScoreOrderDto {
         var orderEntity = mapper.map(order, OrderEntity::class.java)
-        var deliveryAddress = if (order.deliveryAddress == null) {
-            null
-        } else {
-            mapper.map(order.deliveryAddress, AddressEntity::class.java)
+        var deliveryAddress: AddressEntity? = null
+        if (order.deliveryAddress != null) {
+            deliveryAddress = mapper.map(order.deliveryAddress, AddressEntity::class.java)
+            deliveryAddress.state =
+                stateRepository.findByIdOrNull(order.deliveryAddress?.stateId!!) ?: throw BadPayloadException()
         }
         var identityAddress = mapper.map(order.identity.address, AddressEntity::class.java)
+        identityAddress.state =
+            stateRepository.findByIdOrNull(order.identity.address.stateId!!) ?: throw BadPayloadException()
         var identity = mapper.map(order.identity, IdentityEntity::class.java)
         if (order.items.isEmpty()) {
             logger.error("received order without items")
             throw BadPayloadException()
         }
-        if (order.items.any {
-            it.quantity == null || it.quantity!! < 1 || it.id == null || !scoreRepository.existsById(it.id!!)
-        }
-        ) {
+        if (order.items.any { it.quantity < 1 || !scoreRepository.existsById(it.id) }) {
             logger.error("received order with invalid items (null ids/null quantity/too low quantity/non existing scores)")
             throw BadPayloadException()
         }
@@ -91,15 +93,15 @@ class OrderControllerImpl(
         orderEntity.receivedOn = LocalDateTime.now()
         val orderLinks = order.items.map {
             OrderScoreEntity(
-                amount = it.quantity!!,
-                score = scoreRepository.findById(it.id!!).get(),
+                amount = it.quantity,
+                score = scoreRepository.findById(it.id).get(),
                 order = orderEntity
             )
         }.toMutableList()
         orderScoreRepository.saveAll(orderLinks)
         val orderDto = mapper.map(orderEntity, ScoreOrderDto::class.java)
         orderDto.total = orderEntity.total()
-        orderDto.items = orderLinks.map {
+        orderDto.orderedItems = orderLinks.map {
             val dt = mapper.map(scoreRepository.findById(it.score.id!!), ScoreProductDto::class.java)
             dt.quantity = it.amount
             dt
@@ -125,11 +127,10 @@ class OrderControllerImpl(
         entity.confirmed = LocalDateTime.now()
         val evaluatedEntity = orderRepo.save(entity)
         orderRepo.refresh(evaluatedEntity)
-        // evaluatedEntity.items.forEach { sanitizeCatalogue(it.score.category) }
         val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
         dto.total = evaluatedEntity.total()
         dto.billingNumber = evaluatedEntity.billingNumber
-        dto.items = evaluatedEntity.items.map {
+        dto.orderedItems = evaluatedEntity.items.map {
             it.score.category.scores = null
             val dt = mapper.map(it.score, ScoreProductDto::class.java)
             dt.quantity = it.amount
@@ -148,18 +149,5 @@ class OrderControllerImpl(
             logger.warn("Received an order but customer notifications are disabled")
         }
         return dto
-    }
-
-    private fun sanitizeCatalogue(categoryEntity: CategoryEntity) {
-        if (categoryEntity.parent != null) {
-            categoryEntity.parent!!.children = null
-            categoryEntity.parent!!.scores = null
-            categoryEntity.parent!!.parent = null
-        }
-        categoryEntity.scores?.forEach {
-            it.category.children = null
-            it.category.parent = null
-        }
-        categoryEntity.children?.forEach { sanitizeCatalogue(it) }
     }
 }
