@@ -1187,6 +1187,10 @@
 									"",
 									"pm.test(\"confirmed date is null\", function() {",
 									"    pm.expect(order.confirmed).to.equal(null);",
+									"})",
+									"",
+									"pm.test(\"billing number is not null\", function() {",
+									"    pm.expect(order.billingNumber).is.equal(null);",
 									"})"
 								],
 								"type": "text/javascript"
@@ -1276,6 +1280,10 @@
 									"",
 									"pm.test(\"confirmed date is not null\", function() {",
 									"    pm.expect(order.confirmed).is.not.oneOf([null,undefined]);",
+									"})",
+									"",
+									"pm.test(\"billing number is not null\", function() {",
+									"    pm.expect(order.billingNumber).is.not.oneOf([null,undefined]);",
 									"})"
 								],
 								"type": "text/javascript"
@@ -1322,6 +1330,10 @@
 									"",
 									"pm.test(\"confirmed date is null\", function() {",
 									"    pm.expect(order.confirmed).to.equal(null);",
+									"})",
+									"",
+									"pm.test(\"billing number is not null\", function() {",
+									"    pm.expect(order.billingNumber).is.equal(null);",
 									"})"
 								],
 								"type": "text/javascript"
@@ -1431,6 +1443,10 @@
 									"",
 									"pm.test(\"confirmed date is not null\", function() {",
 									"    pm.expect(order.confirmed).is.not.oneOf([null,undefined]);",
+									"})",
+									"",
+									"pm.test(\"billing number is not null\", function() {",
+									"    pm.expect(order.billingNumber).is.not.oneOf([null,undefined]);",
 									"})"
 								],
 								"type": "text/javascript"
