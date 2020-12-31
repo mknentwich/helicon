@@ -121,7 +121,7 @@
 					"response": []
 				},
 				{
-					"name": "create slowakia",
+					"name": "create slovakia",
 					"event": [
 						{
 							"listen": "test",
@@ -131,6 +131,10 @@
 									"pm.test(\"status ok\", function() {",
 									"    pm.response.to.have.status(200);",
 									"    state = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"slovakia_id\", state.id);",
 									"})",
 									"",
 									"pm.test(\"name is Slowakei\", function() {",
@@ -158,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Slowakei\",\n    \"zone\": {\n        \"id\": {{zone_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Slowakei\",\n    \"zoneId\": {{zone_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +183,7 @@
 					"response": []
 				},
 				{
-					"name": "delete slowakia",
+					"name": "delete slovakia",
 					"event": [
 						{
 							"listen": "test",
@@ -197,14 +201,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/meta/state/{{state_id}}",
+							"raw": "{{api}}/meta/state/{{slovakia_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
 								"state",
-								"{{state_id}}"
+								"{{slovakia_id}}"
 							]
 						}
 					},
@@ -252,7 +256,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Österreich\",\n    \"zone\": {\n        \"id\": {{zone_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Österreich\",\n    \"zoneId\": {{zone_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -349,7 +353,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Österreich\",\n    \"zone\": {\n        \"id\": {{zone_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Österreich\",\n    \"zoneId\": {{zone_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -475,7 +479,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\",\n    \"parent\": {\n        \"id\": {{category_root_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\",\n    \"parentId\": {{category_root_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -535,7 +539,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\",\n    \"parent\": {\n        \"id\": {{category_root_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\",\n    \"parentId\": {{category_root_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -711,7 +715,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\",\n    \"parent\": {\n        \"id\": {{category_root_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Marsch\",\n    \"namePlural\": \"Märsche\",\n    \"parentId\": {{category_root_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -771,7 +775,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"behmischer Marsch\",\n    \"namePlural\": \"behmische Märsche\",\n    \"parent\": {\n        \"id\": {{category_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"behmischer Marsch\",\n    \"namePlural\": \"behmische Märsche\",\n    \"parentId\": {{category_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -832,7 +836,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Polka\",\n    \"namePlural\": \"Polka\",\n    \"parent\": {\n        \"id\": {{category_root_id}}\n    }\n}",
+							"raw": "{\n    \"name\": \"Polka\",\n    \"namePlural\": \"Polka\",\n    \"parentId\": {{category_root_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -876,7 +880,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"categoryId\": {{category_behm_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -956,7 +960,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"categoryId\": {{category_behm_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1103,7 +1107,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"category\": {\n        \"id\": {{category_behm_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Castaldo\",\n    \"author\": \"Rudolf Nováček\",\n    \"groupType\": \"Ensemble\",\n    \"price\": 4500,\n    \"difficulty\": 3,\n    \"instrumentation\": \"POSAUNEN!!!\",\n    \"categoryId\": {{category_behm_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1183,7 +1187,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Smutná Milenka\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"groupType\": \"Blasorchester\",\n    \"author\": \"Pavel Heidinger\",\n    \"instrumentation\": \"Behmisch\",\n    \"category\": {\n        \"id\": {{category_polka_id}}\n    }\n}",
+							"raw": "{\n    \"title\": \"Smutná Milenka\",\n    \"price\": 4100,\n    \"difficulty\": 2,\n    \"groupType\": \"Blasorchester\",\n    \"author\": \"Pavel Heidinger\",\n    \"instrumentation\": \"Behmisch\",\n    \"categoryId\": {{category_polka_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1290,7 +1294,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Dr\",\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"state\": {\n        \"id\": {{state_id}}\n      }\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
+							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Dr\",\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1327,11 +1331,11 @@
 									"})",
 									"",
 									"pm.test(\"correct title\", function() {",
-									"    pm.expect(order.items[0].title).to.equal(pm.environment.get(\"score_title\"));",
+									"    pm.expect(order.orderedItems[0].title).to.equal(pm.environment.get(\"score_title\"));",
 									"})",
 									"",
 									"pm.test(\"correct quantity\", function() {",
-									"    pm.expect(order.items[0].quantity).to.equal(1);",
+									"    pm.expect(order.orderedItems[0].quantity).to.equal(1);",
 									"})",
 									"",
 									"pm.test(\"salutation is Dr\", function() {",
@@ -1433,7 +1437,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Herr\",\n    \"firstName\": \"Marty\",\n    \"lastName\": \"McFly\",\n    \"company\": \"The Time Travelers\",\n    \"email\": \"marty.mcfly@bttf.com\",\n    \"telephone\": \"00436647813568\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"2\",\n      \"state\": {\n        \"id\": {{state_id}}\n      }\n    }\n  },\n  \"deliveryAddress\": {\n      \"city\": \"Wien\",\n      \"postCode\": \"1010\",\n      \"street\": \"Stephansplatz\",\n      \"streetNumber\": \"1\",\n      \"state\": {\n          \"id\": {{state_id}}\n      }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 4\n    },\n    {\n        \"id\": {{score_polka_id}},\n        \"quantity\": 2\n    }\n  ]\n}",
+							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Herr\",\n    \"firstName\": \"Marty\",\n    \"lastName\": \"McFly\",\n    \"company\": \"The Time Travelers\",\n    \"email\": \"marty.mcfly@bttf.com\",\n    \"telephone\": \"00436647813568\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"2\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"deliveryAddress\": {\n      \"city\": \"Wien\",\n      \"postCode\": \"1010\",\n      \"street\": \"Stephansplatz\",\n      \"streetNumber\": \"1\",\n      \"stateId\": {{state_id}}\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 4\n    },\n    {\n        \"id\": {{score_polka_id}},\n        \"quantity\": 2\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
