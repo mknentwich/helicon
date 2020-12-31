@@ -3,6 +3,7 @@ package at.markusnentwich.helicon.controller
 import at.markusnentwich.helicon.dto.CategoryProductDto
 import at.markusnentwich.helicon.dto.ScoreProductDto
 import at.markusnentwich.helicon.entities.CategoryEntity
+import at.markusnentwich.helicon.entities.ROOT_CATEGORY_NAME
 import at.markusnentwich.helicon.entities.ScoreEntity
 import at.markusnentwich.helicon.repositories.CategoryRepository
 import at.markusnentwich.helicon.repositories.ScoreRepository
@@ -20,7 +21,9 @@ class CatalogueControllerImpl(
     @Autowired val mapper: ModelMapper
 ) : CatalogueController {
     override fun getCatalogue(): CategoryProductDto {
-        return mapper.map(categoryRepository.getRoot(), CategoryProductDto::class.java)
+        val root = categoryRepository.getRoot() ?: throw NotFoundException()
+        sanitizeCatalogue(root)
+        return mapper.map(root, CategoryProductDto::class.java)
     }
 
     override fun getCategory(id: Long, embed: Boolean): CategoryProductDto {
@@ -30,8 +33,12 @@ class CatalogueControllerImpl(
 
     override fun createCategory(category: CategoryProductDto): CategoryProductDto {
         val categoryEntity = mapper.map(category, CategoryEntity::class.java)
+        if (categoryRepository.getRoot() != null && categoryEntity.name == ROOT_CATEGORY_NAME) {
+            throw BadPayloadException()
+        }
         if (category.parent?.id != null) {
-            categoryEntity.parent = categoryRepository.findByIdOrNull(category.parent!!.id!!) ?: throw BadPayloadException()
+            categoryEntity.parent =
+                categoryRepository.findByIdOrNull(category.parent!!.id!!) ?: throw BadPayloadException()
         }
         return mapper.map(categoryRepository.save(categoryEntity), CategoryProductDto::class.java)
     }
@@ -65,7 +72,8 @@ class CatalogueControllerImpl(
         if (scoreEntity.category.id == null) {
             throw BadPayloadException()
         }
-        scoreEntity.category = categoryRepository.findByIdOrNull(scoreEntity.category.id!!) ?: throw BadPayloadException()
+        scoreEntity.category =
+            categoryRepository.findByIdOrNull(scoreEntity.category.id!!) ?: throw BadPayloadException()
         scoreEntity.category.scores = null
         return mapper.map(scoreRepository.save(scoreEntity), ScoreProductDto::class.java)
     }
@@ -76,5 +84,13 @@ class CatalogueControllerImpl(
 
     override fun deleteScore(id: Long) {
         TODO("Not yet implemented")
+    }
+
+    private fun sanitizeCatalogue(categoryEntity: CategoryEntity) {
+        categoryEntity.scores?.forEach {
+            it.category.children = null
+            it.category.parent = null
+        }
+        categoryEntity.children?.forEach { sanitizeCatalogue(it) }
     }
 }

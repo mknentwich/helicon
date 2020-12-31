@@ -17,3 +17,6 @@ class CategoryEntity(
     @OneToMany(mappedBy = "category")
     var scores: MutableSet<ScoreEntity>? = mutableSetOf()
 )
+
+const val ROOT_CATEGORY_NAME = "root"
+val ROOT_CATEGORY = CategoryEntity(name = ROOT_CATEGORY_NAME, namePlural = "root")
