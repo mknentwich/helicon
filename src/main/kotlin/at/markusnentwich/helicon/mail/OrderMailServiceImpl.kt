@@ -1,6 +1,7 @@
 package at.markusnentwich.helicon.mail
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import at.markusnentwich.helicon.controller.NoOwnerException
 import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
 import at.markusnentwich.helicon.entities.OrderEntity
@@ -30,7 +31,12 @@ class OrderMailServiceImpl(
 
     override fun notifyCustomer(order: OrderEntity) {
         val message = mailSender.createMimeMessage()
-        message.replyTo = arrayOf(toAddress(accountRepository.getOwner().identity))
+        val owner = accountRepository.getOwner()
+        if (owner == null) {
+            logger.error("Helicon has no owner, cancel order")
+            throw NoOwnerException()
+        }
+        message.replyTo = arrayOf(toAddress(owner.identity))
         val helper = MimeMessageHelper(message)
         val mailOrder = toMailOrder(order)
         helper.setTo(toAddress(order.identity))
@@ -43,11 +49,16 @@ class OrderMailServiceImpl(
 
     override fun notifyOwner(order: OrderEntity) {
         val message = mailSender.createMimeMessage()
-        message.replyTo = arrayOf(toAddress(accountRepository.getOwner().identity))
+        val owner = accountRepository.getOwner()
+        if (owner == null) {
+            logger.error("Helicon has no owner, cancel order")
+            throw NoOwnerException()
+        }
+        message.replyTo = arrayOf(toAddress(owner.identity))
         val helper = MimeMessageHelper(message)
         val monitorAddresses = accountRepository.getMonitors().map { toAddress(it.identity) }.toTypedArray()
         val mailOrder = toMailOrder(order)
-        helper.setTo(toAddress(accountRepository.getOwner().identity))
+        helper.setTo(toAddress(owner.identity))
         helper.setFrom(configurationProperties.mail.identity)
         helper.setBcc(monitorAddresses)
         helper.setSubject(convert(OWNER_SUBJECT_FILE, mailOrder))

@@ -11,7 +11,7 @@ import org.springframework.data.repository.CrudRepository
 interface AccountRepository : CrudRepository<AccountEntity, String> {
 
     @Query("select ae from AccountEntity ae inner join ae.roles r where r.name = '$OWNER_ROLE'")
-    fun getOwner(): AccountEntity
+    fun getOwner(): AccountEntity?
 
     @Query("select ae from AccountEntity ae inner join ae.roles r where r.name = '$MONITOR_ROLE'")
     fun getMonitors(): MutableIterable<AccountEntity>

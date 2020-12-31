@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface CategoryRepository : CrudRepository<CategoryEntity, Long> {
 
-    @Query("from CategoryEntity p where p.name = $ROOT_CATEGORY_NAME")
+    @Query("from CategoryEntity p where p.name = '$ROOT_CATEGORY_NAME'")
     fun getRoot(): CategoryEntity?
 }
