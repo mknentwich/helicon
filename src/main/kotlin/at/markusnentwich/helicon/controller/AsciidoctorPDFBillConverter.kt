@@ -31,6 +31,7 @@ class AsciidoctorPDFBillConverter(
             .toStream(baos)
             .attributes(
                 attributes()
+                    // TODO: change path to themes directory
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
@@ -64,6 +65,7 @@ class AsciidoctorPDFBillConverter(
                     .attribute("bankInstitute", config.bill.bank.institute)
                     .attribute("bankReference", order.billingNumber).get()
             ).get()
+        // TODO: change path to adoc file
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
         file.delete()
         return baos
