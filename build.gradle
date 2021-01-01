@@ -13,6 +13,7 @@ group = 'at.markus-nentwich'
 version = '0.0.1-SNAPSHOT'
 java.sourceCompatibility = JavaVersion.VERSION_11
 
+
 repositories {
     mavenCentral()
 }
@@ -63,8 +64,22 @@ test {
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
+}
+
+bootJar {
+    requiresUnpack '**/jruby-complete-*.jar', '**/asciidoctorj-*.jar', '**/asciidoctorj-pdf-*.jar'
+}
+
+bootBuildImage {
+    imageName = 'mknentich/helicon'
+}
+
+task buildJar(type: Exec) {
+    dependsOn(build)
+    executable "sh"
+    args "-c", "mkdir -p build/dependency && cd build/dependency && jar -xvf ../libs/helicon*.jar"
 }
 
 resolve {
