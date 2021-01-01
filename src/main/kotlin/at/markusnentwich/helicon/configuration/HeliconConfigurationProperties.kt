@@ -59,39 +59,15 @@ data class HeliconConfigurationProperties(
     }
 
     data class BillConfiguration(
-        /** Address configuration*/
-        val address: AddressConfiguration = AddressConfiguration(),
-        /** Bank configuration*/
-        val bank: BankConfiguration = BankConfiguration()
-    ) {
-        data class AddressConfiguration(
-            /** The name of the seller / The selling company */
-            val name: String = "Markus Nentwich",
-            /** The street of the seller's address */
-            val street: String = "Vereinsgasse",
-            /** The street number of the seller's address */
-            val streetNumber: String = "25/14",
-            /** The post code of the seller's address */
-            val postCode: String = "A-1020",
-            /** The city of the seller's address */
-            val city: String = "Wien",
-            /** The phone number of the seller */
-            val phone: String = "+43699 / 10329882",
-            /** The mail contact address of the seller */
-            val mail: String = "kontakt@markus-nentwich.at"
-        )
-
-        data class BankConfiguration(
-            /** The iban of the owners bank account. */
-            val iban: String = "AT40 3209 2000 0025 8475",
-            /** The bic of the owners bank account. */
-            val bic: String = "RLNWATWWGAE",
-            /** The name of the owners bank */
-            val institute: String = "Raiffeisen-Regionalbank",
-            /** The name of the owners bank account*/
-            val name: String = "Markus Nentwich"
-        )
-    }
+        /** The iban of the owners bank account. */
+        val iban: String = "AT40 3209 2000 0025 8475",
+        /** The bic of the owners bank account. */
+        val bic: String = "RLNWATWWGAE",
+        /** The name of the owners bank */
+        val institute: String = "Raiffeisen-Regionalbank",
+        /** The name of the owners bank account*/
+        val name: String = "Markus Nentwich"
+    )
 
     data class Root(
         /** Enable the root account, do not use that in production. */

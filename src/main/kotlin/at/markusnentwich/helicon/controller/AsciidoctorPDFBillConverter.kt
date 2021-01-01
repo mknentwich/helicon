@@ -2,6 +2,7 @@ package at.markusnentwich.helicon.controller
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
 import at.markusnentwich.helicon.entities.OrderEntity
+import at.markusnentwich.helicon.repositories.AccountRepository
 import org.asciidoctor.Asciidoctor
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder
@@ -18,11 +19,13 @@ import java.time.format.DateTimeFormatter
 @Controller
 class AsciidoctorPDFBillConverter(
     @Autowired val asciidoctor: Asciidoctor,
-    @Autowired val config: HeliconConfigurationProperties
+    @Autowired val config: HeliconConfigurationProperties,
+    @Autowired val accountRepository: AccountRepository
 ) : BillConverter {
     val logger = LoggerFactory.getLogger(AsciidoctorPDFBillConverter::class.java)
 
     override fun createBill(order: OrderEntity): ByteArrayOutputStream {
+        val owner = accountRepository.getOwner()
         val file = ordersAsCSV(order)
         val baos = ByteArrayOutputStream()
         val options = OptionsBuilder.options()
@@ -37,13 +40,13 @@ class AsciidoctorPDFBillConverter(
                     .attribute("csvFile", file.absolutePath)
                     .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-                    .attribute("ownerName", config.bill.address.name)
-                    .attribute("ownerStreet", config.bill.address.street)
-                    .attribute("ownerStreetNumber", config.bill.address.streetNumber)
-                    .attribute("ownerPostCode", config.bill.address.postCode)
-                    .attribute("ownerCity", config.bill.address.city)
-                    .attribute("ownerPhone", config.bill.address.phone)
-                    .attribute("ownerEmail", config.bill.address.mail)
+                    .attribute("ownerName", owner?.identity?.firstName + " " + owner?.identity?.lastName)
+                    .attribute("ownerStreet", owner?.identity?.address?.street)
+                    .attribute("ownerStreetNumber", owner?.identity?.address?.streetNumber)
+                    .attribute("ownerPostCode", owner?.identity?.address?.postCode)
+                    .attribute("ownerCity", owner?.identity?.address?.city)
+                    .attribute("ownerPhone", owner?.identity?.telephone)
+                    .attribute("ownerEmail", owner?.identity?.email)
                     .attribute("ownerWebsite", config.domain)
                     .attribute("customerSalutation", order.identity.salutation)
                     .attribute("customerCompany", order.identity.company)
@@ -59,10 +62,10 @@ class AsciidoctorPDFBillConverter(
                     .attribute("deliveryPostcode", order.deliveryAddress?.postCode)
                     .attribute("deliveryCity", order.deliveryAddress?.city)
                     .attribute("deliveryState", order.deliveryAddress?.state?.name)
-                    .attribute("bankName", config.bill.bank.name)
-                    .attribute("bankBic", config.bill.bank.bic)
-                    .attribute("bankIban", config.bill.bank.iban)
-                    .attribute("bankInstitute", config.bill.bank.institute)
+                    .attribute("bankName", config.bill.name)
+                    .attribute("bankBic", config.bill.bic)
+                    .attribute("bankIban", config.bill.iban)
+                    .attribute("bankInstitute", config.bill.institute)
                     .attribute("bankReference", order.billingNumber).get()
             ).get()
         // TODO: change path to adoc file
