@@ -24,7 +24,6 @@ class AsciidoctorPDFBillConverter(
 
     override fun createBill(order: OrderEntity): ByteArrayOutputStream {
         val file = ordersAsCSV(order)
-        // TODO: change to inputStream
         val baos = ByteArrayOutputStream()
         val options = OptionsBuilder.options()
             .safe(SafeMode.UNSAFE)
