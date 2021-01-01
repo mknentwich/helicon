@@ -94,7 +94,7 @@ class OrderMailServiceImpl(
 
     private fun convert(template: String, model: MailOrder): String {
         val reader = StringWriter()
-        templateConfiguration.getTemplate(template).process(mapOf(Pair("order", model)), reader)
+        templateConfiguration.getTemplate("mail/$template").process(mapOf(Pair("order", model)), reader)
         return reader.toString()
     }
 }
