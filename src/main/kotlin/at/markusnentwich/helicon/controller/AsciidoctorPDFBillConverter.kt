@@ -35,8 +35,7 @@ class AsciidoctorPDFBillConverter(
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
-                    // TODO: add bill number
-                    // .attribute("billNumber")
+                    .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("ownerName", config.bill.address.name)
                     .attribute("ownerStreet", config.bill.address.street)
@@ -64,8 +63,7 @@ class AsciidoctorPDFBillConverter(
                     .attribute("bankBic", config.bill.bank.bic)
                     .attribute("bankIban", config.bill.bank.iban)
                     .attribute("bankInstitute", config.bill.bank.institute)
-                    // TODO: add payment reference
-                    .attribute("bankReference").get()
+                    .attribute("bankReference", order.billingNumber).get()
             ).get()
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
         file.delete()

@@ -56,10 +56,11 @@ class BillPDFCreationTest(
 
         // order
         val order = OrderEntity()
-        // order.deliveryAddress = delivery
+        order.deliveryAddress = delivery
         order.confirmed = LocalDateTime.now()
         order.identity.company = "Musikverein Leopoldsdorf"
         order.identity.salutation = "Herr"
+        order.billingNumber = "2021010101"
 
         // order scores
         val os1 = OrderScoreEntity(s1, order)
@@ -68,7 +69,6 @@ class BillPDFCreationTest(
         val os3 = OrderScoreEntity(s3, order)
         val os4 = OrderScoreEntity(s4, order)
         os4.amount = 3
-
         order.items = mutableSetOf(os1, os2, os3, os4)
 
         val file = ordersAsCSV(order)
@@ -83,8 +83,7 @@ class BillPDFCreationTest(
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
-                    // TODO: add bill number
-                    // .attribute("billNumber")
+                    .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("ownerName", config.bill.address.name)
                     .attribute("ownerStreet", config.bill.address.street)
@@ -112,8 +111,7 @@ class BillPDFCreationTest(
                     .attribute("bankBic", config.bill.bank.bic)
                     .attribute("bankIban", config.bill.bank.iban)
                     .attribute("bankInstitute", config.bill.bank.institute)
-                    // TODO: add payment reference
-                    .attribute("bankReference").get()
+                    .attribute("bankReference", order.billingNumber).get()
             ).get()
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
         file.delete()
