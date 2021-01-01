@@ -3,6 +3,7 @@
 :author: Richard Stöckl
 :icons: font
 :source-highlighter: coderay
+:artifact: dev/helicon:SNAPSHOT-0.0.1
 
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -34,6 +35,45 @@ git clone https://github.com/mknentwich/helicon.git
 This may take a while, but when done, the service will listen on the preconfigured port.
 
 NOTE: The IDE may provide an easier way to start the application for development purposes.
+
+== Docker
+
+In order to build a docker image, a docker daemon must be running.
+An image can be built either using a local gradle instance or using a multistage build with an included gradle instance.
+
+=== Multistage Build
+
+This is the recommended way for production images, but the build process may take much longer and subsequent builds cannot be performed:
+
+[source, shell script, subs="attributes"]
+----
+docker build -t {artifact} .
+----
+
+=== Local Build
+
+Almost the same, although the project must be built before:
+
+[source, shell script, subs="attributes"]
+----
+./graldew buildJar
+docker build -t {artifact} -f Dockerfile-single .
+----
+
+NOTE: The build task `buildJar` is used here instead of `bootJar` which is normally used for Spring Boot Applications.
+This is because the images contain an exploded jar instead of a single jar file.
+
+=== Run the image
+
+For a successful instance, some resources such as a valid `application.yml` and an asset directory have to be provided:
+
+[source, shell script, subs="attributes"]
+----
+docker run -p 2812:2812 -v "$PWD/assets":/assets -v "$PWD/src/main/resources/application.dev.yml":/application.yml --name helicon-dev -rm {artifact}
+----
+
+NOTE: The included `application.dev.yml` is optimized for a development environment.
+For example email notifications are disabled and H2 is used instead of Postgres.
 
 == Development
 
