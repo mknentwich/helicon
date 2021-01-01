@@ -136,8 +136,6 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
-        // TODO dto mapping
-        // TODO email notifications
         if (config.mail.notification.ownerOnOrder) {
             orderMailService.notifyOwner(evaluatedEntity)
         } else {
