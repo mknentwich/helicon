@@ -1,0 +1,10 @@
+FROM openjdk:16-alpine
+LABEL maintainer="Richard Stöckl"
+RUN adduser --no-create-home --disabled-password heliconuser
+USER heliconuser:heliconuser
+
+ARG DEPENDENCY=build/dependency
+COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java", "-cp", "/app:app/lib/*", "at.markusnentwich.helicon.HeliconApplicationKt"]
