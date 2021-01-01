@@ -6,6 +6,7 @@ import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.entities.OrderScoreEntity
 import at.markusnentwich.helicon.entities.ScoreEntity
+import at.markusnentwich.helicon.repositories.AccountRepository
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder.options
 import org.asciidoctor.SafeMode
@@ -21,12 +22,14 @@ import java.time.format.DateTimeFormatter
 
 @SpringBootTest
 class BillPDFCreationTest(
-    @Autowired val config: HeliconConfigurationProperties
+    @Autowired val config: HeliconConfigurationProperties,
+    @Autowired val accountRepository: AccountRepository
 ) {
 
     @Test
     fun printBillToLocalPDFFile() {
         val asciidoctor = create()
+        val owner = accountRepository.getOwner()
 
         // delivery address
         val delivery = AddressEntity()
@@ -56,10 +59,11 @@ class BillPDFCreationTest(
 
         // order
         val order = OrderEntity()
-        // order.deliveryAddress = delivery
+        order.deliveryAddress = delivery
         order.confirmed = LocalDateTime.now()
         order.identity.company = "Musikverein Leopoldsdorf"
         order.identity.salutation = "Herr"
+        order.billingNumber = "2021010101"
 
         // order scores
         val os1 = OrderScoreEntity(s1, order)
@@ -68,7 +72,6 @@ class BillPDFCreationTest(
         val os3 = OrderScoreEntity(s3, order)
         val os4 = OrderScoreEntity(s4, order)
         os4.amount = 3
-
         order.items = mutableSetOf(os1, os2, os3, os4)
 
         val file = ordersAsCSV(order)
@@ -80,19 +83,19 @@ class BillPDFCreationTest(
             .inPlace(true)
             .attributes(
                 attributes()
+                    // TODO: change path to themes directory
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
-                    // TODO: add bill number
-                    // .attribute("billNumber")
+                    .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
-                    .attribute("ownerName", config.bill.address.name)
-                    .attribute("ownerStreet", config.bill.address.street)
-                    .attribute("ownerStreetNumber", config.bill.address.streetNumber)
-                    .attribute("ownerPostCode", config.bill.address.postCode)
-                    .attribute("ownerCity", config.bill.address.city)
-                    .attribute("ownerPhone", config.bill.address.phone)
-                    .attribute("ownerEmail", config.bill.address.mail)
+                    .attribute("ownerName", owner?.identity?.firstName + " " + owner?.identity?.lastName)
+                    .attribute("ownerStreet", owner?.identity?.address?.street)
+                    .attribute("ownerStreetNumber", owner?.identity?.address?.streetNumber)
+                    .attribute("ownerPostCode", owner?.identity?.address?.postCode)
+                    .attribute("ownerCity", owner?.identity?.address?.city)
+                    .attribute("ownerPhone", owner?.identity?.telephone)
+                    .attribute("ownerEmail", owner?.identity?.email)
                     .attribute("ownerWebsite", config.domain)
                     .attribute("customerSalutation", order.identity.salutation)
                     .attribute("customerCompany", order.identity.company)
@@ -108,12 +111,11 @@ class BillPDFCreationTest(
                     .attribute("deliveryPostcode", order.deliveryAddress?.postCode)
                     .attribute("deliveryCity", order.deliveryAddress?.city)
                     .attribute("deliveryState", order.deliveryAddress?.state?.name)
-                    .attribute("bankName", config.bill.bank.name)
-                    .attribute("bankBic", config.bill.bank.bic)
-                    .attribute("bankIban", config.bill.bank.iban)
-                    .attribute("bankInstitute", config.bill.bank.institute)
-                    // TODO: add payment reference
-                    .attribute("bankReference").get()
+                    .attribute("bankName", config.bill.name)
+                    .attribute("bankBic", config.bill.bic)
+                    .attribute("bankIban", config.bill.iban)
+                    .attribute("bankInstitute", config.bill.institute)
+                    .attribute("bankReference", order.billingNumber).get()
             ).get()
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
         file.delete()
