@@ -56,7 +56,7 @@ Almost the same, although the project must be built before:
 
 [source, shell script, subs="attributes"]
 ----
-./graldew buildJar
+./gradlew buildJar
 docker build -t {artifact} -f Dockerfile-single .
 ----
 
@@ -69,7 +69,7 @@ For a successful instance, some resources such as a valid `application.yml` and 
 
 [source, shell script, subs="attributes"]
 ----
-docker run -p 2812:2812 -v "$PWD/assets":/assets -v "$PWD/src/main/resources/application.dev.yml":/application.yml --name helicon-dev -rm {artifact}
+docker run -p 2812:2812 -v "$PWD/assets":/assets -v "$PWD/src/main/resources/application.dev.yml":/application.yml --name helicon-dev --rm {artifact}
 ----
 
 NOTE: The included `application.dev.yml` is optimized for a development environment.
