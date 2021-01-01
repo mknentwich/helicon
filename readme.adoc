@@ -72,6 +72,9 @@ For a successful instance, some resources such as a valid `application.yml` and 
 docker run -p 2812:2812 -v "$PWD/assets":/assets -v "$PWD/src/main/resources/application.dev.yml":/application.yml --name helicon-dev --rm {artifact}
 ----
 
+TIP: You may want to use the same timezone and time as on the host which can be achieved with the volumes
+`-v /etc/localtime:/etc/localtime:ro -v /etc/timezone:/etc/timezone`
+
 NOTE: The included `application.dev.yml` is optimized for a development environment.
 For example email notifications are disabled and H2 is used instead of Postgres.
 

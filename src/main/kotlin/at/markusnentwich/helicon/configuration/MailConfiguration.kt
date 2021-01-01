@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.Resource
 import java.io.InputStreamReader
 import java.io.Reader
+import java.time.ZoneId
+import javax.annotation.PostConstruct
 
 @Configuration
 class MailConfiguration(
@@ -15,12 +17,19 @@ class MailConfiguration(
     @Autowired val heliconResourceLoader: HeliconResourceLoader
 ) {
 
+    private val logger = LoggerFactory.getLogger(MailConfiguration::class.java)
+
     @Bean
     fun templateConfiguration(): freemarker.template.Configuration {
         val config = freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_30)
         config.templateLoader = ResourceTemplateLoader(heliconResourceLoader)
         config.localizedLookup = false
         return config
+    }
+
+    @PostConstruct
+    fun logTimezone() {
+        logger.info("Helicon uses timezone {}", ZoneId.systemDefault().id)
     }
 }
 
