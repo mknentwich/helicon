@@ -1,7 +1,7 @@
 package at.markusnentwich.helicon.mail
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
-import at.markusnentwich.helicon.controller.AsciidoctorPDFBillConverter
+import at.markusnentwich.helicon.controller.BillConverter
 import at.markusnentwich.helicon.controller.NoOwnerException
 import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
@@ -15,7 +15,6 @@ import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.io.StringWriter
 import javax.mail.internet.InternetAddress
-import javax.mail.util.ByteArrayDataSource
 
 const val OWNER_BODY_FILE = "owner-order.ftl"
 const val OWNER_SUBJECT_FILE = "owner-order-subject.ftl"
@@ -28,7 +27,7 @@ class OrderMailServiceImpl(
     @Autowired val accountRepository: AccountRepository,
     @Autowired val mailSender: JavaMailSender,
     @Autowired val templateConfiguration: Configuration,
-    @Autowired val billConverter: AsciidoctorPDFBillConverter
+    @Autowired val billConverter: BillConverter
 ) : OrderMailService {
     private val logger = LoggerFactory.getLogger(OrderMailServiceImpl::class.java)
 
@@ -58,17 +57,16 @@ class OrderMailServiceImpl(
             throw NoOwnerException()
         }
         message.replyTo = arrayOf(toAddress(owner.identity))
-        val helper = MimeMessageHelper(message)
+        val helper = MimeMessageHelper(message, true)
         val monitorAddresses = accountRepository.getMonitors().map { toAddress(it.identity) }.toTypedArray()
         val mailOrder = toMailOrder(order)
-        val baos = billConverter.createBill(order)
-        val attachment = ByteArrayDataSource(baos.toByteArray(), "application/pdf")
         helper.setTo(toAddress(owner.identity))
         helper.setFrom(configurationProperties.mail.identity)
         helper.setBcc(monitorAddresses)
         helper.setSubject(convert(OWNER_SUBJECT_FILE, mailOrder))
         helper.setText(convert(OWNER_BODY_FILE, mailOrder))
-        helper.addAttachment("Rechnung_" + order.billingNumber + ".pdf", attachment)
+        helper.addAttachment("rechnung-${order.billingNumber}.pdf", { billConverter.createBill(order) }, "application/pdf")
+
         mailSender.send(message)
         logger.info("sent email to owner and monitors")
     }
