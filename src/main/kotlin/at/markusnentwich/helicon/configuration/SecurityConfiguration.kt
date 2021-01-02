@@ -47,10 +47,11 @@ class SecurityConfiguration(
                 "$CATALOGUE_SERVICE/**",
                 "$META_SERVICE/**",
                 "$ACCOUNT_SERVICE/login",
+                "/swagger.html",
                 "/swagger-ui/**",
-                "/v3/**"
+                "/api-docs/**"
             )?.permitAll()
-            ?.antMatchers(HttpMethod.PUT, "$ORDER_SERVICE/confirm/**")?.permitAll()
+            ?.antMatchers(HttpMethod.PUT, "$ORDER_SERVICE/confirmations/**")?.permitAll()
 
             ?.antMatchers(HttpMethod.PUT, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
             ?.antMatchers(HttpMethod.DELETE, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)

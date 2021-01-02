@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Account Service", description = "The Account Service provides the ability to manage user accounts and logins.")
 interface AccountService {
 
-    @RequestMapping("/user/{username}", method = [RequestMethod.GET])
+    @RequestMapping("/users/{username}", method = [RequestMethod.GET])
     @Operation(summary = "return the user information corresponding to this username. the password will not be returned. every user can request itself. only users with the 'root' role are able to request other users than their self.")
     @ApiResponses(
         value = [
@@ -31,7 +31,7 @@ interface AccountService {
     )
     fun getUser(@Parameter(description = "username of the user") @PathVariable username: String): ResponseEntity<AccountDto>
 
-    @RequestMapping("/user", method = [RequestMethod.POST])
+    @RequestMapping("/users", method = [RequestMethod.POST])
     @Operation(summary = "create a new user. the password will not be returned. only users with the 'root' role are able to create users manually. the roles will not be ignored.")
     @ApiResponses(
         value = [
@@ -45,7 +45,7 @@ interface AccountService {
     )
     fun createAccount(@Parameter(description = "the new user") @RequestBody user: AccountDto): ResponseEntity<AccountDto>
 
-    @RequestMapping("/user/{username}", method = [RequestMethod.PUT])
+    @RequestMapping("/users/{username}", method = [RequestMethod.PUT])
     @Operation(summary = "update a user. the password will not be returned. only users with the 'root' role are able to update other users manually. the roles will not be ignored if the requesting user has the role 'root'. users without the role 'root' are only able to change their identity information and their password.")
     @ApiResponses(
         value = [
@@ -62,7 +62,7 @@ interface AccountService {
         @Parameter(description = "the username") @PathVariable username: String
     ): ResponseEntity<AccountDto>
 
-    @RequestMapping("/user/{username}", method = [RequestMethod.DELETE])
+    @RequestMapping("/users/{username}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete user. only users with the 'root' role are able to delete users other than theirself.")
     @ApiResponses(
         value = [
@@ -76,7 +76,7 @@ interface AccountService {
     )
     fun deleteAccount(@Parameter(description = "the username") @PathVariable username: String): ResponseEntity<Void>
 
-    @RequestMapping("/role", method = [RequestMethod.GET])
+    @RequestMapping("/roles", method = [RequestMethod.GET])
     @Operation(summary = "return all available roles. only users with the role 'root' are able to perform this.")
     @ApiResponses(
         value = [

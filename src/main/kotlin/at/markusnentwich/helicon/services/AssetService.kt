@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest
 @Tag(name = "Asset Service", description = "The Asset Service provides the ability to perform requests on certain assets such as PDFs of scores or their audio examples.")
 interface AssetService {
 
-    @RequestMapping("/score/{id}/audio", method = [RequestMethod.GET], produces = ["audio/mpeg"])
+    @RequestMapping("/scores/{id}/audio", method = [RequestMethod.GET], produces = ["audio/mpeg"])
     @Operation(summary = "return the audio example of a score")
     @ApiResponses(
         value = [
@@ -25,7 +25,7 @@ interface AssetService {
     )
     fun getScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
-    @RequestMapping("/score/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/ogg", "audio/mp3", "audio/mpeg", "audio/mp4"])
+    @RequestMapping("/scores/{id}/audio", method = [RequestMethod.PUT], consumes = ["audio/ogg", "audio/mp3", "audio/mpeg", "audio/mp4"])
     @Operation(summary = "update the audio example of a score")
     @ApiResponses(
         value = [
@@ -39,7 +39,7 @@ interface AssetService {
     )
     fun updateScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Void>
 
-    @RequestMapping("/score/{id}/audio", method = [RequestMethod.DELETE])
+    @RequestMapping("/scores/{id}/audio", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an audio example of a score")
     @ApiResponses(
         value = [
@@ -52,7 +52,7 @@ interface AssetService {
     )
     fun deleteScoreAudio(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<Void>
 
-    @RequestMapping("/score/{id}/pdf", method = [RequestMethod.GET], produces = ["application/pdf"])
+    @RequestMapping("/scores/{id}/pdf", method = [RequestMethod.GET], produces = ["application/pdf"])
     @Operation(summary = "return the PDF of a score")
     @ApiResponses(
         value = [
@@ -62,7 +62,7 @@ interface AssetService {
     )
     fun getScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<InputStreamResource>
 
-    @RequestMapping("/score/{id}/pdf", method = [RequestMethod.PUT], consumes = ["application/pdf"])
+    @RequestMapping("/scores/{id}/pdf", method = [RequestMethod.PUT], consumes = ["application/pdf"])
     @Operation(summary = "update the PDF of a score")
     @ApiResponses(
         value = [
@@ -76,7 +76,7 @@ interface AssetService {
     )
     fun updateScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long, request: HttpServletRequest): ResponseEntity<Void>
 
-    @RequestMapping("/score/{id}/pdf", method = [RequestMethod.DELETE])
+    @RequestMapping("/scores/{id}/pdf", method = [RequestMethod.DELETE])
     @Operation(summary = "delete the PDF of a score")
     @ApiResponses(
         value = [

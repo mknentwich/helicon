@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Meta Service", description = "The meta Service manages all data which does not belong to an ordering process directly such as states and zones.")
 interface MetaService {
 
-    @RequestMapping("/state", method = [RequestMethod.GET])
+    @RequestMapping("/states", method = [RequestMethod.GET])
     @Operation(summary = "returns all states")
     @ApiResponses(
         ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = Iterable::class))])
     )
     fun getAllStates(): ResponseEntity<Iterable<StateDto>>
 
-    @RequestMapping("/state/{id}", method = [RequestMethod.GET])
+    @RequestMapping("/states/{id}", method = [RequestMethod.GET])
     @Operation(summary = "returns a state by id")
     @ApiResponses(
         value = [
@@ -34,7 +34,7 @@ interface MetaService {
     )
     fun getStateById(@Parameter(description = "the id of the state") @PathVariable id: Long): ResponseEntity<StateDto>
 
-    @RequestMapping("/state", method = [RequestMethod.POST])
+    @RequestMapping("/states", method = [RequestMethod.POST])
     @Operation(summary = "create a new state")
     @ApiResponses(
         value = [
@@ -47,7 +47,7 @@ interface MetaService {
     )
     fun createState(@Parameter(description = "the new state") @RequestBody state: StateDto, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<StateDto>
 
-    @RequestMapping("/state/{id}", method = [RequestMethod.PUT])
+    @RequestMapping("/states/{id}", method = [RequestMethod.PUT])
     @Operation(summary = "update a state")
     @ApiResponses(
         value = [
@@ -65,7 +65,7 @@ interface MetaService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<StateDto>
 
-    @RequestMapping("/state/{id}", method = [RequestMethod.DELETE])
+    @RequestMapping("/states/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "deletes an existing state")
     @ApiResponses(
         value = [
@@ -78,14 +78,14 @@ interface MetaService {
     )
     fun deleteState(@Parameter(description = "the id of the state") @PathVariable id: Long, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<Void>
 
-    @RequestMapping("/zone", method = [RequestMethod.GET])
+    @RequestMapping("/zones", method = [RequestMethod.GET])
     @Operation(summary = "returns all zones")
     @ApiResponses(
         ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = Iterable::class))])
     )
     fun getAllZones(): ResponseEntity<Iterable<ZoneDto>>
 
-    @RequestMapping("/zone/{id}", method = [RequestMethod.GET])
+    @RequestMapping("/zones/{id}", method = [RequestMethod.GET])
     @Operation(summary = "returns a zone by id")
     @ApiResponses(
         value = [
@@ -95,7 +95,7 @@ interface MetaService {
     )
     fun getZoneById(@Parameter(description = "the id of the zone") @PathVariable id: Long): ResponseEntity<ZoneDto>
 
-    @RequestMapping("/zone", method = [RequestMethod.POST])
+    @RequestMapping("/zones", method = [RequestMethod.POST])
     @Operation(summary = "insert a new zone")
     @ApiResponses(
         value = [
@@ -108,7 +108,7 @@ interface MetaService {
     )
     fun createZone(@Parameter(description = "the new zone") @RequestBody zone: ZoneDto, @RequestHeader(name = "Authorization") jwt: String): ResponseEntity<ZoneDto>
 
-    @RequestMapping("/zone/{id}", method = [RequestMethod.PUT])
+    @RequestMapping("/zones/{id}", method = [RequestMethod.PUT])
     @Operation(summary = "update a zone")
     @ApiResponses(
         value = [
@@ -125,7 +125,7 @@ interface MetaService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ZoneDto>
 
-    @RequestMapping("/zone/{id}", method = [RequestMethod.DELETE])
+    @RequestMapping("/zones/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete an existing zone")
     @ApiResponses(
         value = [
