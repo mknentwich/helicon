@@ -144,16 +144,15 @@ As he is a musician what would better fit than a helicon?
 == Minimal Implementation
 
 ----
-POST /order/
-PUT /order/confirm/{id}
-GET /assets/score/{id}/audio
-GET /assets/score/{id}/pdf
-GET /state/{id}
-GET /state/
-GET /zone/
-GET /zone/{id}
+POST /orders/
+PUT /orders/confirmations/{id}
+GET /assets/scores/{id}/audio
+GET /assets/scores/{id}/pdf
+GET /meta/states/{id}
+GET /meta/states/
+GET /meta/zones/
+GET /meta/zones/{id}
 GET /catalogue/
-GET /catalogue/category/{id}
-GET /catalogue/score
-GET /catalogue/score/{id}
+GET /catalogue/categories/{id}
+GET /catalogue/scores/{id}
 ----
