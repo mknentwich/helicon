@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "account",
+			"name": "accounts",
 			"item": [
 				{
 					"name": "root-login",
@@ -48,12 +48,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/account/login",
+							"raw": "{{api}}/accounts/login",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"account",
+								"accounts",
 								"login"
 							]
 						}
@@ -108,13 +108,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/meta/zone",
+							"raw": "{{api}}/meta/zones",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"zone"
+								"zones"
 							]
 						}
 					},
@@ -170,13 +170,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/meta/state",
+							"raw": "{{api}}/meta/states",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"state"
+								"states"
 							]
 						}
 					},
@@ -201,13 +201,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/meta/state/{{slovakia_id}}",
+							"raw": "{{api}}/meta/states/{{slovakia_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"state",
+								"states",
 								"{{slovakia_id}}"
 							]
 						}
@@ -264,13 +264,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/meta/state",
+							"raw": "{{api}}/meta/states",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"state"
+								"states"
 							]
 						}
 					},
@@ -320,13 +320,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/meta/zone",
+							"raw": "{{api}}/meta/zones",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"zone"
+								"zones"
 							]
 						}
 					},
@@ -361,13 +361,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/meta/state",
+							"raw": "{{api}}/meta/states",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"state"
+								"states"
 							]
 						}
 					},
@@ -392,13 +392,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/meta/state/{{state_id}}",
+							"raw": "{{api}}/meta/states/{{state_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"meta",
-								"state",
+								"states",
 								"{{state_id}}"
 							]
 						}
@@ -487,13 +487,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/category",
+							"raw": "{{api}}/catalogue/categories",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -547,13 +547,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/category",
+							"raw": "{{api}}/catalogue/categories",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -595,13 +595,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/catalogue/category/{{category_id}}",
+							"raw": "{{api}}/catalogue/categories/{{category_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category",
+								"categories",
 								"{{category_id}}"
 							]
 						}
@@ -630,13 +630,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/catalogue/category/{{category_id}}",
+							"raw": "{{api}}/catalogue/categories/{{category_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category",
+								"categories",
 								"{{category_id}}"
 							]
 						}
@@ -662,13 +662,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/catalogue/category/{{category_id}}",
+							"raw": "{{api}}/catalogue/categories/{{category_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category",
+								"categories",
 								"{{category_id}}"
 							]
 						}
@@ -723,13 +723,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/category",
+							"raw": "{{api}}/catalogue/categories",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -783,13 +783,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/category",
+							"raw": "{{api}}/catalogue/categories",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -844,13 +844,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/category",
+							"raw": "{{api}}/catalogue/categories",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -888,13 +888,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/score",
+							"raw": "{{api}}/catalogue/scores",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"score"
+								"scores"
 							]
 						}
 					},
@@ -968,13 +968,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/score",
+							"raw": "{{api}}/catalogue/scores",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"score"
+								"scores"
 							]
 						}
 					},
@@ -1002,13 +1002,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/catalogue/score/{{score_id}}",
+							"raw": "{{api}}/catalogue/scores/{{score_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"score",
+								"scores",
 								"{{score_id}}"
 							]
 						}
@@ -1034,13 +1034,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/catalogue/score/{{score_id}}",
+							"raw": "{{api}}/catalogue/scores/{{score_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"score",
+								"scores",
 								"{{score_id}}"
 							]
 						}
@@ -1115,13 +1115,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/score",
+							"raw": "{{api}}/catalogue/scores",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"score"
+								"scores"
 							]
 						}
 					},
@@ -1195,13 +1195,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/catalogue/score",
+							"raw": "{{api}}/catalogue/scores",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
 								"catalogue",
-								"score"
+								"scores"
 							]
 						}
 					},
@@ -1254,7 +1254,7 @@
 			]
 		},
 		{
-			"name": "order",
+			"name": "orders",
 			"item": [
 				{
 					"name": "order castaldo anynomous",
@@ -1294,7 +1294,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Dr\",\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
+							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Dr\",\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmett.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1302,12 +1302,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/order",
+							"raw": "{{api}}/orders",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"order"
+								"orders"
 							]
 						}
 					},
@@ -1355,7 +1355,7 @@
 									"})",
 									"",
 									"pm.test(\"email is emmet.brown@bttf.com\", function() {",
-									"    pm.expect(order.identity.email).to.equal(\"emmet.brown@bttf.com\");",
+									"    pm.expect(order.identity.email).to.equal(\"emmett.brown@bttf.com\");",
 									"})",
 									"",
 									"pm.test(\"telephone is 00437946825\", function() {",
@@ -1386,13 +1386,13 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/order/confirm/{{order_id}}",
+							"raw": "{{api}}/orders/confirmationsations/{{order_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"order",
-								"confirm",
+								"orders",
+								"confirmations",
 								"{{order_id}}"
 							]
 						}
@@ -1445,12 +1445,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{api}}/order",
+							"raw": "{{api}}/orders",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"order"
+								"orders"
 							]
 						}
 					},
@@ -1549,13 +1549,13 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/order/confirm/{{order_id}}",
+							"raw": "{{api}}/orders/confirmations/{{order_id}}",
 							"host": [
 								"{{api}}"
 							],
 							"path": [
-								"order",
-								"confirm",
+								"orders",
+								"confirmations",
 								"{{order_id}}"
 							]
 						}
@@ -1565,7 +1565,7 @@
 			]
 		},
 		{
-			"name": "asset",
+			"name": "assets",
 			"item": [
 				{
 					"name": "pdf",
@@ -1592,13 +1592,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1634,13 +1634,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1673,13 +1673,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1709,13 +1709,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1748,13 +1748,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/123456/pdf",
+									"raw": "{{api}}/assets/scores/123456/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"123456",
 										"pdf"
 									]
@@ -1784,13 +1784,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1817,13 +1817,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1850,13 +1850,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/pdf",
+									"raw": "{{api}}/assets/scores/{{score_id}}/pdf",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"pdf"
 									]
@@ -1891,13 +1891,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -1933,13 +1933,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -1972,13 +1972,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -2011,13 +2011,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -2050,13 +2050,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -2086,13 +2086,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -2125,13 +2125,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{api}}/asset/score/123456/audio",
+									"raw": "{{api}}/assets/scores/123456/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"123456",
 										"audio"
 									]
@@ -2161,13 +2161,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -2194,13 +2194,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]
@@ -2227,13 +2227,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{api}}/asset/score/{{score_id}}/audio",
+									"raw": "{{api}}/assets/scores/{{score_id}}/audio",
 									"host": [
 										"{{api}}"
 									],
 									"path": [
-										"asset",
-										"score",
+										"assets",
+										"scores",
 										"{{score_id}}",
 										"audio"
 									]

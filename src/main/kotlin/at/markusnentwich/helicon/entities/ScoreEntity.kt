@@ -15,5 +15,7 @@ class ScoreEntity(
     var groupType: String = "Blasorchester",
     var instrumentation: String = "",
     var price: Int = 0,
-    var title: String = "default title"
+    var title: String = "default title",
+    @OneToMany(mappedBy = "score")
+    var orders: MutableSet<OrderScoreEntity> = mutableSetOf()
 )

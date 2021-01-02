@@ -31,7 +31,7 @@ interface CatalogueService {
     )
     fun getCatalogue(): ResponseEntity<CategoryProductDto>
 
-    @RequestMapping("/category/{id}", method = [RequestMethod.GET])
+    @RequestMapping("/categories/{id}", method = [RequestMethod.GET])
     @Operation(summary = "Returns the category with the provided id")
     @ApiResponses(
         value = [
@@ -50,7 +50,7 @@ interface CatalogueService {
         ) embed: Boolean
     ): ResponseEntity<CategoryProductDto>
 
-    @RequestMapping("/category", method = [RequestMethod.POST])
+    @RequestMapping("/categories", method = [RequestMethod.POST])
     @Operation(summary = "create a new category")
     @ApiResponses(
         value = [
@@ -70,7 +70,7 @@ interface CatalogueService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<CategoryProductDto>
 
-    @RequestMapping("/category/{id}", method = [RequestMethod.PUT])
+    @RequestMapping("/categories/{id}", method = [RequestMethod.PUT])
     @Operation(summary = "create a new category")
     @ApiResponses(
         value = [
@@ -92,7 +92,7 @@ interface CatalogueService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<CategoryProductDto>
 
-    @RequestMapping("/category/{id}", method = [RequestMethod.DELETE])
+    @RequestMapping("/categories/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete a category")
     @ApiResponses(
         value = [
@@ -108,7 +108,7 @@ interface CatalogueService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<Void>
 
-    @RequestMapping("/score", method = [RequestMethod.GET])
+    @RequestMapping("/scores", method = [RequestMethod.GET])
     @Operation(summary = "return all scores which are available to buy")
     @ApiResponses(
         ApiResponse(
@@ -120,7 +120,7 @@ interface CatalogueService {
     )
     fun getScores(): ResponseEntity<Iterable<ScoreProductDto>>
 
-    @RequestMapping("/score/{id}", method = [RequestMethod.GET])
+    @RequestMapping("/scores/{id}", method = [RequestMethod.GET])
     @ApiResponses(
         value = [
             ApiResponse(
@@ -133,7 +133,7 @@ interface CatalogueService {
     )
     fun getScoreById(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<ScoreProductDto>
 
-    @RequestMapping("/score", method = [RequestMethod.POST])
+    @RequestMapping("/scores", method = [RequestMethod.POST])
     @Operation(summary = "create a new score")
     @ApiResponses(
         value = [
@@ -149,7 +149,7 @@ interface CatalogueService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ScoreProductDto>
 
-    @RequestMapping("/score/{id}", method = [RequestMethod.PUT])
+    @RequestMapping("/scores/{id}", method = [RequestMethod.PUT])
     @Operation(summary = "update an existing score")
     @ApiResponses(
         value = [
@@ -167,7 +167,7 @@ interface CatalogueService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ScoreProductDto>
 
-    @RequestMapping("/score/{id}", method = [RequestMethod.DELETE])
+    @RequestMapping("/scores/{id}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete a score")
     @ApiResponses(
         value = [

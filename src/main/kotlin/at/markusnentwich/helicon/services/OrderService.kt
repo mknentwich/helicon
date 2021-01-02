@@ -72,7 +72,7 @@ interface OrderService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ScoreOrderDto>
 
-    @RequestMapping("/confirm/{id}", method = [RequestMethod.PUT])
+    @RequestMapping("/confirmations/{id}", method = [RequestMethod.PUT])
     @Operation(description = "confirm an order. if the order is done by a registered user, the user must be authenticated for that")
     @ApiResponses(
         value = [
@@ -92,7 +92,7 @@ interface OrderService {
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<ScoreOrderDto>
 
-    @RequestMapping("/bill/{id}", method = [RequestMethod.GET], produces = [MediaType.APPLICATION_PDF_VALUE])
+    @RequestMapping("/bills/{id}", method = [RequestMethod.GET], produces = [MediaType.APPLICATION_PDF_VALUE])
     @Operation(description = "returns a bill as PDF. customers can only access their own bills. user with the 'owner' role can access all bills")
     @ApiResponses(
         value = [

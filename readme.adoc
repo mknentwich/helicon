@@ -56,7 +56,7 @@ Almost the same, although the project must be built before:
 
 [source, shell script, subs="attributes"]
 ----
-./graldew buildJar
+./gradlew buildJar
 docker build -t {artifact} -f Dockerfile-single .
 ----
 
@@ -69,8 +69,11 @@ For a successful instance, some resources such as a valid `application.yml` and 
 
 [source, shell script, subs="attributes"]
 ----
-docker run -p 2812:2812 -v "$PWD/assets":/assets -v "$PWD/src/main/resources/application.dev.yml":/application.yml --name helicon-dev -rm {artifact}
+docker run -p 2812:2812 -v "$PWD/assets":/assets -v "$PWD/src/main/resources/application.dev.yml":/application.yml --name helicon-dev --rm {artifact}
 ----
+
+TIP: You may want to use the same timezone and time as on the host which can be achieved with the volumes
+`-v /etc/localtime:/etc/localtime:ro -v /etc/timezone:/etc/timezone`
 
 NOTE: The included `application.dev.yml` is optimized for a development environment.
 For example email notifications are disabled and H2 is used instead of Postgres.
@@ -130,7 +133,7 @@ In common environments this will be done via docker so have to refer to the http
 == Is the REST API documented?
 
 Of course, it is, zum Kuckuck!
-It can be accessed via http://localhost:2812/swagger-ui/index.html when the application is running.
+It can be accessed via http://localhost:2812/api/v1/swagger.html when the application is running.
 This is enabled by default, if one wants to disable this in production environments, which is not recommend although as in the projects opinion APIs have to be documented publicly, see the configuration section.
 
 == Where does the name come from?
@@ -141,16 +144,15 @@ As he is a musician what would better fit than a helicon?
 == Minimal Implementation
 
 ----
-POST /order/
-PUT /order/confirm/{id}
-GET /assets/score/{id}/audio
-GET /assets/score/{id}/pdf
-GET /state/{id}
-GET /state/
-GET /zone/
-GET /zone/{id}
+POST /orders/
+PUT /orders/confirmations/{id}
+GET /assets/scores/{id}/audio
+GET /assets/scores/{id}/pdf
+GET /meta/states/{id}
+GET /meta/states/
+GET /meta/zones/
+GET /meta/zones/{id}
 GET /catalogue/
-GET /catalogue/category/{id}
-GET /catalogue/score
-GET /catalogue/score/{id}
+GET /catalogue/categories/{id}
+GET /catalogue/scores/{id}
 ----

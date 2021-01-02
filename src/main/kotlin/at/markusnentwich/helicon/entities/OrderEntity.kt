@@ -45,7 +45,25 @@ class OrderEntity(
 class OrderScorePK(
     var order: UUID? = null,
     var score: Long? = null
-) : Serializable
+) : Serializable {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as OrderScorePK
+
+        if (order != other.order) return false
+        if (score != other.score) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = order?.hashCode() ?: 0
+        result = 31 * result + (score?.hashCode() ?: 0)
+        return result
+    }
+}
 
 @Entity
 @Table(name = "order_score")
