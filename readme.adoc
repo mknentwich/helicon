@@ -133,7 +133,7 @@ In common environments this will be done via docker so have to refer to the http
 == Is the REST API documented?
 
 Of course, it is, zum Kuckuck!
-It can be accessed via http://localhost:2812/swagger-ui/index.html when the application is running.
+It can be accessed via http://localhost:2812/api/v1/swagger.html when the application is running.
 This is enabled by default, if one wants to disable this in production environments, which is not recommend although as in the projects opinion APIs have to be documented publicly, see the configuration section.
 
 == Where does the name come from?

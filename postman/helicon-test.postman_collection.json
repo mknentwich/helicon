@@ -1294,7 +1294,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Dr\",\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmet.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
+							"raw": "{\n  \"identity\": {\n    \"salutation\": \"Dr\",\n    \"firstName\": \"Emmett\",\n    \"lastName\": \"Brown\",\n    \"email\": \"emmett.brown@bttf.com\",\n    \"telephone\": \"00437946825\",\n    \"address\": {\n      \"city\": \"Leopoldsdorf im Marchfelde\",\n      \"postCode\": \"2285\",\n      \"street\": \"Hauptplatz\",\n      \"streetNumber\": \"1\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"items\": [\n    {\n      \"id\": {{score_id}},\n      \"quantity\": 1\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1355,7 +1355,7 @@
 									"})",
 									"",
 									"pm.test(\"email is emmet.brown@bttf.com\", function() {",
-									"    pm.expect(order.identity.email).to.equal(\"emmet.brown@bttf.com\");",
+									"    pm.expect(order.identity.email).to.equal(\"emmett.brown@bttf.com\");",
 									"})",
 									"",
 									"pm.test(\"telephone is 00437946825\", function() {",
