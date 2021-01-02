@@ -1386,7 +1386,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "{{api}}/orders/confirmationsations/{{order_id}}",
+							"raw": "{{api}}/orders/confirmations/{{order_id}}",
 							"host": [
 								"{{api}}"
 							],
