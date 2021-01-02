@@ -1,42 +1,58 @@
 package at.markusnentwich.helicon.controller
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import at.markusnentwich.helicon.configuration.HeliconResourceLoader
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.repositories.AccountRepository
 import org.asciidoctor.Asciidoctor
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder
 import org.asciidoctor.SafeMode
+import org.aspectj.util.FileUtil
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
+import java.nio.file.Path
 import java.time.format.DateTimeFormatter
 
 @Controller
 class AsciidoctorPDFBillConverter(
     @Autowired val asciidoctor: Asciidoctor,
     @Autowired val config: HeliconConfigurationProperties,
-    @Autowired val accountRepository: AccountRepository
+    @Autowired val accountRepository: AccountRepository,
+    @Autowired val heliconResourceLoader: HeliconResourceLoader
 ) : BillConverter {
-    val logger = LoggerFactory.getLogger(AsciidoctorPDFBillConverter::class.java)
+    private val logger = LoggerFactory.getLogger(AsciidoctorPDFBillConverter::class.java)
 
-    override fun createBill(order: OrderEntity): ByteArrayOutputStream {
+    companion object {
+        const val THEME_PREFIX = "mknen"
+        const val THEME_SUFFIX = "-theme.yml"
+    }
+
+    init {
+        copyThemes()
+    }
+
+    override fun createBill(order: OrderEntity): InputStream {
         val owner = accountRepository.getOwner()
         val file = ordersAsCSV(order)
-        val baos = ByteArrayOutputStream()
+        val pipeOut = PipedOutputStream()
         val options = OptionsBuilder.options()
+            .baseDir(Path.of(config.assets, "bill").toFile())
             .safe(SafeMode.UNSAFE)
             .backend("pdf")
-            .toStream(baos)
+            .toStream(pipeOut)
             .attributes(
                 attributes()
-                    // TODO: change path to themes directory
-                    .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
-                    .attribute("pdf-theme", "mknen-theme.yml")
+                    .attribute("pdf-themesdir", "themes")
+                    .attribute("pdf-theme", "$THEME_PREFIX$THEME_SUFFIX")
                     .attribute("csvFile", file.absolutePath)
                     .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
@@ -68,10 +84,27 @@ class AsciidoctorPDFBillConverter(
                     .attribute("bankInstitute", config.bill.institute)
                     .attribute("bankReference", order.billingNumber).get()
             ).get()
-        // TODO: change path to adoc file
-        asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
-        file.delete()
-        return baos
+        val inputStreamReader = InputStreamReader(heliconResourceLoader.getResource("asset:bill/bill.adoc").inputStream)
+
+        val pipeIn = PipedInputStream(pipeOut)
+        Thread {
+            logger.debug("Waiting for pipe...")
+            try {
+                asciidoctor.convert(inputStreamReader, pipeOut.writer(), options)
+            } catch (e: IOException) {
+                // TODO the ruby converter throws an exception here, that the read
+                // closed the pipe, but in the test scenarios everything works.
+                // The Java Mail Helper might be closing to early...
+                logger.warn("Pipe closed by reader, but may have worked...")
+            }
+            logger.debug("Flushing pipe...")
+            pipeOut.flush()
+            logger.debug("Closing pipe...")
+            pipeOut.close()
+            logger.debug("Deleting csv file...")
+            file.delete()
+        }.start()
+        return pipeIn
     }
 
     private fun ordersAsCSV(order: OrderEntity): File {
@@ -104,5 +137,18 @@ class AsciidoctorPDFBillConverter(
 
     private fun price(price: Int): String {
         return "${price / 100}.${String.format("%02d", price % 100)} €"
+    }
+
+    private fun copyThemes() {
+        val billDir = Path.of(config.assets, "bill").toFile()
+        if (!billDir.exists()) {
+            logger.info("Bill assets directory does not exist, creating...")
+            val billDirRes = heliconResourceLoader.getResource("asset:bill")
+            if (!billDirRes.exists()) {
+                logger.error("Bill assets is not available")
+                return
+            }
+            FileUtil.copyDir(billDirRes.file, billDir)
+        }
     }
 }
