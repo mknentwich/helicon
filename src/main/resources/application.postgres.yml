@@ -10,6 +10,9 @@ spring:
     port: 587
     username: helicon@example.org
     password: testpassword
+  jpa:
+    hibernate:
+      ddl-auto: update
 helicon:
   login:
     enable-login: true
@@ -27,10 +30,10 @@ helicon:
     enable: true
   mail:
     notification:
-      customer-on-order: false
-      owner-on-order: false
-      password-change: false
-      registration: false
+      customer-on-order: true
+      owner-on-order: true
+      password-change: true
+      registration: true
     identity: Helicon Dev Mailer <helicon@markus-nentwich.at>
   assets: assets
   domain: markus-nentwich.at
