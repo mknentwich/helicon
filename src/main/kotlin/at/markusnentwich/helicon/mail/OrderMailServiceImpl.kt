@@ -1,6 +1,7 @@
 package at.markusnentwich.helicon.mail
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
+import at.markusnentwich.helicon.controller.AsciidoctorPDFBillConverter
 import at.markusnentwich.helicon.controller.NoOwnerException
 import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
@@ -14,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.io.StringWriter
 import javax.mail.internet.InternetAddress
+import javax.mail.util.ByteArrayDataSource
 
 const val OWNER_BODY_FILE = "owner-order.ftl"
 const val OWNER_SUBJECT_FILE = "owner-order-subject.ftl"
@@ -25,7 +27,8 @@ class OrderMailServiceImpl(
     @Autowired val configurationProperties: HeliconConfigurationProperties,
     @Autowired val accountRepository: AccountRepository,
     @Autowired val mailSender: JavaMailSender,
-    @Autowired val templateConfiguration: Configuration
+    @Autowired val templateConfiguration: Configuration,
+    @Autowired val billConverter: AsciidoctorPDFBillConverter
 ) : OrderMailService {
     private val logger = LoggerFactory.getLogger(OrderMailServiceImpl::class.java)
 
@@ -58,11 +61,14 @@ class OrderMailServiceImpl(
         val helper = MimeMessageHelper(message)
         val monitorAddresses = accountRepository.getMonitors().map { toAddress(it.identity) }.toTypedArray()
         val mailOrder = toMailOrder(order)
+        val baos = billConverter.createBill(order)
+        val attachment = ByteArrayDataSource(baos.toByteArray(), "application/pdf")
         helper.setTo(toAddress(owner.identity))
         helper.setFrom(configurationProperties.mail.identity)
         helper.setBcc(monitorAddresses)
         helper.setSubject(convert(OWNER_SUBJECT_FILE, mailOrder))
         helper.setText(convert(OWNER_BODY_FILE, mailOrder))
+        helper.addAttachment("Rechnung_" + order.billingNumber + ".pdf", attachment)
         mailSender.send(message)
         logger.info("sent email to owner and monitors")
     }
