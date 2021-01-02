@@ -9,6 +9,7 @@ import at.markusnentwich.helicon.repositories.CategoryRepository
 import at.markusnentwich.helicon.repositories.ScoreRepository
 import org.modelmapper.ModelMapper
 import org.modelmapper.TypeToken
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
@@ -18,8 +19,11 @@ import java.lang.reflect.Type
 class CatalogueControllerImpl(
     @Autowired val scoreRepository: ScoreRepository,
     @Autowired val categoryRepository: CategoryRepository,
+    @Autowired val orderScoreRepository: ScoreRepository,
     @Autowired val mapper: ModelMapper
 ) : CatalogueController {
+    private val logger = LoggerFactory.getLogger(CatalogueControllerImpl::class.java)
+
     override fun getCatalogue(): CategoryProductDto {
         val root = categoryRepository.getRoot() ?: throw NotFoundException()
         return mapper.map(root, CategoryProductDto::class.java)
@@ -73,10 +77,34 @@ class CatalogueControllerImpl(
     }
 
     override fun updateScore(score: ScoreProductDto, id: Long): ScoreProductDto {
-        TODO("Not yet implemented")
+        val scoreEntity = mapper.map(score, ScoreEntity::class.java)
+        if (!scoreRepository.existsById(id)) {
+            logger.error("Cannot update score with id [{}], it does not exist", id)
+            throw NotFoundException()
+        }
+        val category = categoryRepository.findByIdOrNull(score.categoryId ?: scoreEntity.category.id!!)
+            ?: throw BadPayloadException()
+        scoreEntity.id = id
+        scoreEntity.category = category
+        return mapper.map(scoreRepository.save(scoreEntity), ScoreProductDto::class.java)
     }
 
     override fun deleteScore(id: Long) {
-        TODO("Not yet implemented")
+        val scoreEntity = scoreRepository.findByIdOrNull(id)
+        if (scoreEntity == null) {
+            logger.error("Cannot delete score with id [{}], it does not exist", id)
+            throw NotFoundException()
+        }
+        if (scoreEntity.orders.isNotEmpty()) {
+            logger.error(
+                "Cannot delete score [{}] - [{}] as it is used in [{}] orders",
+                scoreEntity.id,
+                scoreEntity.title,
+                scoreEntity.orders.size
+            )
+            throw BadPayloadException()
+        }
+        scoreRepository.deleteById(id)
+        logger.debug("Deleted score [{}] - [{}]", scoreEntity.id, scoreEntity.title)
     }
 }
