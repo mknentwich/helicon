@@ -72,9 +72,9 @@ Dieser Betrag enthält keine Umsatzsteuer aufgrund §6(2)27 Kleinunternehmerrege
 '''
 
 Ich bitte Sie, den Betrag binnen 14 Tagen an das folgende Konto zu überweisen:
-[cols="30h,70",frame="none",grid="none"]
+[cols="30h,40,30",frame="none",grid="none"]
 |===
-|Kontoname: |{bankName}
+|Kontoname: |{bankName} .5+a|image::data:image/png;base64,{qrCode}[140,140]
 |IBAN: |{bankIban}
 |BIC: |{bankBic}
 |Geldinstitut: |{bankInstitute}

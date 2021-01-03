@@ -4,21 +4,21 @@ import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
 import at.markusnentwich.helicon.configuration.HeliconResourceLoader
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.repositories.AccountRepository
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.client.j2se.MatrixToImageWriter
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import org.asciidoctor.Asciidoctor
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder
 import org.asciidoctor.SafeMode
 import org.aspectj.util.FileUtil
+import org.bouncycastle.util.encoders.Base64
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
-import java.io.File
-import java.io.FileWriter
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.PipedInputStream
-import java.io.PipedOutputStream
+import java.io.*
 import java.nio.file.Path
 import java.time.format.DateTimeFormatter
 
@@ -54,6 +54,7 @@ class AsciidoctorPDFBillConverter(
                     .attribute("pdf-themesdir", "themes")
                     .attribute("pdf-theme", "$THEME_PREFIX$THEME_SUFFIX")
                     .attribute("csvFile", file.absolutePath)
+                    .attribute("qrCode", createQRCode(order))
                     .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("ownerName", owner?.identity?.firstName + " " + owner?.identity?.lastName)
@@ -150,5 +151,36 @@ class AsciidoctorPDFBillConverter(
             }
             FileUtil.copyDir(billDirRes.file, billDir)
         }
+    }
+
+    /**
+     * Converts the given order to a qrcode image and returns this as base64 string.
+     * @param order order to convert to a qr code
+     * @return plain text, just the base64 value
+     */
+    private fun createQRCode(order: OrderEntity): String {
+        val serviceTag = "BCD"
+        val version = "001"
+        val coding = "1"
+        val function = "SCT"
+        val amountCurrency = "EUR" + "%.2f".format(order.total().toFloat() / 100)
+        val purpose = ""
+        val text = ""
+        val display = "Ihre Transaktion an Nentwich Verlag wird vorbereitet"
+        val data: String =
+            serviceTag + "\n" + version + "\n" + coding + "\n" + function + "\n" + config.bill.bic + "\n" +
+                config.bill.name + "\n" + config.bill.iban + "\n" + amountCurrency + "\n" + purpose + "\n" +
+                order.billingNumber + "\n" + text + "\n" + display
+
+        val hints = mapOf(
+            Pair(EncodeHintType.QR_VERSION, 13),
+            Pair(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M),
+            Pair(EncodeHintType.CHARACTER_SET, "UTF-8")
+        )
+        val matrix = QRCodeWriter().encode(data, BarcodeFormat.QR_CODE, 1400, 1400, hints)
+        val baos = ByteArrayOutputStream()
+        MatrixToImageWriter.writeToStream(matrix, "png", baos)
+        baos.close()
+        return Base64.toBase64String(baos.toByteArray())
     }
 }

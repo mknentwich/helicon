@@ -7,13 +7,20 @@ import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.entities.OrderScoreEntity
 import at.markusnentwich.helicon.entities.ScoreEntity
 import at.markusnentwich.helicon.repositories.AccountRepository
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.client.j2se.MatrixToImageWriter
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import org.asciidoctor.AttributesBuilder.attributes
 import org.asciidoctor.OptionsBuilder.options
 import org.asciidoctor.SafeMode
 import org.asciidoctor.jruby.AsciidoctorJRuby.Factory.create
+import org.bouncycastle.util.encoders.Base64
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -56,6 +63,10 @@ class BillPDFCreationTest(
         s4.title = "Black or White"
         s4.price = 2495
         s4.groupType = "Kommerz"
+        val s5 = ScoreEntity()
+        s5.title = "Teddy ist am Zug"
+        s5.price = 1995
+        s5.groupType = "Schülerheftl"
 
         // order
         val order = OrderEntity()
@@ -72,7 +83,8 @@ class BillPDFCreationTest(
         val os3 = OrderScoreEntity(s3, order)
         val os4 = OrderScoreEntity(s4, order)
         os4.amount = 3
-        order.items = mutableSetOf(os1, os2, os3, os4)
+        val os5 = OrderScoreEntity(s5, order)
+        order.items = mutableSetOf(os1, os2, os3, os4, os5)
 
         val file = ordersAsCSV(order)
 
@@ -87,6 +99,7 @@ class BillPDFCreationTest(
                     .attribute("pdf-themesdir", "src/main/resources/assets/bill/themes")
                     .attribute("pdf-theme", "mknen-theme.yml")
                     .attribute("csvFile", file.absolutePath)
+                    .attribute("qrCode", createQRCode(order))
                     .attribute("billNumber", order.billingNumber)
                     .attribute("billDate", order.confirmed?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
                     .attribute("ownerName", owner?.identity?.firstName + " " + owner?.identity?.lastName)
@@ -151,5 +164,31 @@ class BillPDFCreationTest(
                 fw.flush()
             }
         return file
+    }
+
+    private fun createQRCode(order: OrderEntity): String {
+        val serviceTag = "BCD"
+        val version = "001"
+        val coding = "1"
+        val function = "SCT"
+        val amountCurrency = "EUR" + "%.2f".format(order.total().toFloat() / 100)
+        val purpose = ""
+        val text = ""
+        val display = "Ihre Transaktion an Nentwich Verlag wird vorbereitet"
+        val data: String =
+            serviceTag + "\n" + version + "\n" + coding + "\n" + function + "\n" + config.bill.bic + "\n" +
+                config.bill.name + "\n" + config.bill.iban + "\n" + amountCurrency + "\n" + purpose + "\n" +
+                order.billingNumber + "\n" + text + "\n" + display
+
+        val hints = mapOf(
+            Pair(EncodeHintType.QR_VERSION, 13),
+            Pair(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M),
+            Pair(EncodeHintType.CHARACTER_SET, "UTF-8")
+        )
+        val matrix = QRCodeWriter().encode(data, BarcodeFormat.QR_CODE, 1400, 1400, hints)
+        val baos = ByteArrayOutputStream()
+        MatrixToImageWriter.writeToStream(matrix, "png", baos)
+        baos.close()
+        return Base64.toBase64String(baos.toByteArray())
     }
 }
