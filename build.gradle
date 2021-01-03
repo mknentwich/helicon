@@ -56,6 +56,9 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk15on:1.67'
 
     implementation 'org.freemarker:freemarker:2.3.30'
+
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.google.zxing:javase:3.4.1'
 }
 
 test {
