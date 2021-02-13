@@ -16,11 +16,15 @@ const val PDF_NAME = "pdf"
 
 @Controller
 class AssetControllerImpl(
-    @Autowired val configurationProperties: HeliconConfigurationProperties,
-    @Autowired val scoreRepository: ScoreRepository
+        @Autowired val configurationProperties: HeliconConfigurationProperties,
+        @Autowired val scoreRepository: ScoreRepository
 ) : AssetController {
 
     private val logger = LoggerFactory.getLogger(AssetControllerImpl::class.java)
+
+    init {
+        createDirectories()
+    }
 
     override fun getScoreAudio(id: Long): File {
         return getScoreAudioPath().resolve(id.toString()).toFile()
@@ -80,5 +84,22 @@ class AssetControllerImpl(
 
     fun getScorePdfPath(): Path {
         return Path.of(configurationProperties.assets, PDF_NAME)
+    }
+
+    private fun createDirectories() {
+        val audioFile = getScoreAudioPath().toFile()
+        val pdfFile = getScorePdfPath().toFile()
+        if (!audioFile.exists()) {
+            logger.info("Directory for audio assets does not exist creating it at: {}", audioFile.absolutePath)
+            if (!audioFile.mkdirs()) {
+                logger.error("Unable to create audio assets directory")
+            }
+        }
+        if (!pdfFile.exists()) {
+            logger.info("Directory for pdf assets does not exist creating it at: {}", pdfFile.absolutePath)
+            if (!pdfFile.mkdirs()) {
+                logger.error("Unable to create pdf assets directory")
+            }
+        }
     }
 }
