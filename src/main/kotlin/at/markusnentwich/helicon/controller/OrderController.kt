@@ -9,6 +9,6 @@ interface OrderController {
 
     fun getAll(jwt: String): List<ScoreOrderDto>
     fun getOrderById(id: UUID, jwt: String): ScoreOrderDto
-    fun order(order: ScoreOrderDto, jwt: String): ScoreOrderDto
-    fun confirm(id: UUID, jwt: String): ScoreOrderDto
+    fun order(order: ScoreOrderDto): ScoreOrderDto
+    fun confirm(id: UUID): ScoreOrderDto
 }

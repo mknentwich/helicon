@@ -69,7 +69,7 @@ interface OrderService {
     )
     fun order(
         @RequestBody order: ScoreOrderDto,
-        @RequestHeader(name = "Authorization") jwt: String
+        @RequestHeader(name = "Authorization", required = false) jwt: String?
     ): ResponseEntity<ScoreOrderDto>
 
     @RequestMapping("/confirmations/{id}", method = [RequestMethod.PUT])
@@ -89,7 +89,7 @@ interface OrderService {
     )
     fun confirm(
         @Parameter(description = "the id of the order") @PathVariable id: UUID,
-        @RequestHeader(name = "Authorization") jwt: String
+        @RequestHeader(name = "Authorization", required = false) jwt: String?
     ): ResponseEntity<ScoreOrderDto>
 
     @RequestMapping("/bills/{id}", method = [RequestMethod.GET], produces = [MediaType.APPLICATION_PDF_VALUE])

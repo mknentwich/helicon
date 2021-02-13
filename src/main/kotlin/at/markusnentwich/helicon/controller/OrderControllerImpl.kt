@@ -61,7 +61,7 @@ class OrderControllerImpl(
     }
 
     @Transactional
-    override fun order(order: ScoreOrderDto, jwt: String): ScoreOrderDto {
+    override fun order(order: ScoreOrderDto): ScoreOrderDto {
         var orderEntity = mapper.map(order, OrderEntity::class.java)
         var deliveryAddress: AddressEntity? = null
         if (order.deliveryAddress != null) {
@@ -109,7 +109,7 @@ class OrderControllerImpl(
         return orderDto
     }
 
-    override fun confirm(id: UUID, jwt: String): ScoreOrderDto {
+    override fun confirm(id: UUID): ScoreOrderDto {
         // TODO check permissions
         if (!config.order.enable) {
             logger.error("tried to confirm order {}, but confirmation is not enabled", id)

@@ -31,20 +31,20 @@ class OrderServiceImpl(
         return ResponseEntity.status(status).build()
     }
 
-    override fun order(order: ScoreOrderDto, jwt: String): ResponseEntity<ScoreOrderDto> {
+    override fun order(order: ScoreOrderDto, jwt: String?): ResponseEntity<ScoreOrderDto> {
         callLog("order")
         val status = try {
-            return ResponseEntity.ok(orderController.order(order, jwt))
+            return ResponseEntity.ok(orderController.order(order))
         } catch (e: BadPayloadException) {
             HttpStatus.BAD_REQUEST
         }
         return ResponseEntity.status(status).build()
     }
 
-    override fun confirm(id: UUID, jwt: String): ResponseEntity<ScoreOrderDto> {
+    override fun confirm(id: UUID, jwt: String?): ResponseEntity<ScoreOrderDto> {
         callLog("confirm")
         val status = try {
-            return ResponseEntity.ok(orderController.confirm(id, jwt))
+            return ResponseEntity.ok(orderController.confirm(id))
         } catch (e: NotFoundException) {
             HttpStatus.NOT_FOUND
         }
