@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "24fc0c74-5dc7-400f-a42a-7e7fa7023c0a",
+		"_postman_id": "40d22c2d-01f1-4c1c-b35f-d440c8458585",
 		"name": "helicon-test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1290,6 +1290,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -1383,6 +1386,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "PUT",
 						"header": [],
 						"url": {
