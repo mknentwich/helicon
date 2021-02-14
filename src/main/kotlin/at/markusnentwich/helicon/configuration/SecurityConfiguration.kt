@@ -85,7 +85,7 @@ class SecurityConfiguration(
     fun configurer(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
-                registry.addMapping("/**").allowedOrigins("*")
+                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*")
             }
         }
     }
