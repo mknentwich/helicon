@@ -7,12 +7,7 @@ import at.markusnentwich.helicon.entities.IdentityEntity
 import at.markusnentwich.helicon.entities.OrderEntity
 import at.markusnentwich.helicon.entities.OrderScoreEntity
 import at.markusnentwich.helicon.mail.OrderMailService
-import at.markusnentwich.helicon.repositories.AddressRepository
-import at.markusnentwich.helicon.repositories.IdentityRepository
-import at.markusnentwich.helicon.repositories.OrderRepository
-import at.markusnentwich.helicon.repositories.OrderScoreRepository
-import at.markusnentwich.helicon.repositories.ScoreRepository
-import at.markusnentwich.helicon.repositories.StateRepository
+import at.markusnentwich.helicon.repositories.*
 import org.modelmapper.ModelMapper
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,19 +15,18 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
 import java.time.LocalDateTime
 import java.util.*
-import javax.transaction.Transactional
 
 @Controller
 class OrderControllerImpl(
-    @Autowired val config: HeliconConfigurationProperties,
-    @Autowired val orderRepo: OrderRepository,
-    @Autowired val orderScoreRepository: OrderScoreRepository,
-    @Autowired val scoreRepository: ScoreRepository,
-    @Autowired val identityRepository: IdentityRepository,
-    @Autowired val addressRepository: AddressRepository,
-    @Autowired val mapper: ModelMapper,
-    @Autowired val orderMailService: OrderMailService,
-    @Autowired val stateRepository: StateRepository
+        @Autowired val config: HeliconConfigurationProperties,
+        @Autowired val orderRepo: OrderRepository,
+        @Autowired val orderScoreRepository: OrderScoreRepository,
+        @Autowired val scoreRepository: ScoreRepository,
+        @Autowired val identityRepository: IdentityRepository,
+        @Autowired val addressRepository: AddressRepository,
+        @Autowired val mapper: ModelMapper,
+        @Autowired val orderMailService: OrderMailService,
+        @Autowired val stateRepository: StateRepository
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -49,7 +43,7 @@ class OrderControllerImpl(
         val entity = orderRepo.findById(id).get()
         val dto = mapper.map(entity, ScoreOrderDto::class.java)
         dto.deliveryAddress =
-            if (entity.deliveryAddress == null) null else mapper.map(entity.deliveryAddress, AddressDto::class.java)
+                if (entity.deliveryAddress == null) null else mapper.map(entity.deliveryAddress, AddressDto::class.java)
         dto.identity = mapper.map(entity.identity, IdentityDto::class.java)
         dto.customer = if (entity.customer == null) null else mapper.map(entity.customer, AccountDto::class.java)
         if (dto.customer != null) {
@@ -60,18 +54,17 @@ class OrderControllerImpl(
         return dto
     }
 
-    @Transactional
     override fun order(order: ScoreOrderDto): ScoreOrderDto {
         var orderEntity = mapper.map(order, OrderEntity::class.java)
         var deliveryAddress: AddressEntity? = null
         if (order.deliveryAddress != null) {
             deliveryAddress = mapper.map(order.deliveryAddress, AddressEntity::class.java)
             deliveryAddress.state =
-                stateRepository.findByIdOrNull(order.deliveryAddress?.stateId!!) ?: throw BadPayloadException()
+                    stateRepository.findByIdOrNull(order.deliveryAddress?.stateId!!) ?: throw BadPayloadException()
         }
         var identityAddress = mapper.map(order.identity.address, AddressEntity::class.java)
         identityAddress.state =
-            stateRepository.findByIdOrNull(order.identity.address.stateId!!) ?: throw BadPayloadException()
+                stateRepository.findByIdOrNull(order.identity.address.stateId!!) ?: throw BadPayloadException()
         var identity = mapper.map(order.identity, IdentityEntity::class.java)
         if (order.items.isEmpty()) {
             logger.error("received order without items")
@@ -91,18 +84,20 @@ class OrderControllerImpl(
         orderEntity.deliveryAddress = deliveryAddress
         orderEntity = orderRepo.save(orderEntity)
         orderEntity.receivedOn = LocalDateTime.now()
-        val orderLinks = order.items.map {
+        val orderLinks: Iterable<OrderScoreEntity> = order.items.map {
             OrderScoreEntity(
-                amount = it.quantity,
-                score = scoreRepository.findById(it.id).get(),
-                order = orderEntity
+                    amount = it.quantity,
+                    score = scoreRepository.findById(it.id).get(),
+                    order = orderEntity
             )
         }.toMutableList()
         orderScoreRepository.saveAll(orderLinks)
+        orderRepo.refresh(orderEntity)
         val orderDto = mapper.map(orderEntity, ScoreOrderDto::class.java)
         orderDto.total = orderEntity.total()
-        orderDto.orderedItems = orderLinks.map {
-            val dt = mapper.map(scoreRepository.findById(it.score.id!!), ScoreProductDto::class.java)
+        orderDto.orderedItems = orderEntity.items.map {
+            it.score.category.scores = null
+            val dt = mapper.map(it.score, ScoreProductDto::class.java)
             dt.quantity = it.amount
             dt
         }.toMutableSet()
