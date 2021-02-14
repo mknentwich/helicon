@@ -18,15 +18,15 @@ import java.util.*
 
 @Controller
 class OrderControllerImpl(
-        @Autowired val config: HeliconConfigurationProperties,
-        @Autowired val orderRepo: OrderRepository,
-        @Autowired val orderScoreRepository: OrderScoreRepository,
-        @Autowired val scoreRepository: ScoreRepository,
-        @Autowired val identityRepository: IdentityRepository,
-        @Autowired val addressRepository: AddressRepository,
-        @Autowired val mapper: ModelMapper,
-        @Autowired val orderMailService: OrderMailService,
-        @Autowired val stateRepository: StateRepository
+    @Autowired val config: HeliconConfigurationProperties,
+    @Autowired val orderRepo: OrderRepository,
+    @Autowired val orderScoreRepository: OrderScoreRepository,
+    @Autowired val scoreRepository: ScoreRepository,
+    @Autowired val identityRepository: IdentityRepository,
+    @Autowired val addressRepository: AddressRepository,
+    @Autowired val mapper: ModelMapper,
+    @Autowired val orderMailService: OrderMailService,
+    @Autowired val stateRepository: StateRepository
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -43,7 +43,7 @@ class OrderControllerImpl(
         val entity = orderRepo.findById(id).get()
         val dto = mapper.map(entity, ScoreOrderDto::class.java)
         dto.deliveryAddress =
-                if (entity.deliveryAddress == null) null else mapper.map(entity.deliveryAddress, AddressDto::class.java)
+            if (entity.deliveryAddress == null) null else mapper.map(entity.deliveryAddress, AddressDto::class.java)
         dto.identity = mapper.map(entity.identity, IdentityDto::class.java)
         dto.customer = if (entity.customer == null) null else mapper.map(entity.customer, AccountDto::class.java)
         if (dto.customer != null) {
@@ -60,11 +60,11 @@ class OrderControllerImpl(
         if (order.deliveryAddress != null) {
             deliveryAddress = mapper.map(order.deliveryAddress, AddressEntity::class.java)
             deliveryAddress.state =
-                    stateRepository.findByIdOrNull(order.deliveryAddress?.stateId!!) ?: throw BadPayloadException()
+                stateRepository.findByIdOrNull(order.deliveryAddress?.stateId!!) ?: throw BadPayloadException()
         }
         var identityAddress = mapper.map(order.identity.address, AddressEntity::class.java)
         identityAddress.state =
-                stateRepository.findByIdOrNull(order.identity.address.stateId!!) ?: throw BadPayloadException()
+            stateRepository.findByIdOrNull(order.identity.address.stateId!!) ?: throw BadPayloadException()
         var identity = mapper.map(order.identity, IdentityEntity::class.java)
         if (order.items.isEmpty()) {
             logger.error("received order without items")
@@ -86,9 +86,9 @@ class OrderControllerImpl(
         orderEntity.receivedOn = LocalDateTime.now()
         val orderLinks: Iterable<OrderScoreEntity> = order.items.map {
             OrderScoreEntity(
-                    amount = it.quantity,
-                    score = scoreRepository.findById(it.id).get(),
-                    order = orderEntity
+                amount = it.quantity,
+                score = scoreRepository.findById(it.id).get(),
+                order = orderEntity
             )
         }.toMutableList()
         orderScoreRepository.saveAll(orderLinks)

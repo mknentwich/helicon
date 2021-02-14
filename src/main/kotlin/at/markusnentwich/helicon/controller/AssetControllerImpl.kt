@@ -16,8 +16,8 @@ const val PDF_NAME = "pdf"
 
 @Controller
 class AssetControllerImpl(
-        @Autowired val configurationProperties: HeliconConfigurationProperties,
-        @Autowired val scoreRepository: ScoreRepository
+    @Autowired val configurationProperties: HeliconConfigurationProperties,
+    @Autowired val scoreRepository: ScoreRepository
 ) : AssetController {
 
     private val logger = LoggerFactory.getLogger(AssetControllerImpl::class.java)
