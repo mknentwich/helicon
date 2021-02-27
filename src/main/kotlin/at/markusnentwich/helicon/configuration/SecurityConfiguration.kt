@@ -2,14 +2,7 @@ package at.markusnentwich.helicon.configuration
 
 import at.markusnentwich.helicon.repositories.RoleRepository
 import at.markusnentwich.helicon.repositories.StateRepository
-import at.markusnentwich.helicon.security.ASSET_ROLE
-import at.markusnentwich.helicon.security.CATALOGUE_ROLE
-import at.markusnentwich.helicon.security.HeliconAuthenticationFilter
-import at.markusnentwich.helicon.security.HeliconAuthorizationFilter
-import at.markusnentwich.helicon.security.HeliconUserDetailsService
-import at.markusnentwich.helicon.security.META_ROLE
-import at.markusnentwich.helicon.security.ORDER_ROLE
-import at.markusnentwich.helicon.security.TokenManager
+import at.markusnentwich.helicon.security.*
 import at.markusnentwich.helicon.services.ACCOUNT_SERVICE
 import at.markusnentwich.helicon.services.ASSET_SERVICE
 import at.markusnentwich.helicon.services.CATALOGUE_SERVICE
@@ -67,6 +60,8 @@ class SecurityConfiguration(
             ?.antMatchers(HttpMethod.DELETE, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
 
             ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
+
+            ?.antMatchers(HttpMethod.POST, "$ACCOUNT_SERVICE/**")?.hasAuthority(ACCOUNT_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {
             http?.authorizeRequests()?.antMatchers(HttpMethod.POST, ORDER_SERVICE)?.permitAll()

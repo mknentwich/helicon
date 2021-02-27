@@ -5,19 +5,19 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(name = "Account")
 data class AccountDto(
     @Schema(description = "username of this account")
-    var username: String,
+    var username: String = "nobody",
     @Schema(description = "cleartext password of this account, will only be used during registration, login and password change")
-    var password: String?,
+    var password: String? = null,
     @Schema(description = "the identity of this account")
-    var identity: IdentityDto,
+    var identity: IdentityDto = IdentityDto(),
     @Schema(description = "the state of this account, such as locked, unconfirmed, etc.")
-    var state: String?,
+    var state: String? = "unknown",
     @Schema(description = "roles of this account")
-    var roles: List<RoleDto>?
+    var roles: MutableSet<RoleDto> = mutableSetOf()
 )
 
 @Schema(name = "Role")
 data class RoleDto(
     @Schema(description = "the name of this role")
-    var name: String
+    var name: String = "norole"
 )
