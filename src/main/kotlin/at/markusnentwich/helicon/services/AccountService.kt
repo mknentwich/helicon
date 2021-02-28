@@ -67,7 +67,7 @@ interface AccountService {
     ): ResponseEntity<AccountDto>
 
     @RequestMapping("/users/{username}", method = [RequestMethod.DELETE])
-    @Operation(summary = "delete user. only users with the 'root' role are able to delete users other than theirself.")
+    @Operation(summary = "delete a user", description = "delete a user. account role is required if the issuer is not the username.")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = AccountDto::class))]),
@@ -78,6 +78,7 @@ interface AccountService {
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
     )
+    @PreAuthorize("hasAuthority('$ACCOUNT_ROLE') or #username == authentication.name")
     fun deleteAccount(@Parameter(description = "the username") @PathVariable username: String): ResponseEntity<Void>
 
     @RequestMapping("/roles", method = [RequestMethod.GET])

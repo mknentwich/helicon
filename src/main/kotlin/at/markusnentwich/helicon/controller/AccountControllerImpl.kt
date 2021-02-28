@@ -99,11 +99,13 @@ class AccountControllerImpl(
     }
 
     override fun deleteAccount(username: String) {
-        val accountEntity = accountRepository.findById(username).get()
-        if (accountEntity.identity != null) {
-            throw DependentEntriesException()
+        if (accountRepository.existsById(username)) {
+            accountRepository.deleteById(username)
+            logger.info("Deleted user {}", username)
+        } else {
+            logger.error("User {} does not exist", username)
+            throw NotFoundException()
         }
-        accountRepository.deleteById(username)
     }
 
     override fun getRoles(): Iterable<RoleDto> {

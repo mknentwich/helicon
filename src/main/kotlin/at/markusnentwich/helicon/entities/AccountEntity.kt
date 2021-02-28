@@ -8,9 +8,9 @@ class AccountEntity(
     @Id
     var username: String = "karli",
     var password: String = "invalid",
-    @ManyToOne
+    @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.REFRESH])
     var identity: IdentityEntity = IdentityEntity(),
-    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL], targetEntity = RoleEntity::class)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.PERSIST, CascadeType.REFRESH], targetEntity = RoleEntity::class)
     var roles: MutableSet<RoleEntity> = mutableSetOf()
 )
 

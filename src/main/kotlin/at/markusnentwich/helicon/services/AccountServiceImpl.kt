@@ -42,7 +42,16 @@ class AccountServiceImpl(
     }
 
     override fun deleteAccount(username: String): ResponseEntity<Void> {
-        TODO("Not yet implemented")
+        val status = try {
+            accountController.deleteAccount(username)
+            HttpStatus.OK
+        } catch (e: NotFoundException) {
+            HttpStatus.NOT_FOUND
+        } catch (e: Exception) {
+            logger.error("Unexpected exception", e)
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+        return ResponseEntity.status(status).build()
     }
 
     override fun getRoles(): ResponseEntity<Iterable<RoleDto>> {
