@@ -4,6 +4,7 @@ import at.markusnentwich.helicon.dto.AccountDto
 import at.markusnentwich.helicon.dto.AddressDto
 import at.markusnentwich.helicon.dto.IdentityDto
 import at.markusnentwich.helicon.dto.RoleDto
+import at.markusnentwich.helicon.security.ACCOUNT_ROLE
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
@@ -113,7 +114,7 @@ interface AccountService {
     fun login(@RequestHeader(name = "Authorization", required = true) authorization: String): ResponseEntity<Void>
 
     @RequestMapping("/users/{username}/identity", method = [RequestMethod.PUT])
-    @Operation(summary = "update the identity information of a user", description = "update the identity information of a user. account roles is required if the issuer is not the username. attributes of references are not effected")
+    @Operation(summary = "update the identity information of a user", description = "update the identity information of a user. account roles is required if the issuer is not the username. attributes of references are not affected")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = IdentityDto::class))]),
@@ -122,9 +123,19 @@ interface AccountService {
             ApiResponse(responseCode = "404")
         ]
     )
-    @PreAuthorize("hasAuthority('account') or #username == authentication.name")
+    @PreAuthorize("hasAuthority('$ACCOUNT_ROLE') or #username == authentication.name")
     fun updateIdentity(@PathVariable(required = true) username: String, @RequestBody identity: IdentityDto): ResponseEntity<IdentityDto>
 
     @RequestMapping("/users/{username}/identity/address", method = [RequestMethod.PUT])
+    @Operation(summary = "update the address of a user", description = "update the address of a user. account role is required if the issuer is not the username. attributes of references are not affected")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", content = [Content(schema = Schema(implementation = AddressDto::class))]),
+            ApiResponse(responseCode = "400", description = "state with 'statId' does not exist"),
+            ApiResponse(responseCode = "403"),
+            ApiResponse(responseCode = "404")
+        ]
+    )
+    @PreAuthorize("hasAuthority('$ACCOUNT_ROLE') or #username == authentication.name")
     fun updateAddress(@PathVariable(required = true) username: String, @RequestBody address: AddressDto): ResponseEntity<AddressDto>
 }

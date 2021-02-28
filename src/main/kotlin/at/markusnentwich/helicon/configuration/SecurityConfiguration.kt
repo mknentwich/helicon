@@ -56,6 +56,8 @@ class SecurityConfiguration(
             ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
 
             ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity")?.authenticated()
+            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity/address")?.authenticated()
+            ?.antMatchers(HttpMethod.DELETE, "$ACCOUNT_SERVICE/users/*")?.hasAuthority(ACCOUNT_ROLE)
             ?.antMatchers(HttpMethod.POST, "$ACCOUNT_SERVICE/**")?.hasAuthority(ACCOUNT_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {

@@ -74,6 +74,16 @@ class AccountServiceImpl(
     }
 
     override fun updateAddress(username: String, address: AddressDto): ResponseEntity<AddressDto> {
-        TODO("Not yet implemented")
+        val status = try {
+            return ResponseEntity.ok(accountController.updateAddress(username, address))
+        } catch (e: NotFoundException) {
+            HttpStatus.NOT_FOUND
+        } catch (e: BadPayloadException) {
+            HttpStatus.BAD_REQUEST
+        } catch (e: Exception) {
+            logger.error("Unexpected exception", e)
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+        return ResponseEntity.status(status).build()
     }
 }

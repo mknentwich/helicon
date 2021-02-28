@@ -29,7 +29,7 @@ class HeliconAuthenticationFilter(
 ) :
     UsernamePasswordAuthenticationFilter() {
 
-    private val logger = LoggerFactory.getLogger(HeliconAuthenticationFilter::class.java)
+    private val hlogger = LoggerFactory.getLogger(HeliconAuthenticationFilter::class.java)
 
     init {
         setFilterProcessesUrl("$ACCOUNT_SERVICE/login")
@@ -39,13 +39,13 @@ class HeliconAuthenticationFilter(
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         if (!configurationProperties.login.enableLogin) {
             response?.status = HttpStatus.FORBIDDEN.value()
-            logger.error("Received login request but login service is disabled")
+            hlogger.error("Received login request but login service is disabled")
             throw DisabledAuthenticationException("login disabled")
         }
         try {
             val head = request?.getHeader(AUTH_HEADER_KEY)
             if (head == null || !head.startsWith(BASIC_AUTH_PREFIX)) {
-                logger.error("Received bad login request")
+                hlogger.error("Received bad login request")
                 response?.status = HttpStatus.BAD_REQUEST.value()
                 throw BadCredentialsException("not a basic auth")
             }
@@ -59,22 +59,22 @@ class HeliconAuthenticationFilter(
             )
             val authData = basicHeader.split(':', ignoreCase = true, limit = 2)
             if (authData.size != 2) {
-                logger.error("Received bad login request")
+                hlogger.error("Received bad login request")
                 response?.status = HttpStatus.BAD_REQUEST.value()
                 throw BadCredentialsException("no colon provided")
             }
             val username = authData[0]
             val password = authData[1]
             if (username.toLowerCase() == "root" && !configurationProperties.login.root.enable) {
-                logger.error("Received root login request which is disabled")
+                hlogger.error("Received root login request which is disabled")
                 throw DisabledAuthenticationException("root is disabled")
             }
             return authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         } catch (e: IOException) {
-            logger.error("Received login with bad credentials")
+            hlogger.error("Received login with bad credentials")
             throw AuthenticationCredentialsNotFoundException("failed to resolve authentication credentials", e)
         } catch (e: IllegalArgumentException) {
-            logger.error("Received login with invalid base64")
+            hlogger.error("Received login with invalid base64")
             throw BadCredentialsException("invalid base64", e)
         }
     }
@@ -91,9 +91,9 @@ class HeliconAuthenticationFilter(
                 AUTH_HEADER_KEY,
                 configurationProperties.login.jwt.prefix + tokenManager.generateToken(user)
             )
-            logger.info("Login was successful")
+            hlogger.info("Login was successful")
         } else {
-            logger.error("Cannot generate token")
+            hlogger.error("Cannot generate token")
             response?.status = 500
         }
     }

@@ -84,7 +84,18 @@ class AccountControllerImpl(
     }
 
     override fun updateAddress(username: String, address: AddressDto): AddressDto {
-        TODO("Not yet implemented")
+        val userEntity = accountRepository.findById(username).orElseThrow {
+            logger.error("No user with username {}", username)
+            throw NotFoundException()
+        }
+        val addressEntity = mapper.map(address, AddressEntity::class.java)
+        val stateEntity = stateRepository.findById(address.stateId!!).orElseThrow {
+            logger.error("No state with id {}", address.stateId)
+            throw BadPayloadException()
+        }
+        addressEntity.id = userEntity.identity.address.id
+        addressEntity.state = stateEntity
+        return mapper.map(addressRepository.save(addressEntity), AddressDto::class.java)
     }
 
     override fun deleteAccount(username: String) {
