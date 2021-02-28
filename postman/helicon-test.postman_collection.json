@@ -1295,6 +1295,566 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "password",
+					"item": [
+						{
+							"name": "change ro password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var ro;",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    ro = pm.response.json();",
+											"});",
+											"",
+											"pm.test(\"username\", function () {",
+											"    pm.expect(ro.username).to.eql(\"ro\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"rolaren1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"storing jwt\", function() {",
+											"    pm.response.to.have.header(\"Authorization\")",
+											"    var token = pm.response.headers.get(\"Authorization\");",
+											"    pm.environment.set(\"rolaren_jwt\", token.replace(\"Bearer \", \"\"))",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "ro",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "rolaren1234",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/accounts/login",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change ro password as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var ro;",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    ro = pm.response.json();",
+											"});",
+											"",
+											"pm.test(\"username\", function () {",
+											"    pm.expect(ro.username).to.eql(\"ro\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"rolaren\",\n    \"password\": \"rolaren12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"storing jwt\", function() {",
+											"    pm.response.to.have.header(\"Authorization\")",
+											"    var token = pm.response.headers.get(\"Authorization\");",
+											"    pm.environment.set(\"rolaren_jwt\", token.replace(\"Bearer \", \"\"))",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "ro",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "rolaren12345678",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/accounts/login",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change data password as ro",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is forbidden\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"rolaren\",\n    \"password\": \"rolaren1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/data",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"data"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change ro username as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var ro;",
+											"",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    ro = pm.response.json();",
+											"});",
+											"",
+											"pm.test(\"username\", function () {",
+											"    pm.expect(ro.username).to.eql(\"ro\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"storing jwt\", function() {",
+											"    pm.response.to.have.header(\"Authorization\")",
+											"    var token = pm.response.headers.get(\"Authorization\");",
+											"    pm.environment.set(\"rolaren_jwt\", token.replace(\"Bearer \", \"\"))",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "rolaren12345678",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "ro",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/accounts/login",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change worf username as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is not found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"worf\",\n    \"password\": \"worf1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/worf",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"worf"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "roles",
+					"item": [
+						{
+							"name": "change ro roles",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is forbidden\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\"monitor\", \"catalogue\"]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro/roles",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change ro roles as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var roles;",
+											"",
+											"pm.test(\"Status code is ok\", function () {",
+											"    pm.response.to.have.status(200);",
+											"    roles = pm.response.json();",
+											"});",
+											"",
+											"pm.test(\"roles\", function () {",
+											"    _.each(roles, (item) => {",
+											"        pm.expect(item.name).to.oneOf([\"monitor\", \"catalogue\"]);",
+											"    });",
+											"    pm.expect(roles.length).to.eq(2);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\"monitor\", \"catalogue\"]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro/roles",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change worf roles as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is not found\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\"monitor\", \"catalogue\"]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/worf/roles",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"worf",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
