@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "accounts",
+			"name": "login",
 			"item": [
 				{
 					"name": "root-login",
@@ -409,6 +409,894 @@
 			"auth": {
 				"type": "noauth"
 			}
+		},
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "create data unpriviledged",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"data\",\n  \"password\": \"{{data_password}}\",\n  \"identity\": {\n    \"salutation\": \"Lt. Cmdr.\",\n    \"firstName\": \"Mister\",\n    \"lastName\": \"Data\",\n    \"company\": \"Starfleet\",\n    \"email\": \"data@starfleet.terra\",\n    \"telephone\": \"002379\",\n    \"address\": {\n      \"city\": \"USS Enterprise (NCC-1701-D)\",\n      \"postCode\": \"02285\",\n      \"street\": \"Bridge\",\n      \"streetNumber\": \"3\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"state\": \"active\",\n  \"roles\": [\n    {\n      \"name\": \"owner\"\n    },\n    {\n        \"name\": \"root\"\n    },\n    {\n        \"name\": \"catalogue\"\n    },\n    {\n        \"name\": \"asset\"\n    },\n    {\n        \"name\": \"account\"\n    },\n    {\n        \"name\": \"order\"\n    },\n    {\n        \"name\": \"meta\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data;",
+											"var adr;",
+											"",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    data = pm.response.json();",
+											"    adr = data.identity.address;",
+											"})",
+											"",
+											"pm.test(\"username\", function() {",
+											"    pm.expect(data.username, \"data\");",
+											"})",
+											"",
+											"pm.test(\"salutation\", function() {",
+											"    pm.expect(data.identity.salutation, \"Lt. Cmdr.\");",
+											"})",
+											"",
+											"pm.test(\"firstName\", function() {",
+											"    pm.expect(data.identity.firstName, \"Mister\");",
+											"})",
+											"",
+											"pm.test(\"lastName\", function() {",
+											"    pm.expect(data.identity.lastName, \"Data\");",
+											"})",
+											"",
+											"pm.test(\"company\", function() {",
+											"    pm.expect(data.identity.company, \"Starfleet\");",
+											"})",
+											"",
+											"pm.test(\"email\", function() {",
+											"    pm.expect(data.identity.email, \"data@starfleet.terra\");",
+											"})",
+											"",
+											"pm.test(\"telephone\", function() {",
+											"    pm.expect(data.identity.telephone, \"002379\");",
+											"})",
+											"",
+											"pm.test(\"street\", function() {",
+											"    pm.expect(adr.street, \"Bridge\");",
+											"})",
+											"",
+											"pm.test(\"streetNumber\", function() {",
+											"    pm.expect(adr.streetNumber, 3);",
+											"})",
+											"",
+											"pm.test(\"postcode\", function() {",
+											"    pm.expect(adr.postcode, \"02285\");",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"data\",\n  \"password\": \"{{data_password}}\",\n  \"identity\": {\n    \"salutation\": \"Lt. Cmdr.\",\n    \"firstName\": \"Mister\",\n    \"lastName\": \"Data\",\n    \"company\": \"Starfleet\",\n    \"email\": \"data@starfleet.terra\",\n    \"telephone\": \"002379\",\n    \"address\": {\n      \"city\": \"USS Enterprise (NCC-1701-D)\",\n      \"postCode\": \"02285\",\n      \"street\": \"Bridge\",\n      \"streetNumber\": \"3\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"state\": \"active\",\n  \"roles\": [\n    {\n      \"name\": \"owner\"\n    },\n    {\n        \"name\": \"root\"\n    },\n    {\n        \"name\": \"catalogue\"\n    },\n    {\n        \"name\": \"asset\"\n    },\n    {\n        \"name\": \"account\"\n    },\n    {\n        \"name\": \"order\"\n    },\n    {\n        \"name\": \"meta\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "data login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"storing jwt\", function() {",
+											"    pm.response.to.have.header(\"Authorization\")",
+											"    var token = pm.response.headers.get(\"Authorization\");",
+											"    pm.environment.set(\"jwt\", token.replace(\"Bearer \", \"\"))",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{data_password}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "data",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/accounts/login",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create ro laren",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var ro;",
+											"var adr;",
+											"",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    ro = pm.response.json();",
+											"    adr = ro.identity.address;",
+											"})",
+											"",
+											"pm.test(\"username\", function() {",
+											"    pm.expect(ro.username, \"ro\");",
+											"})",
+											"",
+											"pm.test(\"salutation\", function() {",
+											"    pm.expect(ro.identity.salutation, \"Ens.\");",
+											"})",
+											"",
+											"pm.test(\"firstName\", function() {",
+											"    pm.expect(ro.identity.firstName, \"Laren\");",
+											"})",
+											"",
+											"pm.test(\"lastName\", function() {",
+											"    pm.expect(ro.identity.lastName, \"Ro\");",
+											"})",
+											"",
+											"pm.test(\"company\", function() {",
+											"    pm.expect(ro.identity.company, \"Starfleet\");",
+											"})",
+											"",
+											"pm.test(\"email\", function() {",
+											"    pm.expect(ro.identity.email, \"ro.laren@starfleet.terra\");",
+											"})",
+											"",
+											"pm.test(\"telephone\", function() {",
+											"    pm.expect(ro.identity.telephone, \"002379\");",
+											"})",
+											"",
+											"pm.test(\"street\", function() {",
+											"    pm.expect(adr.street, \"Bridge\");",
+											"})",
+											"",
+											"pm.test(\"streetNumber\", function() {",
+											"    pm.expect(adr.streetNumber, 5);",
+											"})",
+											"",
+											"pm.test(\"postcode\", function() {",
+											"    pm.expect(adr.postcode, \"02285\");",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"ro\",\n  \"password\": \"{{rolaren_password}}\",\n  \"identity\": {\n    \"salutation\": \"Ens.\",\n    \"firstName\": \"Laren\",\n    \"lastName\": \"Ro\",\n    \"company\": \"Starfleet\",\n    \"email\": \"ro.laren@starfleet.terra\",\n    \"telephone\": \"002379\",\n    \"address\": {\n      \"city\": \"USS Enterprise (NCC-1701-D)\",\n      \"postCode\": \"02285\",\n      \"street\": \"Bridge\",\n      \"streetNumber\": \"5\",\n      \"stateId\": {{state_id}}\n    }\n  },\n  \"state\": \"active\",\n  \"roles\": [\n    {\n      \"name\": \"monitor\"\n    },\n    {\n        \"name\": \"catalogue\"\n    },\n    {\n        \"name\": \"asset\"\n    },\n    {\n        \"name\": \"order\"\n    },\n    {\n        \"name\": \"meta\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete root",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/accounts/users/root",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"root"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"storing jwt\", function() {",
+											"    pm.response.to.have.header(\"Authorization\")",
+											"    var token = pm.response.headers.get(\"Authorization\");",
+											"    pm.environment.set(\"rolaren_jwt\", token.replace(\"Bearer \", \"\"))",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "ro",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{rolaren_password}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api}}/accounts/login",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "identity",
+					"item": [
+						{
+							"name": "data lt as ro laren",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"salutation\": \"Lt\",\n    \"firstName\": \"Mister\",\n    \"lastName\": \"Data\",\n    \"company\": \"Starfleet\",\n    \"email\": \"data@starfleet.terra\",\n    \"telephone\": \"002379\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/data/identity",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"data",
+										"identity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren lt",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var ro;",
+											"",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    ro = pm.response.json();",
+											"})",
+											"",
+											"pm.test(\"salutation\", function() {",
+											"    pm.expect(ro.salutation, \"Lt.\");",
+											"})",
+											"",
+											"pm.test(\"firstName\", function() {",
+											"    pm.expect(ro.firstName, \"Laren\");",
+											"})",
+											"",
+											"pm.test(\"lastName\", function() {",
+											"    pm.expect(ro.lastName, \"Ro\");",
+											"})",
+											"",
+											"pm.test(\"email\", function() {",
+											"    pm.expect(ro.email, \"ro.laren@starfleet.terra\");",
+											"})",
+											"",
+											"pm.test(\"company\", function() {",
+											"    pm.expect(ro.company, \"Starfleet\");",
+											"})",
+											"",
+											"pm.test(\"telephone\", function() {",
+											"    pm.expect(ro.telephone, \"002379\");",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"salutation\": \"Lt.\",\n    \"firstName\": \"Laren\",\n    \"lastName\": \"Ro\",\n    \"company\": \"Starfleet\",\n    \"email\": \"ro.laren@starfleet.terra\",\n    \"telephone\": \"002379\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro/identity",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro",
+										"identity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren marquise as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var ro;",
+											"",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    ro = pm.response.json();",
+											"})",
+											"",
+											"pm.test(\"salutation\", function() {",
+											"    pm.expect(ro.salutation, \"Lt.\");",
+											"})",
+											"",
+											"pm.test(\"firstName\", function() {",
+											"    pm.expect(ro.firstName, \"Laren\");",
+											"})",
+											"",
+											"pm.test(\"lastName\", function() {",
+											"    pm.expect(ro.lastName, \"Ro\");",
+											"})",
+											"",
+											"pm.test(\"email\", function() {",
+											"    pm.expect(ro.email, \"ro.laren@marquise.bajor\");",
+											"})",
+											"",
+											"pm.test(\"company\", function() {",
+											"    pm.expect(ro.company, \"Marquise\");",
+											"})",
+											"",
+											"pm.test(\"telephone\", function() {",
+											"    pm.expect(ro.telephone, \"002379\");",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"salutation\": \"Lt.\",\n    \"firstName\": \"Laren\",\n    \"lastName\": \"Ro\",\n    \"company\": \"Marquise\",\n    \"email\": \"ro.laren@marquise.bajor\",\n    \"telephone\": \"002379\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro/identity",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro",
+										"identity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "worf name as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"salutation\": \"Lt.\",\n    \"firstName\": \"Worf\",\n    \"lastName\": \"son of Mogh\",\n    \"company\": \"Starfleet\",\n    \"email\": \"worf@marquise.bajor\",\n    \"telephone\": \"002379\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/worf/identity",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"worf",
+										"identity"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "address",
+					"item": [
+						{
+							"name": "data city as ro laren",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status forbidden\", function() {",
+											"    pm.response.to.have.status(403);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"city\": \"Betazed\",\n    \"postCode\": \"02285\",\n    \"street\": \"Bridge\",\n    \"streetNumber\": \"3\",\n    \"stateId\": {{state_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/data/identity/address",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"data",
+										"identity",
+										"address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "data invalid state id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status bad request\", function() {",
+											"    pm.response.to.have.status(400);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"city\": \"Betazed\",\n    \"postCode\": \"02285\",\n    \"street\": \"Bridge\",\n    \"streetNumber\": \"3\",\n    \"stateId\": 56456\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/data/identity/address",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"data",
+										"identity",
+										"address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren enterprise e",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var adr;",
+											"",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    adr = pm.response.json();",
+											"})",
+											"",
+											"pm.test(\"city\", function() {",
+											"    pm.expect(adr.city, \"USS Enterprise (NCC-1701-E)\");",
+											"})",
+											"",
+											"pm.test(\"street\", function() {",
+											"    pm.expect(adr.street, \"Bridge\");",
+											"})",
+											"",
+											"pm.test(\"streetNumber\", function() {",
+											"    pm.expect(adr.streetNumber, 5);",
+											"})",
+											"",
+											"pm.test(\"postcode\", function() {",
+											"    pm.expect(adr.postcode, \"02285\");",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{rolaren_jwt}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"city\": \"USS Enterprise (NCC-1701-E)\",\n    \"postCode\": \"02285\",\n    \"street\": \"Bridge\",\n    \"streetNumber\": \"5\",\n    \"stateId\": {{state_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro/identity/address",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro",
+										"identity",
+										"address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ro laren bajor as data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var adr;",
+											"",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    adr = pm.response.json();",
+											"})",
+											"",
+											"pm.test(\"city\", function() {",
+											"    pm.expect(adr.city, \"Bajor\");",
+											"})",
+											"",
+											"pm.test(\"street\", function() {",
+											"    pm.expect(adr.street, \"Bridge\");",
+											"})",
+											"",
+											"pm.test(\"streetNumber\", function() {",
+											"    pm.expect(adr.streetNumber, 5);",
+											"})",
+											"",
+											"pm.test(\"postcode\", function() {",
+											"    pm.expect(adr.postcode, \"02285\");",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"city\": \"Bajor\",\n    \"postCode\": \"02285\",\n    \"street\": \"Bridge\",\n    \"streetNumber\": \"5\",\n    \"stateId\": {{state_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/ro/identity/address",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"ro",
+										"identity",
+										"address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "worf city",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status not found\", function() {",
+											"    pm.response.to.have.status(404);",
+											"})",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"city\": \"Bajor\",\n    \"postCode\": \"02285\",\n    \"street\": \"Bridge\",\n    \"streetNumber\": \"5\",\n    \"stateId\": {{state_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/accounts/users/worf/identity/address",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"accounts",
+										"users",
+										"worf",
+										"identity",
+										"address"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		},
 		{
 			"name": "catalogue",
