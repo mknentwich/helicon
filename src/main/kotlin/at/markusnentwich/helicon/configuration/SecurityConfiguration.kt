@@ -1,18 +1,13 @@
 package at.markusnentwich.helicon.configuration
 
-import at.markusnentwich.helicon.repositories.RoleRepository
-import at.markusnentwich.helicon.repositories.StateRepository
 import at.markusnentwich.helicon.security.*
-import at.markusnentwich.helicon.services.ACCOUNT_SERVICE
-import at.markusnentwich.helicon.services.ASSET_SERVICE
-import at.markusnentwich.helicon.services.CATALOGUE_SERVICE
-import at.markusnentwich.helicon.services.META_SERVICE
-import at.markusnentwich.helicon.services.ORDER_SERVICE
+import at.markusnentwich.helicon.services.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -24,11 +19,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
     @Autowired val configurationProperties: HeliconConfigurationProperties,
-    @Autowired val stateRepository: StateRepository,
     @Autowired val userDetailsService: HeliconUserDetailsService,
-    @Autowired val roleRepository: RoleRepository
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
@@ -61,6 +55,7 @@ class SecurityConfiguration(
 
             ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
 
+            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity")?.authenticated()
             ?.antMatchers(HttpMethod.POST, "$ACCOUNT_SERVICE/**")?.hasAuthority(ACCOUNT_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {

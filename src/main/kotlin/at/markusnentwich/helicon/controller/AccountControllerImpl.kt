@@ -2,6 +2,8 @@ package at.markusnentwich.helicon.controller
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
 import at.markusnentwich.helicon.dto.AccountDto
+import at.markusnentwich.helicon.dto.AddressDto
+import at.markusnentwich.helicon.dto.IdentityDto
 import at.markusnentwich.helicon.dto.RoleDto
 import at.markusnentwich.helicon.entities.AccountEntity
 import at.markusnentwich.helicon.entities.AddressEntity
@@ -11,6 +13,7 @@ import org.modelmapper.ModelMapper
 import org.modelmapper.TypeToken
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 import java.lang.reflect.Type
@@ -70,6 +73,18 @@ class AccountControllerImpl(
         }
         val saved = accountRepository.save(accountEntity)
         return user
+    }
+
+    override fun updateIdentity(username: String, identity: IdentityDto): IdentityDto {
+        val userEntity = accountRepository.findByIdOrNull(username) ?: throw NotFoundException()
+        val identityEntity = mapper.map(identity, IdentityEntity::class.java)
+        identityEntity.id = userEntity.identity.id
+        identityEntity.address = userEntity.identity.address
+        return mapper.map(identityRepository.save(identityEntity), IdentityDto::class.java)
+    }
+
+    override fun updateAddress(username: String, address: AddressDto): AddressDto {
+        TODO("Not yet implemented")
     }
 
     override fun deleteAccount(username: String) {

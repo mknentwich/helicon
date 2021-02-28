@@ -1,6 +1,8 @@
 package at.markusnentwich.helicon.services
 
 import at.markusnentwich.helicon.dto.AccountDto
+import at.markusnentwich.helicon.dto.AddressDto
+import at.markusnentwich.helicon.dto.IdentityDto
 import at.markusnentwich.helicon.dto.RoleDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -92,7 +95,7 @@ interface AccountService {
     @Operation(summary = "register a new user. roles will be ignored, the password will not be returned.")
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = OK, content = [ Content(schema = Schema(implementation = AccountDto::class))]),
+            ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = AccountDto::class))]),
             ApiResponse(responseCode = "409", description = "$CONFLICT a user with this username already exists."),
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
@@ -108,4 +111,20 @@ interface AccountService {
         ]
     )
     fun login(@RequestHeader(name = "Authorization", required = true) authorization: String): ResponseEntity<Void>
+
+    @RequestMapping("/users/{username}/identity", method = [RequestMethod.PUT])
+    @Operation(summary = "update the identity information of a user", description = "update the identity information of a user. account roles is required if the issuer is not the username. attributes of references are not effected")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = IdentityDto::class))]),
+            ApiResponse(responseCode = "400", description = BAD_REQUEST),
+            ApiResponse(responseCode = "403", description = FORBIDDEN),
+            ApiResponse(responseCode = "404")
+        ]
+    )
+    @PreAuthorize("hasAuthority('account') or #username == authentication.name")
+    fun updateIdentity(@PathVariable(required = true) username: String, @RequestBody identity: IdentityDto): ResponseEntity<IdentityDto>
+
+    @RequestMapping("/users/{username}/identity/address", method = [RequestMethod.PUT])
+    fun updateAddress(@PathVariable(required = true) username: String, @RequestBody address: AddressDto): ResponseEntity<AddressDto>
 }
