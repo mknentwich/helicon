@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "7aff7e5b-3752-4d84-8a15-f03a6c4bf12f",
+		"_postman_id": "6afb43c3-4a51-45c0-8306-e939b2ea26bd",
 		"name": "helicon-preprod",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "accounts",
+			"name": "login",
 			"item": [
 				{
 					"name": "root-login",
@@ -69,61 +69,6 @@
 					"name": "create eu",
 					"item": [
 						{
-							"name": "create eu zone",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"status ok\", function() {",
-											"    pm.response.to.have.status(200);",
-											"})",
-											"",
-											"pm.test(\"name is EU\", function() {",
-											"    pm.expect(pm.response.json().name).is.to.equal(\"EU\");",
-											"})",
-											"",
-											"pm.test(\"shipping is 700\", function() {",
-											"    pm.expect(pm.response.json().shipping).is.to.equal(700);",
-											"})",
-											"",
-											"pm.test(\"store zone\", function() {",
-											"    var zone = pm.response.json();",
-											"    pm.environment.set(\"zone_id\", zone.id);",
-											"    pm.environment.set(\"zone_name\",zone.name);",
-											"    pm.environment.set(\"zone_shipping\", zone.shipping);",
-											"})"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"EU\",\n    \"shipping\": 700\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{api}}/meta/zones",
-									"host": [
-										"{{api}}"
-									],
-									"path": [
-										"meta",
-										"zones"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "create inland zone",
 							"event": [
 								{
@@ -159,6 +104,123 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"name\": \"Inland\",\n    \"shipping\": 300\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/meta/zones",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"meta",
+										"zones"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create austria",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var state;",
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"    state = pm.response.json();",
+											"})",
+											"",
+											"pm.test(\"name is Österreich\", function() {",
+											"    pm.expect(state.name).to.equal(\"Österreich\");",
+											"})",
+											"",
+											"pm.test(\"zone id is parent\", function() {",
+											"    pm.expect(state.zone.id).to.equal(pm.environment.get(\"zone_id\"));",
+											"})",
+											"",
+											"pm.test(\"zone name is parent\", function() {",
+											"    pm.expect(state.zone.name).to.equal(pm.environment.get(\"zone_name\"));",
+											"})",
+											"",
+											"pm.test(\"store state id\", function() {",
+											"    pm.environment.set(\"austria_id\", state.id);",
+											"})",
+											"",
+											"pm.test(\"zone shipping is parent\", function() {",
+											"    pm.expect(state.zone.shipping).to.equal(pm.environment.get(\"zone_shipping\"));",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Österreich\",\n    \"zoneId\": {{zone_id}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api}}/meta/states",
+									"host": [
+										"{{api}}"
+									],
+									"path": [
+										"meta",
+										"states"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create eu zone",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"status ok\", function() {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test(\"name is EU\", function() {",
+											"    pm.expect(pm.response.json().name).is.to.equal(\"EU\");",
+											"})",
+											"",
+											"pm.test(\"shipping is 700\", function() {",
+											"    pm.expect(pm.response.json().shipping).is.to.equal(700);",
+											"})",
+											"",
+											"pm.test(\"store zone\", function() {",
+											"    var zone = pm.response.json();",
+											"    pm.environment.set(\"zone_id\", zone.id);",
+											"    pm.environment.set(\"zone_name\",zone.name);",
+											"    pm.environment.set(\"zone_shipping\", zone.shipping);",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"EU\",\n    \"shipping\": 700\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -221,68 +283,6 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"name\": \"Slowakei\",\n    \"zoneId\": {{zone_id}}\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{api}}/meta/states",
-									"host": [
-										"{{api}}"
-									],
-									"path": [
-										"meta",
-										"states"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "create austria",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"var state;",
-											"pm.test(\"status ok\", function() {",
-											"    pm.response.to.have.status(200);",
-											"    state = pm.response.json();",
-											"})",
-											"",
-											"pm.test(\"name is Österreich\", function() {",
-											"    pm.expect(state.name).to.equal(\"Österreich\");",
-											"})",
-											"",
-											"pm.test(\"zone id is parent\", function() {",
-											"    pm.expect(state.zone.id).to.equal(pm.environment.get(\"zone_id\"));",
-											"})",
-											"",
-											"pm.test(\"zone name is parent\", function() {",
-											"    pm.expect(state.zone.name).to.equal(pm.environment.get(\"zone_name\"));",
-											"})",
-											"",
-											"pm.test(\"store state id\", function() {",
-											"    pm.environment.set(\"state_id\", state.id);",
-											"})",
-											"",
-											"pm.test(\"zone shipping is parent\", function() {",
-											"    pm.expect(state.zone.shipping).to.equal(pm.environment.get(\"zone_shipping\"));",
-											"})"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"name\": \"Österreich\",\n    \"zoneId\": {{zone_id}}\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2173,6 +2173,658 @@
 						"value": "{{jwt}}",
 						"type": "string"
 					}
+				]
+			}
+		},
+		{
+			"name": "accounts",
+			"item": [
+				{
+					"name": "create markus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var bod;",
+									"var adr;",
+									"",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    bod = pm.response.json();",
+									"    adr = bod.identity.address;",
+									"})",
+									"",
+									"pm.test(\"username\", function() {",
+									"    pm.expect(bod.username, \"markus\");",
+									"})",
+									"",
+									"pm.test(\"salutation\", function() {",
+									"    pm.expect(bod.identity.salutation, \"Herr\");",
+									"})",
+									"",
+									"pm.test(\"firstName\", function() {",
+									"    pm.expect(bod.identity.firstName, \"Markus\");",
+									"})",
+									"",
+									"pm.test(\"lastName\", function() {",
+									"    pm.expect(bod.identity.lastName, \"Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"company\", function() {",
+									"    pm.expect(bod.identity.company, \"Musikverein Leopoldsdorf\");",
+									"})",
+									"",
+									"pm.test(\"email\", function() {",
+									"    pm.expect(bod.identity.email, \"kontakt@markus-nentwich.at\");",
+									"})",
+									"",
+									"pm.test(\"telephone\", function() {",
+									"    pm.expect(bod.identity.telephone, \"0043699 10329882\");",
+									"})",
+									"",
+									"pm.test(\"street\", function() {",
+									"    pm.expect(adr.street, \"Vereinsgasse\");",
+									"})",
+									"",
+									"pm.test(\"streetNumber\", function() {",
+									"    pm.expect(adr.streetNumber, \"25/14\");",
+									"})",
+									"",
+									"pm.test(\"postcode\", function() {",
+									"    pm.expect(adr.postcode, \"1020\");",
+									"})",
+									"",
+									"pm.test(\"city\", function() {",
+									"    pm.expect(adr.city, \"Wien\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"markus\",\n  \"password\": \"{{markus_password}}\",\n  \"identity\": {\n    \"salutation\": \"Herr\",\n    \"firstName\": \"Markus\",\n    \"lastName\": \"Nentwich\",\n    \"company\": \"Musikverein Leopoldsdorf\",\n    \"email\": \"kontakt@markus-nentwich.at\",\n    \"telephone\": \"0043699 10329882\",\n    \"address\": {\n      \"city\": \"Wien\",\n      \"postCode\": \"1020\",\n      \"street\": \"Vereinsgasse\",\n      \"streetNumber\": \"25/14\",\n      \"stateId\": {{austria_id}}\n    }\n  },\n  \"state\": \"active\",\n  \"roles\": [\n    {\n      \"name\": \"owner\"\n    },\n    {\n        \"name\": \"catalogue\"\n    },\n    {\n        \"name\": \"asset\"\n    },\n    {\n        \"name\": \"order\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/accounts/users",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create dennis",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"dennis\",\n  \"password\": \"{{dennis_password}}\",\n  \"identity\": {\n    \"salutation\": \"Herr\",\n    \"firstName\": \"Dennis\",\n    \"lastName\": \"\",\n    \"company\": \"Musikverein Leopoldsdorf\",\n    \"email\": \"{{dennis_email}}\",\n    \"telephone\": \"\",\n    \"address\": {\n      \"city\": \"\",\n      \"postCode\": \"\",\n      \"street\": \"\",\n      \"streetNumber\": \"\",\n      \"stateId\": {{austria_id}}\n    }\n  },\n  \"state\": \"active\",\n  \"roles\": [\n    {\n      \"name\": \"monitor\"\n    },\n    {\n      \"name\": \"root\"\n    },\n    {\n        \"name\": \"catalogue\"\n    },\n    {\n        \"name\": \"asset\"\n    },\n    {\n        \"name\": \"order\"\n    },\n    {\n        \"name\": \"meta\"\n    },\n    {\n        \"name\": \"account\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/accounts/users",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create richi",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"richi\",\n  \"password\": \"{{richi_password}}\",\n  \"identity\": {\n    \"salutation\": \"Herr\",\n    \"firstName\": \"Richard\",\n    \"lastName\": \"\",\n    \"company\": \"Musikverein Leopoldsdorf\",\n    \"email\": \"{{richi_email}}\",\n    \"telephone\": \"\",\n    \"address\": {\n      \"city\": \"\",\n      \"postCode\": \"\",\n      \"street\": \"\",\n      \"streetNumber\": \"\",\n      \"stateId\": {{austria_id}}\n    }\n  },\n  \"state\": \"active\",\n  \"roles\": [\n    {\n      \"name\": \"monitor\"\n    },\n    {\n      \"name\": \"root\"\n    },\n    {\n        \"name\": \"catalogue\"\n    },\n    {\n        \"name\": \"asset\"\n    },\n    {\n        \"name\": \"order\"\n    },\n    {\n        \"name\": \"meta\"\n    },\n    {\n        \"name\": \"account\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/accounts/users",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "markus login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"storing jwt\", function() {",
+									"    pm.response.to.have.header(\"Authorization\")",
+									"    var token = pm.response.headers.get(\"Authorization\");",
+									"    pm.environment.set(\"jwt\", token.replace(\"Bearer \", \"\"))",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{markus_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "markus",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/accounts/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dennis login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"storing jwt\", function() {",
+									"    pm.response.to.have.header(\"Authorization\")",
+									"    var token = pm.response.headers.get(\"Authorization\");",
+									"    pm.environment.set(\"jwt\", token.replace(\"Bearer \", \"\"))",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{dennis_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "dennis",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/accounts/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "richi login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"storing jwt\", function() {",
+									"    pm.response.to.have.header(\"Authorization\")",
+									"    var token = pm.response.headers.get(\"Authorization\");",
+									"    pm.environment.set(\"jwt\", token.replace(\"Bearer \", \"\"))",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{richi_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "richi",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/accounts/login",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change root roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is ok\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/accounts/users/root/roles",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"accounts",
+								"users",
+								"root",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "catalogue",
+			"item": [
+				{
+					"name": "get catalogue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_root_id\", category.id);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "polka",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_polka_id\", category.id);",
+									"})",
+									"",
+									"pm.test(\"name is Polka\", function() {",
+									"    pm.expect(category.name).to.equal(\"Polka\");",
+									"    pm.environment.set(\"category_polka_name\", category.name);",
+									"})",
+									"",
+									"pm.test(\"namePlural is Polka\", function() {",
+									"    pm.expect(category.namePlural).to.equal(\"Polka\");",
+									"    pm.environment.set(\"category_polka_namePlural\", category.namePlural);",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Polka\",\n    \"namePlural\": \"Polka\",\n    \"parentId\": {{category_root_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/categories",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "letzte runde klein",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"kleine Besetzung\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 4);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 3900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Eine letzte Runde\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"kleine Besetzung\",\n    \"price\": 3900,\n    \"difficulty\": 4,\n    \"instrumentation\": \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\",\n    \"categoryId\": {{category_polka_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "letzte runde gross",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"Blasorchester\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Particell in C, Flöte in C, Oboe in C, Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Klarinette 3 in B, Bassklarinette in B, Altsaxophon 1 in Es, Altsaxophon 2 in Es, Tenorsaxophon 1 in B, Tenorsaxophon 2 in B, Baritonsaxophon in Es, Fagott in C, Flügelhorn 1, Flügelhorn 2, Trompete 1 in B, Trompete 2 in B, Trompete 3 in B, Horn 1 in F und Es, Horn 2 in F und Es, Horn 3 in F und Es, Horn 4 in F und Es, Tenorhorn in B, Bariton in B und C, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Bass 1 in C, Bass 2 in C, Bass in Es, Bass in B, Schlagwerk, Glockenspiel\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 2);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 4900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Eine letzte Runde\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"Blasorchester\",\n    \"price\": 4900,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Particell in C, Flöte in C, Oboe in C, Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Klarinette 3 in B, Bassklarinette in B, Altsaxophon 1 in Es, Altsaxophon 2 in Es, Tenorsaxophon 1 in B, Tenorsaxophon 2 in B, Baritonsaxophon in Es, Fagott in C, Flügelhorn 1, Flügelhorn 2, Trompete 1 in B, Trompete 2 in B, Trompete 3 in B, Horn 1 in F und Es, Horn 2 in F und Es, Horn 3 in F und Es, Horn 4 in F und Es, Tenorhorn in B, Bariton in B und C, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Bass 1 in C, Bass 2 in C, Bass in Es, Bass in B, Schlagwerk, Glockenspiel\",\n    \"categoryId\": {{category_polka_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
 				]
 			}
 		}
