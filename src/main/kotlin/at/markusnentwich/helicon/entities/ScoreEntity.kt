@@ -13,6 +13,7 @@ class ScoreEntity(
     var category: CategoryEntity = CategoryEntity(),
     var difficulty: Int = 1,
     var groupType: String = "Blasorchester",
+    @Lob
     var instrumentation: String = "",
     var price: Int = 0,
     var title: String = "default title",
