@@ -8,6 +8,7 @@ import at.markusnentwich.helicon.security.ACCOUNT_ROLE
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -50,7 +51,7 @@ interface AccountService {
     fun createAccount(@Parameter(description = "the new user") @RequestBody user: AccountDto): ResponseEntity<AccountDto>
 
     @RequestMapping("/users/{username}", method = [RequestMethod.PUT])
-    @Operation(summary = "update a user. the password will not be returned. only users with the 'root' role are able to update other users manually. the roles will not be ignored if the requesting user has the role 'root'. users without the role 'root' are only able to change their identity information and their password.")
+    @Operation(summary = "update a user", description = "account role is required if the issuer is not the username. roles and identity are not affected. password will be updated iff not null")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = OK, content = [Content(schema = Schema(implementation = AccountDto::class))]),
@@ -61,10 +62,24 @@ interface AccountService {
             ApiResponse(responseCode = "422", description = UNPROCESSABLE_ENTITY)
         ]
     )
+    @PreAuthorize("hasAuthority('$ACCOUNT_ROLE') or #username == authentication.name")
     fun updateAccount(
         @Parameter(description = "the user") @RequestBody user: AccountDto,
         @Parameter(description = "the username") @PathVariable username: String
     ): ResponseEntity<AccountDto>
+
+    @RequestMapping("/users/{username}/roles", method = [RequestMethod.PUT])
+    @Operation(summary = "update roles of a user", description = "update roles of a user. 'account' role is required")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", content = [Content(array = ArraySchema(schema = Schema(implementation = RoleDto::class)))]),
+            ApiResponse(responseCode = "400", description = "at least one of the roles do not exist"),
+            ApiResponse(responseCode = "403"),
+            ApiResponse(responseCode = "404", description = "user with username does not exist")
+        ]
+
+    )
+    fun updateRoles(@PathVariable username: String, @RequestBody roles: Array<String>): ResponseEntity<Iterable<RoleDto>>
 
     @RequestMapping("/users/{username}", method = [RequestMethod.DELETE])
     @Operation(summary = "delete a user", description = "delete a user. account role is required if the issuer is not the username.")

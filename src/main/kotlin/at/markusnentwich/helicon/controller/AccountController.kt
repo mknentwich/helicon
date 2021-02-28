@@ -11,7 +11,8 @@ interface AccountController {
 
     fun getUser(username: String): AccountDto
     fun createAccount(user: AccountDto): AccountDto
-    fun updateAccount(user: AccountDto, username: String): AccountDto
+    fun updateAccount(username: String, account: AccountDto): AccountDto
+    fun updateRoles(username: String, roles: Array<String>): Iterable<RoleDto>
 
     /**
      * Update the identity information of the user with 'username'.

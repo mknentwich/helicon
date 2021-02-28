@@ -1,10 +1,7 @@
 package at.markusnentwich.helicon.controller
 
 import at.markusnentwich.helicon.configuration.HeliconConfigurationProperties
-import at.markusnentwich.helicon.dto.AccountDto
-import at.markusnentwich.helicon.dto.AddressDto
-import at.markusnentwich.helicon.dto.IdentityDto
-import at.markusnentwich.helicon.dto.RoleDto
+import at.markusnentwich.helicon.dto.*
 import at.markusnentwich.helicon.entities.AccountEntity
 import at.markusnentwich.helicon.entities.AddressEntity
 import at.markusnentwich.helicon.entities.IdentityEntity
@@ -66,13 +63,33 @@ class AccountControllerImpl(
         return mapper.map(accountToReturn, AccountDto::class.java)
     }
 
-    override fun updateAccount(user: AccountDto, username: String): AccountDto {
-        val accountEntity = mapper.map(user, AccountEntity::class.java)
-        if (accountEntity.password != null && accountEntity.identity != null) {
-            throw BadPayloadException()
+    override fun updateAccount(username: String, account: AccountDto): AccountDto {
+        val userEntity = accountRepository.findById(username).orElseThrow {
+            logger.error("Cannot find user {}", username)
+            throw NotFoundException()
         }
-        val saved = accountRepository.save(accountEntity)
-        return user
+        if (account.password != null) {
+            logger.info("Changing password of {}", username)
+            userEntity.password = passwordEncoder.encode(account.password)
+        }
+        return mapper.map(accountRepository.save(userEntity), AccountDto::class.java)
+    }
+
+    override fun updateRoles(username: String, roles: Array<String>): Iterable<RoleDto> {
+        logger.info("Update roles of {}", username)
+        val userEntity = accountRepository.findById(username).orElseThrow {
+            logger.error("Cannot find user {}", username)
+            throw NotFoundException()
+        }
+        userEntity.roles = roles.asList().map { r ->
+            rolesRepository.findById(r).orElseThrow {
+                logger.error("Role {} does not exist", r)
+                throw BadPayloadException()
+            }
+        }.toMutableSet()
+        logger.info("Roles of {} are now {}", username, userEntity.roles)
+        val listType: Type = object : TypeToken<List<RoleDto>>() {}.type
+        return mapper.map(accountRepository.save(userEntity).roles, listType)
     }
 
     override fun updateIdentity(username: String, identity: IdentityDto): IdentityDto {

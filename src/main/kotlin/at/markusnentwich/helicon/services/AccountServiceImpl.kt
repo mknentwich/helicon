@@ -1,13 +1,13 @@
 package at.markusnentwich.helicon.services
 
 import at.markusnentwich.helicon.controller.AccountController
+import at.markusnentwich.helicon.controller.AlreadyExistsException
 import at.markusnentwich.helicon.controller.BadPayloadException
 import at.markusnentwich.helicon.controller.NotFoundException
 import at.markusnentwich.helicon.dto.AccountDto
 import at.markusnentwich.helicon.dto.AddressDto
 import at.markusnentwich.helicon.dto.IdentityDto
 import at.markusnentwich.helicon.dto.RoleDto
-import at.markusnentwich.helicon.security.HeliconUserDetailsService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class AccountServiceImpl(
-    @Autowired val accountController: AccountController,
-    @Autowired val userDetailsService: HeliconUserDetailsService
+    @Autowired val accountController: AccountController
 ) : AccountService {
 
     private val logger = LoggerFactory.getLogger(AccountServiceImpl::class.java)
@@ -38,7 +37,33 @@ class AccountServiceImpl(
     }
 
     override fun updateAccount(user: AccountDto, username: String): ResponseEntity<AccountDto> {
-        TODO("Not yet implemented")
+        val status = try {
+            return ResponseEntity.ok(accountController.updateAccount(username, user))
+        } catch (e: NotFoundException) {
+            HttpStatus.NOT_FOUND
+        } catch (e: BadPayloadException) {
+            HttpStatus.BAD_REQUEST
+        } catch (e: AlreadyExistsException) {
+            HttpStatus.CONFLICT
+        } catch (e: Exception) {
+            logger.error("Unexpected exception", e)
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+        return ResponseEntity.status(status).build()
+    }
+
+    override fun updateRoles(username: String, roles: Array<String>): ResponseEntity<Iterable<RoleDto>> {
+        val status = try {
+            return ResponseEntity.ok(accountController.updateRoles(username, roles))
+        } catch (e: NotFoundException) {
+            HttpStatus.NOT_FOUND
+        } catch (e: BadPayloadException) {
+            HttpStatus.BAD_REQUEST
+        } catch (e: Exception) {
+            logger.error("Unexpected exception", e)
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+        return ResponseEntity.status(status).build()
     }
 
     override fun deleteAccount(username: String): ResponseEntity<Void> {

@@ -58,6 +58,8 @@ class SecurityConfiguration(
             ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity")?.authenticated()
             ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity/address")?.authenticated()
             ?.antMatchers(HttpMethod.DELETE, "$ACCOUNT_SERVICE/users/*")?.hasAuthority(ACCOUNT_ROLE)
+            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/roles")?.hasAuthority(ACCOUNT_ROLE)
+            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*")?.authenticated()
             ?.antMatchers(HttpMethod.POST, "$ACCOUNT_SERVICE/**")?.hasAuthority(ACCOUNT_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {
