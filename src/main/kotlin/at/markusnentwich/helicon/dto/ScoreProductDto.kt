@@ -22,6 +22,10 @@ data class ScoreProductDto(
     var quantity: Int? = null,
     @Schema(description = "the title of this score", example = "Eine letzte Runde")
     var title: String? = "Eine letzte Runde",
+    @Schema(description = "the summary of this score", example = "Eine leichte Kapellenpolka über die Luft im Marchfeld", required = false)
+    var summary: String? = null,
+    @Schema(description = "the description of the score, comprehensive version of 'summary'", example = "Diese Polka soll an die Luft im Marchfeld erinnern. Daran gearbeitet wurde dabei selbstverständlich nur auf der Terrasse des Elternhauses von Markus Nentwich, wobei immer ein Bier aus Marchfelder Getreide Beistand leistete.", required = false)
+    var description: String? = null
 )
 
 @Schema(name = "ScoreItem")

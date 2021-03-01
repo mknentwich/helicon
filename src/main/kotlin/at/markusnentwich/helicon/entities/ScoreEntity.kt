@@ -18,5 +18,8 @@ class ScoreEntity(
     var price: Int = 0,
     var title: String = "default title",
     @OneToMany(mappedBy = "score")
-    var orders: MutableSet<OrderScoreEntity> = mutableSetOf()
+    var orders: MutableSet<OrderScoreEntity> = mutableSetOf(),
+    var summary: String = "",
+    @Lob
+    var description: String = ""
 )
