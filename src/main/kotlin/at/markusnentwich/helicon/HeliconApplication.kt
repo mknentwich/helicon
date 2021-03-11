@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@SpringBootApplication
+@SpringBootApplication(proxyBeanMethods = false)
 @ConfigurationPropertiesScan("at.markusnentwich.helicon.configuration")
 @EnableJpaRepositories(repositoryBaseClass = HeliconRepositoryImpl::class)
 @OpenAPIDefinition(
