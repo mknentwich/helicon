@@ -13,13 +13,13 @@ class ScoreEntity(
     var category: CategoryEntity = CategoryEntity(),
     var difficulty: Int = 1,
     var groupType: String = "Blasorchester",
-    @Lob
+    @Column(length = 10000)
     var instrumentation: String = "",
     var price: Int = 0,
     var title: String = "default title",
     @OneToMany(mappedBy = "score")
     var orders: MutableSet<OrderScoreEntity> = mutableSetOf(),
-    var summary: String = "",
-    @Lob
-    var description: String = ""
+    var summary: String? = null,
+    @Column(length = 10000)
+    var description: String? = null
 )
