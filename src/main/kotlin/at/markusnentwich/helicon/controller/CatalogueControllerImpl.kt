@@ -45,8 +45,7 @@ class CatalogueControllerImpl(
     }
 
     override fun updateCategory(category: CategoryProductDto, id: Long): CategoryProductDto {
-        val categoryEntity = mapper.map(category, CategoryEntity::class.java)
-        TODO("Not yes implemented")
+        TODO("Not yet implemented")
     }
 
     override fun deleteCategory(id: Long, force: Boolean) {

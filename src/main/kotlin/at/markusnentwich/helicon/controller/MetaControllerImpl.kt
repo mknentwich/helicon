@@ -55,8 +55,8 @@ class MetaControllerImpl(
             logger.error("state with id {} does not exist", id)
             throw NotFoundException()
         }
-        if (state.id != null && state.id != id && stateRepository.existsById(state.id)) {
-            logger.error("a state with id {} already exist", state.id)
+        if (state.id != null && state.id != id) {
+            logger.error("Changing the state id is not supported")
             throw AlreadyExistsException()
         }
         val stateEntity = modelMapper.map(state, StateEntity::class.java)
@@ -99,12 +99,11 @@ class MetaControllerImpl(
         if (!zoneRepository.existsById(id)) {
             logger.error("zone with id {} does not exist", id)
         }
-        if (zone.id != null && zone.id != id && zoneRepository.existsById(zone.id)) {
-            logger.error("zone with id {} already exist", zone.id)
-            throw AlreadyExistsException()
+        if (zone.id != null && zone.id != id) {
+            logger.error("Changing the zone id is not supported")
+            throw BadPayloadException()
         }
         val zoneEntity = modelMapper.map(zone, ZoneEntity::class.java)
-        zoneEntity.id = id
         return modelMapper.map(zoneRepository.save(zoneEntity), ZoneDto::class.java)
     }
 
