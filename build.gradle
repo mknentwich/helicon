@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'org.springframework.boot' version '2.4.3'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.4.10'
@@ -7,6 +7,8 @@ plugins {
     id 'org.jetbrains.kotlin.kapt' version '1.4.10'
     id 'io.swagger.core.v3.swagger-gradle-plugin' version '2.1.4'
     id 'org.jlleitschuh.gradle.ktlint' version '9.4.1'
+
+    id "com.github.ayltai.spring-graalvm-native-plugin" version "1.4.3"
 }
 
 group = 'at.markus-nentwich'
@@ -16,12 +18,12 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
 dependencies {
     implementation 'org.apache.logging.log4j:log4j:2.13.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -76,7 +78,12 @@ bootJar {
 }
 
 bootBuildImage {
-    imageName = 'mknentich/helicon'
+    imageName = 'mknentwich/helicon'
+    builder = "paketobuildpacks/builder:full"
+    environment = [
+            "BP_BOOT_NATIVE_IMAGE" : "1",
+            "BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS": "-Dspring.spel.ignore=false -Dspring.native.remove-yaml-support=false -Dspring.native.verify=true"
+    ]
 }
 
 task buildJar(type: Exec) {
