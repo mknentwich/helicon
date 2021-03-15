@@ -29,5 +29,7 @@ data class ScoreOrderDto(
     @Schema(description = "the date when the backend received the order. will be null while ordering", readOnly = true)
     var receivedOn: LocalDateTime? = null,
     @Schema(description = "the date when the order was sent")
-    var sent: LocalDateTime? = null
+    var sent: LocalDateTime? = null,
+    @Schema(description = "the shipping costs of the current order", readOnly = true)
+    var shippingCosts: Int? = null
 )

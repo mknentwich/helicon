@@ -101,6 +101,7 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
+        orderDto.shippingCosts = orderEntity.shippingCosts()
         return orderDto
     }
 
@@ -131,6 +132,7 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
+        dto.shippingCosts = evaluatedEntity.shippingCosts()
         if (config.mail.notification.ownerOnOrder) {
             orderMailService.notifyOwner(evaluatedEntity)
         } else {

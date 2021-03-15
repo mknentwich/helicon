@@ -38,7 +38,15 @@ class OrderEntity(
     }
 
     fun total(): Int {
-        return items.stream().mapToInt { it.amount * it.score.price }.sum() + deliveryAddress().state.zone.shipping
+        return productCosts() + shippingCosts()
+    }
+
+    fun productCosts(): Int {
+        return items.stream().mapToInt { it.amount * it.score.price }.sum()
+    }
+
+    fun shippingCosts(): Int {
+        return if (productCosts() >= 9900) 0 else deliveryAddress().state.zone.shipping
     }
 }
 
