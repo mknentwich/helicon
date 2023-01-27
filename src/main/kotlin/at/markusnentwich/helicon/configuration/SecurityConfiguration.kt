@@ -6,32 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder
+import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 class SecurityConfiguration(
     @Autowired val configurationProperties: HeliconConfigurationProperties,
     @Autowired val userDetailsService: HeliconUserDetailsService,
-) : WebSecurityConfigurerAdapter() {
+) {
 
-    override fun configure(http: HttpSecurity?) {
-        http?.cors()?.and()?.csrf()?.disable()
-            ?.headers()?.frameOptions()?.disable()?.and()
-            ?.addFilter(authenticationFilter())?.addFilter(authorizationFilter())
-            ?.sessionManagement()?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)?.and()
-            ?.authorizeRequests()
-            ?.antMatchers(
+    @Bean
+    fun configureSecurityFilterChain(
+        http: HttpSecurity,
+        authenticationFilter: HeliconAuthenticationFilter,
+        authorizationFilter: HeliconAuthorizationFilter
+    ): SecurityFilterChain {
+        http.cors().and().csrf().disable()
+            .headers().frameOptions().disable().and()
+            .addFilter(authenticationFilter).addFilter(authorizationFilter)
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .authorizeHttpRequests()
+            .requestMatchers(
                 HttpMethod.GET,
                 "$ASSET_SERVICE/**",
                 "$CATALOGUE_SERVICE/**",
@@ -40,40 +46,43 @@ class SecurityConfiguration(
                 "/swagger.html",
                 "/swagger-ui/**",
                 "/api-docs/**"
-            )?.permitAll()
-            ?.antMatchers(HttpMethod.PUT, "$ORDER_SERVICE/confirmations/**")?.permitAll()
+            ).permitAll()
+            .requestMatchers(HttpMethod.PUT, "$ORDER_SERVICE/confirmations/**").permitAll()
 
-            ?.antMatchers(HttpMethod.PUT, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
-            ?.antMatchers(HttpMethod.DELETE, "$ASSET_SERVICE/**")?.hasAuthority(ASSET_ROLE)
+            .requestMatchers(HttpMethod.PUT, "$ASSET_SERVICE/**").hasAuthority(ASSET_ROLE)
+            .requestMatchers(HttpMethod.DELETE, "$ASSET_SERVICE/**").hasAuthority(ASSET_ROLE)
 
-            ?.antMatchers(HttpMethod.POST, "$CATALOGUE_SERVICE/**")?.hasAuthority(CATALOGUE_ROLE)
-            ?.antMatchers(HttpMethod.PUT, "$CATALOGUE_SERVICE/**")?.hasAuthority(CATALOGUE_ROLE)
-            ?.antMatchers(HttpMethod.DELETE, "$CATALOGUE_SERVICE/**")?.hasAuthority(CATALOGUE_ROLE)
+            .requestMatchers(HttpMethod.POST, "$CATALOGUE_SERVICE/**").hasAuthority(CATALOGUE_ROLE)
+            .requestMatchers(HttpMethod.PUT, "$CATALOGUE_SERVICE/**").hasAuthority(CATALOGUE_ROLE)
+            .requestMatchers(HttpMethod.DELETE, "$CATALOGUE_SERVICE/**").hasAuthority(CATALOGUE_ROLE)
 
-            ?.antMatchers(HttpMethod.POST, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
-            ?.antMatchers(HttpMethod.PUT, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
-            ?.antMatchers(HttpMethod.DELETE, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
+            .requestMatchers(HttpMethod.POST, "$META_SERVICE/**").hasAuthority(META_ROLE)
+            .requestMatchers(HttpMethod.PUT, "$META_SERVICE/**").hasAuthority(META_ROLE)
+            .requestMatchers(HttpMethod.DELETE, "$META_SERVICE/**").hasAuthority(META_ROLE)
 
-            ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
+            .requestMatchers(HttpMethod.GET, "$ORDER_SERVICE/**").hasAuthority(ORDER_ROLE)
 
-            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity")?.authenticated()
-            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity/address")?.authenticated()
-            ?.antMatchers(HttpMethod.DELETE, "$ACCOUNT_SERVICE/users/*")?.hasAuthority(ACCOUNT_ROLE)
-            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/roles")?.hasAuthority(ACCOUNT_ROLE)
-            ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*")?.authenticated()
-            ?.antMatchers(HttpMethod.POST, "$ACCOUNT_SERVICE/**")?.hasAuthority(ACCOUNT_ROLE)
+            .requestMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity").authenticated()
+            .requestMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity/address").authenticated()
+            .requestMatchers(HttpMethod.DELETE, "$ACCOUNT_SERVICE/users/*").hasAuthority(ACCOUNT_ROLE)
+            .requestMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/roles").hasAuthority(ACCOUNT_ROLE)
+            .requestMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*").authenticated()
+            .requestMatchers(HttpMethod.POST, "$ACCOUNT_SERVICE/**").hasAuthority(ACCOUNT_ROLE)
 
         if (configurationProperties.order.allowAnonymous) {
-            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, ORDER_SERVICE)?.permitAll()
+            http.authorizeHttpRequests().requestMatchers(HttpMethod.POST, ORDER_SERVICE).permitAll()
         } else {
-            http?.authorizeRequests()?.antMatchers(HttpMethod.POST, ORDER_SERVICE)?.authenticated()
+            http.authorizeHttpRequests().requestMatchers(HttpMethod.POST, ORDER_SERVICE).authenticated()
         }
 
-        http?.authorizeRequests()?.anyRequest()?.denyAll()
+        http.authorizeHttpRequests().anyRequest().denyAll()
+        return http.build()
     }
 
-    override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(userDetailsService)?.passwordEncoder(passwordEncoder())
+    @Bean
+    fun configureAuthenticationManager(auth: AuthenticationManagerBuilder): AuthenticationManager {
+        auth.userDetailsService(userDetailsService)?.passwordEncoder(passwordEncoder())
+        return auth.build()
     }
 
     @Bean
@@ -87,18 +96,21 @@ class SecurityConfiguration(
 
     @Bean
     fun passwordEncoder(): PasswordEncoder {
-        return SCryptPasswordEncoder()
+        return SCryptPasswordEncoder.defaultsForSpringSecurity_v5_8()
     }
 
     private fun tokenManager(): TokenManager {
         return TokenManager(configurationProperties, userDetailsService)
     }
 
-    private fun authenticationFilter(): HeliconAuthenticationFilter {
-        return HeliconAuthenticationFilter(tokenManager(), configurationProperties, authenticationManagerBean())
+
+    @Bean
+    fun authenticationFilter(authenticationManager: AuthenticationManager): HeliconAuthenticationFilter {
+        return HeliconAuthenticationFilter(tokenManager(), configurationProperties, authenticationManager)
     }
 
-    private fun authorizationFilter(): HeliconAuthorizationFilter {
-        return HeliconAuthorizationFilter(authenticationManager(), configurationProperties, tokenManager())
+    @Bean
+    fun authorizationFilter(authenticationManager: AuthenticationManager): HeliconAuthorizationFilter {
+        return HeliconAuthorizationFilter(authenticationManager, configurationProperties, tokenManager())
     }
 }
