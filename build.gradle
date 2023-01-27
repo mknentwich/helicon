@@ -1,20 +1,31 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id 'org.springframework.boot' version '2.4.3'
-    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.4.10'
-    id 'org.jetbrains.kotlin.plugin.jpa' version '1.4.10'
-    id 'org.jetbrains.kotlin.kapt' version '1.4.10'
-    id 'io.swagger.core.v3.swagger-gradle-plugin' version '2.1.4'
-    id 'org.jlleitschuh.gradle.ktlint' version '9.4.1'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.8.0'
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.0'
+    id 'io.swagger.core.v3.swagger-gradle-plugin' version '2.2.8'
+    id 'org.jlleitschuh.gradle.ktlint' version '11.0.0'
 
     id "com.github.ayltai.spring-graalvm-native-plugin" version "1.4.3"
 }
 
 group = 'at.markus-nentwich'
 version = '0.0.1-SNAPSHOT'
-java.sourceCompatibility = JavaVersion.VERSION_11
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+kotlin {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -22,13 +33,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.apache.logging.log4j:log4j:2.13.3'
+    implementation 'org.apache.logging.log4j:log4j:2.19.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    kapt 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
@@ -39,37 +50,37 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    implementation 'io.swagger.core.v3:swagger-annotations:2.1.4'
-    implementation 'io.swagger.core.v3:swagger-core:2.1.4'
-    implementation 'io.swagger.core.v3:swagger-jaxrs2:2.1.4'
-    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.4.7'
-    implementation 'org.springdoc:springdoc-openapi-ui:1.4.7'
-    implementation 'org.springdoc:springdoc-openapi-kotlin:1.4.7'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.8'
+    implementation 'io.swagger.core.v3:swagger-core:2.2.8'
+    implementation 'io.swagger.core.v3:swagger-jaxrs2:2.2.8'
+    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.5.12'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
+    implementation 'org.springdoc:springdoc-openapi-kotlin:1.6.14'
 
-    implementation 'org.modelmapper:modelmapper:2.3.8'
+    implementation 'org.modelmapper:modelmapper:3.1.1'
 
-    implementation 'org.asciidoctor:asciidoctorj:2.4.1'
-    implementation 'org.asciidoctor:asciidoctorj-pdf:1.5.3'
+    implementation 'org.asciidoctor:asciidoctorj:2.5.7'
+    implementation 'org.asciidoctor:asciidoctorj-pdf:2.3.4'
 
     runtimeOnly 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.67'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 
-    implementation 'org.freemarker:freemarker:2.3.30'
+    implementation 'org.freemarker:freemarker:2.3.31'
 
-    implementation 'com.google.zxing:core:3.4.1'
-    implementation 'com.google.zxing:javase:3.4.1'
+    implementation 'com.google.zxing:core:3.5.1'
+    implementation 'com.google.zxing:javase:3.5.1'
 }
 
 test {
     useJUnitPlatform()
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+tasks.withType(KotlinCompile).configureEach {
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
@@ -81,20 +92,20 @@ bootBuildImage {
     imageName = 'mknentwich/helicon'
     builder = "paketobuildpacks/builder:full"
     environment = [
-            "BP_BOOT_NATIVE_IMAGE" : "1",
-            "BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS": "-Dspring.spel.ignore=false -Dspring.native.remove-yaml-support=false -Dspring.native.verify=true"
+            "BP_NATIVE_IMAGE"                : "1",
+            "BP_NATIVE_IMAGE_BUILD_ARGUMENTS": "-Dspring.spel.ignore=false -Dspring.native.remove-yaml-support=false -Dspring.native.verify=true"
     ]
 }
 
-task buildJar(type: Exec) {
-    dependsOn(build)
-    executable "sh"
-    args "-c", "mkdir -p build/dependency && cd build/dependency && jar -xvf ../libs/helicon*.jar"
-}
+//tasks.register('buildJar') {
+//    dependsOn(build)
+//    executable "sh"
+//    args "-c", "mkdir -p build/dependency && cd build/dependency && jar -xvf ../libs/helicon*.jar"
+//}
 
-resolve {
-    classpath = sourceSets.main.runtimeClasspath as Iterable<File>
-    outputDir = buildDir
-    outputFormat = io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
-    resourcePackages = ['at.markusnentwich.helicon.services']
-}
+//resolve {
+//    classpath = sourceSets.main.runtimeClasspath as Iterable<File>
+//    outputDir = buildDir
+//    outputFormat = io.swagger.v3.plugins.gradle.tasks.ResolveTask.Format.YAML
+//    resourcePackages = ['at.markusnentwich.helicon.services']
+//}
