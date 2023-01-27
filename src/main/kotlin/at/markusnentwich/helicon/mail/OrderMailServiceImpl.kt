@@ -14,7 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
 import java.io.StringWriter
-import javax.mail.internet.InternetAddress
+import jakarta.mail.internet.InternetAddress
 
 const val OWNER_BODY_FILE = "owner-order.ftl"
 const val OWNER_SUBJECT_FILE = "owner-order-subject.ftl"

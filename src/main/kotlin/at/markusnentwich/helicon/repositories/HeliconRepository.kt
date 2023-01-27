@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.NoRepositoryBean
 import java.io.Serializable
-import javax.persistence.EntityManager
-import javax.transaction.Transactional
+import jakarta.persistence.EntityManager
+import jakarta.transaction.Transactional
 
 @NoRepositoryBean
 interface HeliconRepository<T, ID : Serializable> : CrudRepository<T, ID> {

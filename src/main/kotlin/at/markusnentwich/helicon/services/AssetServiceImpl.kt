@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import javax.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletRequest
 
 @RestController(ASSET_SERVICE)
 class AssetServiceImpl(

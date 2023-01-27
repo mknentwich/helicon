@@ -9,7 +9,7 @@ import org.springframework.core.io.Resource
 import java.io.InputStreamReader
 import java.io.Reader
 import java.time.ZoneId
-import javax.annotation.PostConstruct
+import jakarta.annotation.PostConstruct
 
 @Configuration
 class MailConfiguration(

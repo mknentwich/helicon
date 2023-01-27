@@ -15,9 +15,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.Base64
-import javax.servlet.FilterChain
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 
 const val AUTH_HEADER_KEY = "Authorization"
 const val BASIC_AUTH_PREFIX = "Basic "
