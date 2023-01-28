@@ -7,10 +7,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-@EnableWebSecurity
 @EnableMethodSecurity
 class SecurityConfiguration(
     @Autowired val configurationProperties: HeliconConfigurationProperties,
@@ -80,9 +78,8 @@ class SecurityConfiguration(
     }
 
     @Bean
-    fun configureAuthenticationManager(auth: AuthenticationManagerBuilder): AuthenticationManager {
-        auth.userDetailsService(userDetailsService)?.passwordEncoder(passwordEncoder())
-        return auth.build()
+    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
+        return authenticationConfiguration.authenticationManager
     }
 
     @Bean
@@ -102,7 +99,6 @@ class SecurityConfiguration(
     private fun tokenManager(): TokenManager {
         return TokenManager(configurationProperties, userDetailsService)
     }
-
 
     @Bean
     fun authenticationFilter(authenticationManager: AuthenticationManager): HeliconAuthenticationFilter {

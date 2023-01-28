@@ -1,9 +1,7 @@
 package at.markusnentwich.helicon.configuration
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 
-@ConstructorBinding
 @ConfigurationProperties(prefix = "helicon")
 data class HeliconConfigurationProperties(
 
