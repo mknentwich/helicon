@@ -65,7 +65,7 @@ class HeliconAuthenticationFilter(
             }
             val username = authData[0]
             val password = authData[1]
-            if (username.toLowerCase() == "root" && !configurationProperties.login.root.enable) {
+            if (username.lowercase() == "root" && !configurationProperties.login.root.enable) {
                 hlogger.error("Received root login request which is disabled")
                 throw DisabledAuthenticationException("root is disabled")
             }
