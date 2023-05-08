@@ -54,6 +54,7 @@ class SecurityConfiguration(
             ?.antMatchers(HttpMethod.PUT, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
             ?.antMatchers(HttpMethod.DELETE, "$META_SERVICE/**")?.hasAuthority(META_ROLE)
 
+            ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/bill/collection")?.hasAuthority(ORDER_ROLE)
             ?.antMatchers(HttpMethod.GET, "$ORDER_SERVICE/**")?.hasAuthority(ORDER_ROLE)
 
             ?.antMatchers(HttpMethod.PUT, "$ACCOUNT_SERVICE/users/*/identity")?.authenticated()

@@ -13,8 +13,13 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Controller
+import org.springframework.transaction.annotation.Transactional
+import java.io.ByteArrayOutputStream
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 @Controller
 class OrderControllerImpl(
@@ -26,7 +31,8 @@ class OrderControllerImpl(
     @Autowired val addressRepository: AddressRepository,
     @Autowired val mapper: ModelMapper,
     @Autowired val orderMailService: OrderMailService,
-    @Autowired val stateRepository: StateRepository
+    @Autowired val stateRepository: StateRepository,
+    @Autowired val billConverter: BillConverter,
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -144,5 +150,22 @@ class OrderControllerImpl(
             logger.warn("Received an order but customer notifications are disabled")
         }
         return dto
+    }
+
+    @Transactional
+    override fun billCollection(from: LocalDate, to: LocalDate, confirmed: Boolean, jwt: String): ByteArray {
+        val orders = orderRepo.findOrdersInRange(from.atStartOfDay(), to.atStartOfDay(), confirmed)
+        val byteOut = ByteArrayOutputStream()
+        val zipStream = ZipOutputStream(byteOut)
+        orders.forEach {
+            val entry = ZipEntry("rechnung-${it.billingNumber ?: UUID.randomUUID()}.pdf")
+            zipStream.putNextEntry(entry)
+
+            val pdfInput = billConverter.createBill(it)
+            zipStream.write(pdfInput.readAllBytes())
+            zipStream.closeEntry()
+        }
+        zipStream.close()
+        return byteOut.toByteArray()
     }
 }

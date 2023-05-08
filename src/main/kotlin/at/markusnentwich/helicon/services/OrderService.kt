@@ -8,9 +8,12 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.core.io.Resource
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 import java.util.*
 
 @RestController
@@ -107,4 +110,22 @@ interface OrderService {
         @Parameter(description = "the id of the order") @PathVariable id: UUID,
         @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<Array<Byte>>
+
+    @RequestMapping("/bills/collection", method = [RequestMethod.GET], produces = ["application/zip"])
+    @Operation(description = "returns the collection of bills")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = OK),
+            ApiResponse(responseCode = "400", description = BAD_REQUEST),
+            ApiResponse(responseCode = "401", description = UNAUTHORIZED),
+            ApiResponse(responseCode = "403", description = FORBIDDEN),
+        ]
+    )
+
+    fun billCollection(
+        @Parameter(description = "begin of the bill collection, inclusive") @DateTimeFormat(pattern = "yyyy-MM-dd") from: LocalDate,
+        @Parameter(description = "end of the bill collection, exclusive") @DateTimeFormat(pattern = "yyyy-MM-dd") to: LocalDate,
+        @Parameter(description = "only collect bills which are confirmed") confirmed: Boolean,
+        @RequestHeader(name = "Authorization") jwt: String,
+    ): ResponseEntity<Resource>
 }
