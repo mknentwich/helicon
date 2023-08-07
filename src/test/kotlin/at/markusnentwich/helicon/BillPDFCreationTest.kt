@@ -144,7 +144,7 @@ class BillPDFCreationTest(
         order.items.forEach {
             builder.append("${it.amount},${it.score.title} (${it.score.groupType}),${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")
         }
-        builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(order.shippingCosts())}\r\n")
+        builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(order.shipping)}\r\n")
         builder.append(",,Summe,${price(order.total())}")
 
         var file: File? = null
