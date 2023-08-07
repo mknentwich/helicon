@@ -89,6 +89,8 @@ class OrderControllerImpl(
         orderEntity.identity = identity
         orderEntity.deliveryAddress = deliveryAddress
         orderEntity = orderRepo.save(orderEntity)
+        orderEntity.taxRate = identityAddress.state.bookTaxes
+        orderEntity.shipping = identityAddress.state.zone.shipping
         orderEntity.receivedOn = LocalDateTime.now()
         val orderLinks: Iterable<OrderScoreEntity> = order.items.map {
             OrderScoreEntity(
