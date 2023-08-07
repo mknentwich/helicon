@@ -139,7 +139,6 @@ class OrderControllerImpl(
         }
         entity.confirmed = LocalDateTime.now()
         val evaluatedEntity = orderRepo.save(entity)
-        orderRepo.refresh(evaluatedEntity)
         val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
         dto.total = evaluatedEntity.total()
         dto.billingNumber = evaluatedEntity.billingNumber
