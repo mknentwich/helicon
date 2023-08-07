@@ -105,7 +105,8 @@ class OrderControllerImpl(
         }.toMutableSet()
         orderScoreRepository.saveAll(orderLinks)
         orderEntity.items = orderLinks
-        orderEntity.shipping = if (orderEntity.productCosts() >= 9900) 0 else identityAddress.state.zone.shipping
+        orderEntity.shipping =
+            if (orderEntity.productCosts() >= 9900) 0 else (deliveryAddress ?: identityAddress).state.zone.shipping
         val orderDto = mapper.map(orderEntity, ScoreOrderDto::class.java)
         orderDto.total = orderEntity.total()
         orderDto.orderedItems = orderEntity.items.map {
