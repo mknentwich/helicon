@@ -57,6 +57,10 @@ class OrderControllerImpl(
         }
         val items = entity.items.map { mapper.map(it, ScoreProductDto::class.java) }.toMutableSet()
         dto.orderedItems = items
+        dto.shippingCosts = entity.shipping
+        dto.taxRate = entity.taxRate?.toDouble()
+        dto.taxes = entity.taxes()
+        dto.totalBeforeTaxes = entity.beforeTaxes()
         return dto
     }
 
@@ -109,7 +113,10 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
-        orderDto.shippingCosts = orderEntity.shippingCosts()
+        orderDto.shippingCosts = orderEntity.shipping
+        orderDto.taxRate = orderEntity.taxRate?.toDouble()
+        orderDto.taxes = orderEntity.taxes()
+        orderDto.totalBeforeTaxes = orderEntity.beforeTaxes()
         return orderDto
     }
 
@@ -140,7 +147,10 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
-        dto.shippingCosts = evaluatedEntity.shippingCosts()
+        dto.shippingCosts = evaluatedEntity.shipping
+        dto.taxRate = evaluatedEntity.taxRate?.toDouble()
+        dto.taxes = evaluatedEntity.taxes()
+        dto.totalBeforeTaxes = evaluatedEntity.beforeTaxes()
         if (config.mail.notification.ownerOnOrder) {
             orderMailService.notifyOwner(evaluatedEntity)
         } else {

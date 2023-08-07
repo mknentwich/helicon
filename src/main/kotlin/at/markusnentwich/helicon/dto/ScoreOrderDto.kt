@@ -24,12 +24,22 @@ data class ScoreOrderDto(
     var items: MutableSet<ScoreItemDto> = mutableSetOf(),
     @Schema(description = "the items which belong to this order", readOnly = true)
     var orderedItems: MutableSet<ScoreProductDto> = mutableSetOf(),
-    @Schema(description = "the total price of the order in subunits, e.g. cent. this is only during confirmation", example = "3995", readOnly = true)
+    @Schema(
+        description = "the total price of the order in subunits, e.g. cent. this is only during confirmation",
+        example = "3995",
+        readOnly = true
+    )
     var total: Int? = null,
     @Schema(description = "the date when the backend received the order. will be null while ordering", readOnly = true)
     var receivedOn: LocalDateTime? = null,
     @Schema(description = "the date when the order was sent")
     var sent: LocalDateTime? = null,
     @Schema(description = "the shipping costs of the current order", readOnly = true)
-    var shippingCosts: Int? = null
+    var shippingCosts: Int? = null,
+    @Schema(description = "the tax rate of this order in percent, do not use for calculation", readOnly = true)
+    var taxRate: Double? = null,
+    @Schema(description = "the total taxes in subunits", readOnly = true)
+    var taxes: Int? = null,
+    @Schema(description = "the price before tax calculation in subunits", readOnly = true)
+    var totalBeforeTaxes: Int? = null
 )
