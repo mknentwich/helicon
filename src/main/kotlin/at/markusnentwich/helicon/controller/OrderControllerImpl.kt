@@ -103,6 +103,7 @@ class OrderControllerImpl(
                 order = orderEntity
             )
         }.toMutableSet()
+        orderScoreRepository.saveAll(orderLinks)
         orderEntity.items = orderLinks
         orderEntity.shipping = if (orderEntity.productCosts() >= 9900) 0 else identityAddress.state.zone.shipping
         val orderDto = mapper.map(orderEntity, ScoreOrderDto::class.java)
