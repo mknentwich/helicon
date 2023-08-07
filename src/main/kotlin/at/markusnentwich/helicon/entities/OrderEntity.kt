@@ -2,9 +2,11 @@ package at.markusnentwich.helicon.entities
 
 import org.hibernate.annotations.Formula
 import java.io.Serializable
+import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.util.UUID
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -28,7 +30,8 @@ class OrderEntity(
     var identity: IdentityEntity = IdentityEntity(),
     @OneToMany(mappedBy = "order")
     var items: MutableSet<OrderScoreEntity> = mutableSetOf(),
-    var taxRate: Int? = null,
+    @Column(precision = 6, scale = 3)
+    var taxRate: BigDecimal? = null,
     var shipping: Int = 0,
     var inProgress: LocalDateTime? = null,
     var receivedOn: LocalDateTime? = null,
@@ -49,12 +52,12 @@ class OrderEntity(
     }
 
     fun beforeTaxes(): Int {
-        val taxRate = 100 + (taxRate ?: 0)
-        if (taxRate == 100) {
+        val taxRate = 100.toBigDecimal() + (taxRate ?: BigDecimal.ZERO)
+        if (taxRate == 100.toBigDecimal()) {
             return total()
         }
         val total = total().toBigDecimal()
-        return total.divide(taxRate.toBigDecimal(), RoundingMode.HALF_UP).multiply(100.toBigDecimal()).intValueExact()
+        return total.divide(taxRate, RoundingMode.HALF_UP).multiply(100.toBigDecimal()).intValueExact()
     }
 
     fun taxes(): Int {
