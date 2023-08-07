@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import java.io.*
+import java.math.BigDecimal
 import java.nio.file.Path
+import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 
 @Controller
@@ -83,7 +85,9 @@ class AsciidoctorPDFBillConverter(
                     .attribute("bankBic", config.bill.bic)
                     .attribute("bankIban", config.bill.iban)
                     .attribute("bankInstitute", config.bill.institute)
-                    .attribute("bankReference", order.billingNumber).get()
+                    .attribute("bankReference", order.billingNumber)
+                    .attribute("taxNull", if (order.taxRate == null) "true" else null)
+                    .attribute("taxZero", if (order.taxRate?.compareTo(BigDecimal.ZERO) == 0) "true" else null).get()
             ).get()
         val inputStreamReader = InputStreamReader(heliconResourceLoader.getResource("asset:bill/bill.adoc").inputStream)
 
@@ -115,8 +119,21 @@ class AsciidoctorPDFBillConverter(
             builder.append("${it.amount},${it.score.title} (${it.score.groupType}),${price(it.score.price)},${price(it.score.price * it.amount)}\r\n")
         }
         builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(order.shippingCosts())}\r\n")
-        builder.append(",,Summe,${price(order.total())}")
-
+        val taxRate = order.taxRate ?: BigDecimal.ZERO
+        if (taxRate.compareTo(BigDecimal.ZERO) == 0) {
+            builder.append(",,Summe,${price(order.total())}")
+        } else {
+            val taxFormat = DecimalFormat()
+            taxFormat.minimumFractionDigits = 0
+            taxFormat.maximumFractionDigits = 3
+            builder.append(",,\"Summe, netto\",${price(order.beforeTaxes())}\r\n")
+            builder.append(
+                ",,enthaltene USt. ${
+                    taxFormat.format(taxRate).replace(",", ".")
+                }%,${price(order.beforeTaxes())}\r\n"
+            )
+            builder.append(",,\"Summe, brutto\",${price(order.total())}\r\n")
+        }
         var file: File? = null
         try {
             file = File.createTempFile("test", ".csv")
