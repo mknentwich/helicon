@@ -64,6 +64,7 @@ class OrderControllerImpl(
         return dto
     }
 
+    @Transactional
     override fun order(order: ScoreOrderDto): ScoreOrderDto {
         var orderEntity = mapper.map(order, OrderEntity::class.java)
         var deliveryAddress: AddressEntity? = null
@@ -94,17 +95,16 @@ class OrderControllerImpl(
         orderEntity.deliveryAddress = deliveryAddress
         orderEntity = orderRepo.save(orderEntity)
         orderEntity.taxRate = identityAddress.state.bookTaxes
-        orderEntity.shipping = identityAddress.state.zone.shipping
         orderEntity.receivedOn = LocalDateTime.now()
-        val orderLinks: Iterable<OrderScoreEntity> = order.items.map {
+        val orderLinks = order.items.map {
             OrderScoreEntity(
                 amount = it.quantity,
                 score = scoreRepository.findById(it.id).get(),
                 order = orderEntity
             )
-        }.toMutableList()
-        orderScoreRepository.saveAll(orderLinks)
-        orderRepo.refresh(orderEntity)
+        }.toMutableSet()
+        orderEntity.items = orderLinks
+        orderEntity.shipping = if (orderEntity.productCosts() >= 9900) 0 else identityAddress.state.zone.shipping
         val orderDto = mapper.map(orderEntity, ScoreOrderDto::class.java)
         orderDto.total = orderEntity.total()
         orderDto.orderedItems = orderEntity.items.map {
@@ -120,6 +120,7 @@ class OrderControllerImpl(
         return orderDto
     }
 
+    @Transactional
     override fun confirm(id: UUID): ScoreOrderDto {
         // TODO check permissions
         if (!config.order.enable) {
