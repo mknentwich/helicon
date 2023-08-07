@@ -1,8 +1,10 @@
 package at.markusnentwich.helicon.entities
 
+import org.hibernate.annotations.ColumnDefault
 import org.hibernate.annotations.Formula
 import java.io.Serializable
 import java.math.BigDecimal
+import java.math.MathContext
 import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.util.UUID
@@ -32,6 +34,7 @@ class OrderEntity(
     var items: MutableSet<OrderScoreEntity> = mutableSetOf(),
     @Column(precision = 6, scale = 3)
     var taxRate: BigDecimal? = null,
+    @ColumnDefault("0")
     var shipping: Int = 0,
     var inProgress: LocalDateTime? = null,
     var receivedOn: LocalDateTime? = null,
@@ -44,7 +47,7 @@ class OrderEntity(
     }
 
     fun total(): Int {
-        return productCosts() + shippingCosts()
+        return productCosts() + shipping
     }
 
     fun productCosts(): Int {
@@ -52,20 +55,18 @@ class OrderEntity(
     }
 
     fun beforeTaxes(): Int {
-        val taxRate = 100.toBigDecimal() + (taxRate ?: BigDecimal.ZERO)
-        if (taxRate == 100.toBigDecimal()) {
+        val mc = MathContext(30, RoundingMode.HALF_UP)
+        val taxRate = 100.toBigDecimal(mc) + (taxRate ?: BigDecimal.ZERO)
+        if (taxRate == 100.toBigDecimal(mc)) {
             return total()
         }
-        val total = total().toBigDecimal()
-        return total.divide(taxRate, RoundingMode.HALF_UP).multiply(100.toBigDecimal()).intValueExact()
+        val total = total().toBigDecimal(mc)
+        return total.divide(taxRate, mc).multiply(100.toBigDecimal(mc), mc).setScale(0, RoundingMode.HALF_UP)
+            .intValueExact()
     }
 
     fun taxes(): Int {
         return total() - beforeTaxes()
-    }
-
-    fun shippingCosts(): Int {
-        return if (productCosts() >= 9900) 0 else deliveryAddress().state.zone.shipping
     }
 }
 
