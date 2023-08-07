@@ -130,7 +130,7 @@ class AsciidoctorPDFBillConverter(
             builder.append(
                 ",,enthaltene USt. ${
                     taxFormat.format(taxRate).replace(",", ".")
-                }%,${price(order.beforeTaxes())}\r\n"
+                }%,${price(order.taxes())}\r\n"
             )
             builder.append(",,\"Summe, brutto\",${price(order.total())}\r\n")
         }
