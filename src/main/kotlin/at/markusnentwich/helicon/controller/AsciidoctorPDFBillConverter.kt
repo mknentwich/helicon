@@ -121,18 +121,18 @@ class AsciidoctorPDFBillConverter(
         builder.append("1,Versand (${order.deliveryAddress().state.name}),,${price(order.shipping)}\r\n")
         val taxRate = order.taxRate ?: BigDecimal.ZERO
         if (taxRate.compareTo(BigDecimal.ZERO) == 0) {
-            builder.append(",,Summe,${price(order.total())}")
+            builder.append(",,Gesamtbetrag,${price(order.total())}")
         } else {
             val taxFormat = DecimalFormat()
             taxFormat.minimumFractionDigits = 0
             taxFormat.maximumFractionDigits = 3
-            builder.append(",,\"Summe, netto\",${price(order.beforeTaxes())}\r\n")
+            builder.append(",\"Gesamtbetrag netto\",,${price(order.beforeTaxes())}\r\n")
             builder.append(
-                ",,enthaltene USt. ${
+                ",enthaltene USt. ${
                     taxFormat.format(taxRate).replace(",", ".")
-                }%,${price(order.taxes())}\r\n"
+                }%,,${price(order.taxes())}\r\n"
             )
-            builder.append(",,\"Summe, brutto\",${price(order.total())}\r\n")
+            builder.append(",\"Gesamtbetrag brutto\",,${price(order.total())}\r\n")
         }
         var file: File? = null
         try {
