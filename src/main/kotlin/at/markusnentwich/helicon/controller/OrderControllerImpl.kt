@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import kotlin.math.log
 
 @Controller
 class OrderControllerImpl(
@@ -125,6 +126,7 @@ class OrderControllerImpl(
     @Transactional
     override fun confirm(id: UUID): ScoreOrderDto {
         // TODO check permissions
+        logger.info("Confirm order with id {}", id)
         if (!config.order.enable) {
             logger.error("tried to confirm order {}, but confirmation is not enabled", id)
             throw NotFoundException()
@@ -139,7 +141,9 @@ class OrderControllerImpl(
             throw BadPayloadException()
         }
         entity.confirmed = LocalDateTime.now()
+        logger.info("Order {} has confirmation timestamp {}", id, entity.confirmed)
         val evaluatedEntity = orderRepo.save(entity)
+        logger.debug("Order {} is saved in repository", id)
         val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
         dto.total = evaluatedEntity.total()
         dto.billingNumber = evaluatedEntity.billingNumber
@@ -154,15 +158,29 @@ class OrderControllerImpl(
         dto.taxes = evaluatedEntity.taxes()
         dto.totalBeforeTaxes = evaluatedEntity.beforeTaxes()
         if (config.mail.notification.ownerOnOrder) {
-            orderMailService.notifyOwner(evaluatedEntity)
+            try {
+                orderMailService.notifyOwner(evaluatedEntity)
+            } catch (e: Exception) {
+                logger.error(
+                    "Unable to send owner notification for order {}, the order is not confirmed anymore",
+                    id,
+                    e
+                )
+                throw e
+            }
         } else {
             logger.warn("Received an order but owner notifications are disabled")
         }
         if (config.mail.notification.customerOnOrder) {
-            orderMailService.notifyCustomer(evaluatedEntity)
+            try {
+                orderMailService.notifyCustomer(evaluatedEntity)
+            } catch (e: Exception) {
+                logger.warn("Unable to send customer notification for order {}, the order remains confirmed", id, e)
+            }
         } else {
             logger.warn("Received an order but customer notifications are disabled")
         }
+        logger.info("Confirmation for oder {} with confirmation timestamp {} succeed", id, entity.confirmed)
         return dto
     }
 
