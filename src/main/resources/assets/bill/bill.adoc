@@ -73,7 +73,7 @@ endif::[]
 
 ifdef::taxZero[]
 [.text-center]
-Satz von Schweiz
+Diese Lieferung ist als steuerfreie Ausfuhrlieferung von der österreichischen Umsatzsteuer befreit.
 endif::[]
 
 
