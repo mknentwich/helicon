@@ -16,6 +16,6 @@ interface OrderController {
         from: LocalDate,
         to: LocalDate,
         confirmed: Boolean,
-        jwt: String,
+        jwt: String
     ): ByteArray
 }

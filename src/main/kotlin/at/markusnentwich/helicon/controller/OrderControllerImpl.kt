@@ -32,7 +32,7 @@ class OrderControllerImpl(
     @Autowired val mapper: ModelMapper,
     @Autowired val orderMailService: OrderMailService,
     @Autowired val stateRepository: StateRepository,
-    @Autowired val billConverter: BillConverter,
+    @Autowired val billConverter: BillConverter
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 

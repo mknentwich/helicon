@@ -126,7 +126,6 @@ class AccountControllerImpl(
     }
 
     override fun getRoles(): Iterable<RoleDto> {
-
         val listType: Type = object : TypeToken<List<RoleDto>>() {}.type
         return mapper.map(rolesRepository.findAll(), listType)
     }
