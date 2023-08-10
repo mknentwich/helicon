@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helicon
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  rules:
+    - host: helicon.markus-nentwich.at
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: helicon
+                port:
+                  number: 2812
+  tls:
+    - hosts:
+      - helicon.markus-nentwich.at
+      secretName: helicon-ingress-cert

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helicon-db
+  labels:
+    app: helicon-db
+spec:
+  selector:
+    app: helicon-db
+  ports:
+    - name: db
+      port: 5432
+      targetPort: db
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helicon
+  labels:
+    app: helicon
+spec:
+  selector:
+    app: helicon
+  ports:
+    - name: rest
+      port: 2812
+      targetPort: rest
+  type: ClusterIP
