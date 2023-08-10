@@ -2701,7 +2701,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Eine letzte Runde\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"kleine Besetzung\",\n    \"price\": 3900,\n    \"difficulty\": 4,\n    \"instrumentation\": \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\",\n    \"categoryId\": {{category_polka_id}}\n}",
+							"raw": "{\n    \"title\": \"Eine letzte Runde\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"kleine Besetzung\",\n    \"summary\": \"Eine leichte Kapellenpolka über die Luft im Marchfeld\",\n    \"price\": 3900,\n    \"difficulty\": 4,\n    \"instrumentation\": \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\",\n    \"categoryId\": {{category_polka_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2716,6 +2716,844 @@
 							"path": [
 								"catalogue",
 								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "letzte runde klein neue stufe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"kleine Besetzung\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 4);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 3900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n                    \"author\": \"Markus Nentwich\",\n                    \"categoryId\": 46,\n                    \"difficulty\": 5,\n                    \"groupType\": \"böhmische Besetzung\",\n                    \"instrumentation\": \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\",\n                    \"price\": 3900,\n                    \"quantity\": null,\n                    \"title\": \"Eine letzte Runde\",\n                    \"summary\": \"© Nentwich Verlag\",\n                    \"description\": \"Mit „Eine letzte Runde“ ist Markus Nentwich ein wahrer Hit am Blasmusiksektor gelungen. Dem ersten Teil im Egerländer Stil folgt ein Trio mit Ohrwurmgarantie, ein sinfonischer Mittelteil und ein Grandioso. Das Arrangement der Kaiser Musikanten ist zwar ein wahrer „Lippenfresser“, das Publikum weiß es aber zu schätzen.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores/47",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores",
+								"47"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "letzte runde neue stufe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"kleine Besetzung\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 4);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 3900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": \"Markus Nentwich\",\n                    \"categoryId\": 46,\n                    \"difficulty\": 3,\n                    \"groupType\": \"Blasorchester\",\n                    \"instrumentation\": \"Particell in C, Flöte in C, Oboe in C, Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Klarinette 3 in B, Bassklarinette in B, Altsaxophon 1 in Es, Altsaxophon 2 in Es, Tenorsaxophon 1 in B, Tenorsaxophon 2 in B, Baritonsaxophon in Es, Fagott in C, Flügelhorn 1, Flügelhorn 2, Trompete 1 in B, Trompete 2 in B, Trompete 3 in B, Horn 1 in F und Es, Horn 2 in F und Es, Horn 3 in F und Es, Horn 4 in F und Es, Tenorhorn in B, Bariton in B und C, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Bass 1 in C, Bass 2 in C, Bass in Es, Bass in B, Schlagwerk, Glockenspiel\",\n                    \"price\": 4900,\n                    \"quantity\": null,\n                    \"title\": \"Eine letzte Runde\",\n                    \"summary\": \"© Nentwich Verlag\",\n                    \"description\": \"Mit „Eine letzte Runde“ ist Markus Nentwich ein wahrer Hit am Blasmusiksektor gelungen. Dem ersten Teil im Egerländer Stil folgt ein Trio mit Ohrwurmgarantie, ein sinfonischer Mittelteil und ein Grandioso. Das Blasorchesterarrangement wirkt gleichermaßen nicht nur bei Konzerten, sondern auch bei Früh- und Dämmerschoppen.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores/48",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores",
+								"48"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sonnenhof",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"kleine Besetzung\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 4);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 3900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Besuch am Sonnenhof\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"7er/8er Besetzung\",\n    \"summary\": \"© Nentwich Verlag\",\n    \"description\": \"Eine flotte Polka von Markus Nentwich, bei der seine geographische Nähe zu Tschechien und sein Faible für modernere Harmonien aufeinanderprallen. Perfekt für die Formation Viera Blech, zu hören auf der 2022 erschienen CD „Typisch Untypisch“.\",\n    \"price\": 2290,\n    \"difficulty\": 4,\n    \"instrumentation\": \"Flügelhorn 1 in B, Flügelhorn 2 in B, Trompete in B, Tenorhorn in B, Bariton in B und C, Tuba in B und C, Schlagwerk\",\n    \"categoryId\": {{category_polka_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create konzertmarsch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var category;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    category = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store id\", function() {",
+									"    pm.environment.set(\"category_id\", category.id);",
+									"})",
+									"",
+									"pm.test(\"name is Marsch\", function() {",
+									"    pm.expect(category.name).to.equal(\"Marsch\");",
+									"    pm.environment.set(\"category_name\", category.name);",
+									"})",
+									"",
+									"pm.test(\"namePlural is Märsche\", function() {",
+									"    pm.expect(category.namePlural).to.equal(\"Märsche\");",
+									"    pm.environment.set(\"category_namePlural\", category.namePlural);",
+									"})",
+									"",
+									"/*pm.test(\"parent is root\", function() {",
+									"    pm.expect(category.parent.id).to.equal(pm.environment.get(\"category_root_id\"));",
+									"})*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Konzertmarsch\",\n    \"namePlural\": \"Konzertmärsche\",\n    \"parentId\": {{category_root_id}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/categories",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "galaxien",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"kleine Besetzung\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 4);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 3900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Marsch der Galaxien\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"7er/8er Besetzung\",\n    \"summary\": \"© Nentwich Verlag\",\n    \"price\": 2290,\n    \"difficulty\": 3,\n    \"instrumentation\": \"Flügelhorn 1 in B, Flügelhorn 2 in B, Trompete in B, Tenorhorn in B, Bariton in B und C, Tuba in B und C, Schlagwerk\",\n    \"categoryId\": 545\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "zwetschkerl",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store march id\", function() {",
+									"    pm.environment.set(\"score_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"group type\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"kleine Besetzung\");",
+									"})",
+									"",
+									"pm.test(\"author\", function() {",
+									"    pm.expect(score.author).to.equal(\"Markus Nentwich\");",
+									"})",
+									"",
+									"pm.test(\"title\", function() {",
+									"    pm.expect(score.title, \"Eine letzte Runde\");",
+									"    pm.environment.set(\"score_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"instrumentation\", function() {",
+									"    pm.expect(score.instrumentation, \"Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Flügelhorn 1, Flügelhorn 2, Tenorhorn in B, Bariton in B und C, Trompete 1 in B, Trompete 2 in B und Es, Trompete 3 in B und Es, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Melodieposaune in B und C, Tuba, Schlagwerk\");",
+									"    pm.environment.set(\"score_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty\", function() {",
+									"    pm.expect(score.difficulty, 4);",
+									"    pm.environment.set(\"score_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price\", function() {",
+									"    pm.expect(score.price, 3900);",
+									"    pm.environment.set(\"score_price\", score.price);",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Švestka - das Zwetschkerl\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"Blasorchester\",\n    \"summary\": \"© Nentwich Verlag\",\n    \"price\": 3900,\n    \"difficulty\": 2,\n    \"description\": \"POLKABUCHFORMAT Die 2022 erschienene Polka widmete Markus Nentwich seiner Nichte Lea. Einfach, gemütlich und leicht für Blasorchester zu spielen erinnert dieses Stück an Böhmen von früher. Zu hören auf der CD „Leise wird es nie…“ von „eine kleine Dorfmusik“.\",\n    \"instrumentation\": \"Melodie in B und C, Flöte in C, Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Klarinette 3 in B, Bassklarinette in B, Fagott in C, Altsaxophon 1 in Es, Altsaxophon 2 in Es, Tenorsaxophon 1 in B, Tenorsaxophon 2 in B, Baritonsaxophon in Es, Flügelhorn 1, Flügelhorn 2, Trompete 1 in B, Trompete 2 in B, Trompete 3 in B, Horn 1 in F und Es, Horn 2 in F und Es, Horn 3 in F und Es, Tenorhorn in B, Bariton in B und C, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Bass 1 in C, Bass 2 in C, Bass in Es, Bass in B, Schlagwerk\",\n    \"categoryId\": 46\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/catalogue/scores",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete castaldo Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status is ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api}}/catalogue/scores/515",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"catalogue",
+								"scores",
+								"515"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create pdf Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store polka id\", function() {",
+									"    pm.environment.set(\"score_polka_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"title is Smutná Milenka\", function() {",
+									"    pm.expect(score.title).to.equal(\"Smutná Milenka\");",
+									"    pm.environment.set(\"score_polka_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"group type is Blasorchester\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"Blasorchester\");",
+									"})",
+									"",
+									"pm.test(\"author is Paevl Heidinger\", function() {",
+									"    pm.expect(score.author).to.equal(\"Pavel Heidinger\");",
+									"})",
+									"",
+									"pm.test(\"instrumentation is Behmisch\", function() {",
+									"    pm.expect(score.instrumentation).to.equal(\"Behmisch\");",
+									"    pm.environment.set(\"score_polka_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty is 2\", function() {",
+									"    pm.expect(score.difficulty).to.equal(2);",
+									"    pm.environment.set(\"score_polka_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price is 4100\", function() {",
+									"    pm.expect(score.price).to.equal(4100);",
+									"    pm.environment.set(\"score_polka_price\", score.price);",
+									"})",
+									"",
+									"/*pm.test(\"category is polka\", function() {",
+									"    pm.expect(score.category.id).to.equal(pm.environment.get(\"category_polka_id\"));",
+									"    pm.expect(score.category.name).to.equal(pm.environment.get(\"category_polka_name\"));",
+									"    pm.expect(score.category.namePlural).to.equal(pm.environment.get(\"category_polka_namePlural\"));",
+									"})*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/home/richi/Downloads/Besuch am Sonnenhof Online.pdf"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/assets/scores/516/pdf",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"assets",
+								"scores",
+								"516",
+								"pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create galaxien pdf",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store polka id\", function() {",
+									"    pm.environment.set(\"score_polka_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"title is Smutná Milenka\", function() {",
+									"    pm.expect(score.title).to.equal(\"Smutná Milenka\");",
+									"    pm.environment.set(\"score_polka_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"group type is Blasorchester\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"Blasorchester\");",
+									"})",
+									"",
+									"pm.test(\"author is Paevl Heidinger\", function() {",
+									"    pm.expect(score.author).to.equal(\"Pavel Heidinger\");",
+									"})",
+									"",
+									"pm.test(\"instrumentation is Behmisch\", function() {",
+									"    pm.expect(score.instrumentation).to.equal(\"Behmisch\");",
+									"    pm.environment.set(\"score_polka_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty is 2\", function() {",
+									"    pm.expect(score.difficulty).to.equal(2);",
+									"    pm.environment.set(\"score_polka_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price is 4100\", function() {",
+									"    pm.expect(score.price).to.equal(4100);",
+									"    pm.environment.set(\"score_polka_price\", score.price);",
+									"})",
+									"",
+									"/*pm.test(\"category is polka\", function() {",
+									"    pm.expect(score.category.id).to.equal(pm.environment.get(\"category_polka_id\"));",
+									"    pm.expect(score.category.name).to.equal(pm.environment.get(\"category_polka_name\"));",
+									"    pm.expect(score.category.namePlural).to.equal(pm.environment.get(\"category_polka_namePlural\"));",
+									"})*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/home/richi/Downloads/Marsch der Galaxien Online.pdf"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/assets/scores/546/pdf",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"assets",
+								"scores",
+								"546",
+								"pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create zwetschkerl pdf",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var score;",
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"    score = pm.response.json();",
+									"})",
+									"",
+									"pm.test(\"store polka id\", function() {",
+									"    pm.environment.set(\"score_polka_id\", score.id);",
+									"})",
+									"",
+									"pm.test(\"title is Smutná Milenka\", function() {",
+									"    pm.expect(score.title).to.equal(\"Smutná Milenka\");",
+									"    pm.environment.set(\"score_polka_title\", score.title);",
+									"})",
+									"",
+									"pm.test(\"group type is Blasorchester\", function() {",
+									"    pm.expect(score.groupType).to.equal(\"Blasorchester\");",
+									"})",
+									"",
+									"pm.test(\"author is Paevl Heidinger\", function() {",
+									"    pm.expect(score.author).to.equal(\"Pavel Heidinger\");",
+									"})",
+									"",
+									"pm.test(\"instrumentation is Behmisch\", function() {",
+									"    pm.expect(score.instrumentation).to.equal(\"Behmisch\");",
+									"    pm.environment.set(\"score_polka_instrumentation\", score.instrumentation);",
+									"})",
+									"",
+									"pm.test(\"difficulty is 2\", function() {",
+									"    pm.expect(score.difficulty).to.equal(2);",
+									"    pm.environment.set(\"score_polka_difficulty\", score.difficulty);",
+									"})",
+									"",
+									"pm.test(\"price is 4100\", function() {",
+									"    pm.expect(score.price).to.equal(4100);",
+									"    pm.environment.set(\"score_polka_price\", score.price);",
+									"})",
+									"",
+									"/*pm.test(\"category is polka\", function() {",
+									"    pm.expect(score.category.id).to.equal(pm.environment.get(\"category_polka_id\"));",
+									"    pm.expect(score.category.name).to.equal(pm.environment.get(\"category_polka_name\"));",
+									"    pm.expect(score.category.namePlural).to.equal(pm.environment.get(\"category_polka_namePlural\"));",
+									"})*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/home/richi/Downloads/Marsch der Galaxien Online.pdf"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api}}/assets/scores/546/pdf",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"assets",
+								"scores",
+								"546",
+								"pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create audio mp3 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/home/richi/Downloads/Besuch am Sonnenhof - Hörprobe.mp3"
+							}
+						},
+						"url": {
+							"raw": "{{api}}/assets/scores/516/audio",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"assets",
+								"scores",
+								"516",
+								"audio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create audio mp3 galaxien",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/home/richi/Downloads/Besuch am Sonnenhof - Hörprobe.mp3"
+							}
+						},
+						"url": {
+							"raw": "{{api}}/assets/scores/546/audio",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"assets",
+								"scores",
+								"546",
+								"audio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create audio mp3 zwetschkerl",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status ok\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/home/richi/Downloads/Besuch am Sonnenhof - Hörprobe.mp3"
+							}
+						},
+						"url": {
+							"raw": "{{api}}/assets/scores/546/audio",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"assets",
+								"scores",
+								"546",
+								"audio"
 							]
 						}
 					},
@@ -2776,7 +3614,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Eine letzte Runde\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"Blasorchester\",\n    \"price\": 4900,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Particell in C, Flöte in C, Oboe in C, Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Klarinette 3 in B, Bassklarinette in B, Altsaxophon 1 in Es, Altsaxophon 2 in Es, Tenorsaxophon 1 in B, Tenorsaxophon 2 in B, Baritonsaxophon in Es, Fagott in C, Flügelhorn 1, Flügelhorn 2, Trompete 1 in B, Trompete 2 in B, Trompete 3 in B, Horn 1 in F und Es, Horn 2 in F und Es, Horn 3 in F und Es, Horn 4 in F und Es, Tenorhorn in B, Bariton in B und C, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Bass 1 in C, Bass 2 in C, Bass in Es, Bass in B, Schlagwerk, Glockenspiel\",\n    \"categoryId\": {{category_polka_id}}\n}",
+							"raw": "{\n    \"title\": \"Eine letzte Runde\",\n    \"author\": \"Markus Nentwich\",\n    \"groupType\": \"Blasorchester\",\n    \"summary\": \"Eine leichte Kapellenpolka über die Luft im Marchfeld\",\n    \"price\": 4900,\n    \"difficulty\": 2,\n    \"instrumentation\": \"Particell in C, Flöte in C, Oboe in C, Klarinette in Es, Klarinette 1 in B, Klarinette 2 in B, Klarinette 3 in B, Bassklarinette in B, Altsaxophon 1 in Es, Altsaxophon 2 in Es, Tenorsaxophon 1 in B, Tenorsaxophon 2 in B, Baritonsaxophon in Es, Fagott in C, Flügelhorn 1, Flügelhorn 2, Trompete 1 in B, Trompete 2 in B, Trompete 3 in B, Horn 1 in F und Es, Horn 2 in F und Es, Horn 3 in F und Es, Horn 4 in F und Es, Tenorhorn in B, Bariton in B und C, Posaune 1 in B und C, Posaune 2 in B und C, Posaune 3 in B und C, Bass 1 in C, Bass 2 in C, Bass in Es, Bass in B, Schlagwerk, Glockenspiel\",\n    \"categoryId\": {{category_polka_id}}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2791,6 +3629,55 @@
 							"path": [
 								"catalogue",
 								"scores"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "Bill Collection",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/zip",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{api}}/orders/bills/collection?from=2023-08-07&to=2023-08-08&confirm=true",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"orders",
+								"bills",
+								"collection"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2023-08-07"
+								},
+								{
+									"key": "to",
+									"value": "2023-08-08"
+								},
+								{
+									"key": "confirm",
+									"value": "true"
+								}
 							]
 						}
 					},
