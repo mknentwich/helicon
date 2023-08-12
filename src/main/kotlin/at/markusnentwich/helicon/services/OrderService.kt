@@ -118,14 +118,17 @@ interface OrderService {
             ApiResponse(responseCode = "200", description = OK),
             ApiResponse(responseCode = "400", description = BAD_REQUEST),
             ApiResponse(responseCode = "401", description = UNAUTHORIZED),
-            ApiResponse(responseCode = "403", description = FORBIDDEN),
+            ApiResponse(responseCode = "403", description = FORBIDDEN)
         ]
     )
-
     fun billCollection(
-        @Parameter(description = "begin of the bill collection, inclusive") @DateTimeFormat(pattern = "yyyy-MM-dd") from: LocalDate,
-        @Parameter(description = "end of the bill collection, exclusive") @DateTimeFormat(pattern = "yyyy-MM-dd") to: LocalDate,
+        @Parameter(description = "begin of the bill collection, inclusive")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        from: LocalDate,
+        @Parameter(description = "end of the bill collection, exclusive")
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        to: LocalDate,
         @Parameter(description = "only collect bills which are confirmed") confirmed: Boolean,
-        @RequestHeader(name = "Authorization") jwt: String,
+        @RequestHeader(name = "Authorization") jwt: String
     ): ResponseEntity<Resource>
 }

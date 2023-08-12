@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
     @Autowired val configurationProperties: HeliconConfigurationProperties,
-    @Autowired val userDetailsService: HeliconUserDetailsService,
+    @Autowired val userDetailsService: HeliconUserDetailsService
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {

@@ -20,6 +20,8 @@ import java.time.LocalDateTime
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 @Controller
 class OrderControllerImpl(
@@ -33,6 +35,7 @@ class OrderControllerImpl(
     @Autowired val orderMailService: OrderMailService,
     @Autowired val stateRepository: StateRepository,
     @Autowired val billConverter: BillConverter,
+    @PersistenceContext val entityManager: EntityManager
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -57,9 +60,14 @@ class OrderControllerImpl(
         }
         val items = entity.items.map { mapper.map(it, ScoreProductDto::class.java) }.toMutableSet()
         dto.orderedItems = items
+        dto.shippingCosts = entity.shipping
+        dto.taxRate = entity.taxRate?.toDouble()
+        dto.taxes = entity.taxes()
+        dto.totalBeforeTaxes = entity.beforeTaxes()
         return dto
     }
 
+    @Transactional
     override fun order(order: ScoreOrderDto): ScoreOrderDto {
         var orderEntity = mapper.map(order, OrderEntity::class.java)
         var deliveryAddress: AddressEntity? = null
@@ -89,16 +97,19 @@ class OrderControllerImpl(
         orderEntity.identity = identity
         orderEntity.deliveryAddress = deliveryAddress
         orderEntity = orderRepo.save(orderEntity)
+        orderEntity.taxRate = identityAddress.state.bookTaxes
         orderEntity.receivedOn = LocalDateTime.now()
-        val orderLinks: Iterable<OrderScoreEntity> = order.items.map {
+        val orderLinks = order.items.map {
             OrderScoreEntity(
                 amount = it.quantity,
                 score = scoreRepository.findById(it.id).get(),
                 order = orderEntity
             )
-        }.toMutableList()
+        }.toMutableSet()
         orderScoreRepository.saveAll(orderLinks)
-        orderRepo.refresh(orderEntity)
+        orderEntity.items = orderLinks
+        orderEntity.shipping =
+            if (orderEntity.productCosts() >= 9900) 0 else (deliveryAddress ?: identityAddress).state.zone.shipping
         val orderDto = mapper.map(orderEntity, ScoreOrderDto::class.java)
         orderDto.total = orderEntity.total()
         orderDto.orderedItems = orderEntity.items.map {
@@ -107,12 +118,17 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
-        orderDto.shippingCosts = orderEntity.shippingCosts()
+        orderDto.shippingCosts = orderEntity.shipping
+        orderDto.taxRate = orderEntity.taxRate?.toDouble()
+        orderDto.taxes = orderEntity.taxes()
+        orderDto.totalBeforeTaxes = orderEntity.beforeTaxes()
         return orderDto
     }
 
+    @Transactional
     override fun confirm(id: UUID): ScoreOrderDto {
         // TODO check permissions
+        logger.info("Confirm order with id {}", id)
         if (!config.order.enable) {
             logger.error("tried to confirm order {}, but confirmation is not enabled", id)
             throw NotFoundException()
@@ -127,8 +143,11 @@ class OrderControllerImpl(
             throw BadPayloadException()
         }
         entity.confirmed = LocalDateTime.now()
+        logger.info("Order {} has confirmation timestamp {}", id, entity.confirmed)
         val evaluatedEntity = orderRepo.save(entity)
-        orderRepo.refresh(evaluatedEntity)
+        entityManager.flush()
+        entityManager.refresh(evaluatedEntity)
+        logger.debug("Order {} is saved in repository and refreshed", id)
         val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
         dto.total = evaluatedEntity.total()
         dto.billingNumber = evaluatedEntity.billingNumber
@@ -138,17 +157,34 @@ class OrderControllerImpl(
             dt.quantity = it.amount
             dt
         }.toMutableSet()
-        dto.shippingCosts = evaluatedEntity.shippingCosts()
+        dto.shippingCosts = evaluatedEntity.shipping
+        dto.taxRate = evaluatedEntity.taxRate?.toDouble()
+        dto.taxes = evaluatedEntity.taxes()
+        dto.totalBeforeTaxes = evaluatedEntity.beforeTaxes()
         if (config.mail.notification.ownerOnOrder) {
-            orderMailService.notifyOwner(evaluatedEntity)
+            try {
+                orderMailService.notifyOwner(evaluatedEntity)
+            } catch (e: Exception) {
+                logger.error(
+                    "Unable to send owner notification for order {}, the order is not confirmed anymore",
+                    id,
+                    e
+                )
+                throw e
+            }
         } else {
             logger.warn("Received an order but owner notifications are disabled")
         }
         if (config.mail.notification.customerOnOrder) {
-            orderMailService.notifyCustomer(evaluatedEntity)
+            try {
+                orderMailService.notifyCustomer(evaluatedEntity)
+            } catch (e: Exception) {
+                logger.warn("Unable to send customer notification for order {}, the order remains confirmed", id, e)
+            }
         } else {
             logger.warn("Received an order but customer notifications are disabled")
         }
+        logger.info("Confirmation for oder {} with confirmation timestamp {} succeed", id, entity.confirmed)
         return dto
     }
 

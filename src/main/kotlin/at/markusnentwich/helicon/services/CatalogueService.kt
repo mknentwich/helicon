@@ -45,9 +45,11 @@ interface CatalogueService {
     )
     fun getCategory(
         @Parameter(description = "id of the category") @PathVariable id: Long,
-        @Parameter(description = "set to true if scores should be embedded", required = false) @RequestParam(
+        @Parameter(description = "set to true if scores should be embedded", required = false)
+        @RequestParam(
             defaultValue = "false"
-        ) embed: Boolean
+        )
+        embed: Boolean
     ): ResponseEntity<CategoryProductDto>
 
     @RequestMapping("/categories", method = [RequestMethod.POST])
@@ -100,7 +102,7 @@ interface CatalogueService {
             ApiResponse(responseCode = "400", description = BAD_REQUEST),
             ApiResponse(responseCode = "401", description = UNAUTHORIZED),
             ApiResponse(responseCode = "403", description = FORBIDDEN),
-            ApiResponse(responseCode = "404", description = "no category with such id found"),
+            ApiResponse(responseCode = "404", description = "no category with such id found")
         ]
     )
     fun deleteCategory(

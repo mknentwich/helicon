@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helicon-db
+  labels:
+    app: helicon-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helicon-db
+  template:
+    metadata:
+      name: helicon-db
+      labels:
+        app: helicon-db
+    spec:
+      volumes:
+        - name: helicon-db
+          persistentVolumeClaim:
+            claimName: markus-helicon-db
+      containers:
+        - name: helicon-db
+          image: docker.io/postgres:15-alpine
+          imagePullPolicy: "Always"
+          ports:
+            - name: db
+              containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: helicon-db
+          envFrom:
+            - configMapRef:
+                name: helicon
+            - secretRef:
+                name: helicon
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helicon
+  labels:
+    app: helicon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helicon
+  template:
+    metadata:
+      name: helicon
+      labels:
+        app: helicon
+    spec:
+      volumes:
+        - name: helicon-assets
+          persistentVolumeClaim:
+            claimName: markus-helicon-assets
+        - name: helicon-config
+          configMap:
+            name: helicon
+      containers:
+        - name: helicon
+          image: docker.io/eiskasten/helicon:0.1.0
+          imagePullPolicy: "Always"
+          ports:
+            - name: rest
+              containerPort: 2812
+          volumeMounts:
+            - mountPath: /helicon/assets
+              name: helicon-assets
+            - mountPath: /helicon/application.yml
+              subPath: application.yml
+              name: helicon-config
+          envFrom:
+            - secretRef:
+                name: helicon
+      restartPolicy: Always

@@ -84,7 +84,7 @@ interface AssetService {
             ApiResponse(responseCode = "400", description = BAD_REQUEST),
             ApiResponse(responseCode = "401", description = UNAUTHORIZED),
             ApiResponse(responseCode = "403", description = FORBIDDEN),
-            ApiResponse(responseCode = "404", description = "no score with such id found"),
+            ApiResponse(responseCode = "404", description = "no score with such id found")
         ]
     )
     fun deleteScorePdf(@Parameter(description = "id of the score") @PathVariable id: Long): ResponseEntity<Void>
