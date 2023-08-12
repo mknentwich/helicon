@@ -35,7 +35,7 @@ class OrderControllerImpl(
     @Autowired val orderMailService: OrderMailService,
     @Autowired val stateRepository: StateRepository,
     @Autowired val billConverter: BillConverter,
-    @PersistenceContext val entityManager: EntityManager,
+    @PersistenceContext val entityManager: EntityManager
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
