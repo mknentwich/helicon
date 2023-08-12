@@ -1,5 +1,5 @@
 FROM --platform=$BUILDPLATFORM gradle:7-jdk11-alpine AS build
-ARG VERSION=0.1.0
+ARG VERSION=0.1.1
 WORKDIR /home/gradle/src
 COPY . /home/gradle/src
 RUN --mount=type=cache,target=/home/gradle/.gradle gradle buildJar -x test
