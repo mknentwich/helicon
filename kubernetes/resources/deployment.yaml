@@ -27,9 +27,11 @@ spec:
             - name: db
               containerPort: 5432
           volumeMounts:
-            - mountPath: /var/lib/postgresql
+            - mountPath: /var/lib/postgresql/data
               name: helicon-db
           envFrom:
+            - configMapRef:
+                name: helicon
             - secretRef:
                 name: helicon
       restartPolicy: Always
