@@ -20,6 +20,8 @@ import java.time.LocalDateTime
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
 
 @Controller
 class OrderControllerImpl(
@@ -32,7 +34,8 @@ class OrderControllerImpl(
     @Autowired val mapper: ModelMapper,
     @Autowired val orderMailService: OrderMailService,
     @Autowired val stateRepository: StateRepository,
-    @Autowired val billConverter: BillConverter
+    @Autowired val billConverter: BillConverter,
+    @PersistenceContext val entityManager: EntityManager,
 ) : OrderController {
     private val logger = LoggerFactory.getLogger(OrderControllerImpl::class.java)
 
@@ -142,7 +145,9 @@ class OrderControllerImpl(
         entity.confirmed = LocalDateTime.now()
         logger.info("Order {} has confirmation timestamp {}", id, entity.confirmed)
         val evaluatedEntity = orderRepo.save(entity)
-        logger.debug("Order {} is saved in repository", id)
+        entityManager.flush()
+        entityManager.refresh(evaluatedEntity)
+        logger.debug("Order {} is saved in repository and refreshed", id)
         val dto = mapper.map(evaluatedEntity, ScoreOrderDto::class.java)
         dto.total = evaluatedEntity.total()
         dto.billingNumber = evaluatedEntity.billingNumber
