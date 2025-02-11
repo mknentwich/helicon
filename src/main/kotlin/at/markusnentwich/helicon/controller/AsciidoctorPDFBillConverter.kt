@@ -46,6 +46,8 @@ class AsciidoctorPDFBillConverter(
         val owner = accountRepository.getOwner()
         val file = ordersAsCSV(order)
         val pipeOut = PipedOutputStream()
+        val stateId = order.identity.address.state.id
+        val billConfig = config.bill.getOrDefault(stateId, config.bill[0]!!)
         val options = OptionsBuilder.options()
             .baseDir(Path.of(config.assets, "bill").toFile())
             .safe(SafeMode.UNSAFE)
@@ -81,10 +83,10 @@ class AsciidoctorPDFBillConverter(
                     .attribute("deliveryPostcode", order.deliveryAddress?.postCode?.replace("&", ""))
                     .attribute("deliveryCity", order.deliveryAddress?.city?.replace("&", ""))
                     .attribute("deliveryState", order.deliveryAddress?.state?.name?.replace("&", ""))
-                    .attribute("bankName", config.bill.name)
-                    .attribute("bankBic", config.bill.bic)
-                    .attribute("bankIban", config.bill.iban)
-                    .attribute("bankInstitute", config.bill.institute)
+                    .attribute("bankName", billConfig.name)
+                    .attribute("bankBic", billConfig.bic)
+                    .attribute("bankIban", billConfig.iban)
+                    .attribute("bankInstitute", billConfig.institute)
                     .attribute("bankReference", order.billingNumber)
                     .attribute("taxNull", if (order.taxRate == null) "true" else null)
                     .attribute("taxZero", if (order.taxRate?.compareTo(BigDecimal.ZERO) == 0) "true" else null).get()
@@ -175,6 +177,9 @@ class AsciidoctorPDFBillConverter(
      * @return plain text, just the base64 value
      */
     private fun createQRCode(order: OrderEntity): String {
+        val stateId = order.identity.address.state.id
+        val billConfig = config.bill.getOrDefault(stateId, config.bill[0]!!)
+
         val serviceTag = "BCD"
         val version = "001"
         val coding = "1"
@@ -184,8 +189,8 @@ class AsciidoctorPDFBillConverter(
         val text = ""
         val display = "Ihre Transaktion an Nentwich Verlag wird vorbereitet"
         val data: String =
-            serviceTag + "\n" + version + "\n" + coding + "\n" + function + "\n" + config.bill.bic + "\n" +
-                config.bill.name + "\n" + config.bill.iban + "\n" + amountCurrency + "\n" + purpose + "\n" +
+            serviceTag + "\n" + version + "\n" + coding + "\n" + function + "\n" + billConfig.bic + "\n" +
+                billConfig.name + "\n" + billConfig.iban + "\n" + amountCurrency + "\n" + purpose + "\n" +
                 order.billingNumber + "\n" + text + "\n" + display
 
         val hints = mapOf(
