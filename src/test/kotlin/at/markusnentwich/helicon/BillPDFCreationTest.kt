@@ -89,6 +89,9 @@ class BillPDFCreationTest(
         val file = ordersAsCSV(order)
 
         // -- set attributes and options --
+
+        val defaultBill = config.defaultBill
+
         val options = options()
             .safe(SafeMode.UNSAFE)
             .backend("pdf")
@@ -124,10 +127,10 @@ class BillPDFCreationTest(
                     .attribute("deliveryPostcode", order.deliveryAddress?.postCode)
                     .attribute("deliveryCity", order.deliveryAddress?.city)
                     .attribute("deliveryState", order.deliveryAddress?.state?.name)
-                    .attribute("bankName", config.bill.name)
-                    .attribute("bankBic", config.bill.bic)
-                    .attribute("bankIban", config.bill.iban)
-                    .attribute("bankInstitute", config.bill.institute)
+                    .attribute("bankName", defaultBill.name)
+                    .attribute("bankBic", defaultBill.bic)
+                    .attribute("bankIban", defaultBill.iban)
+                    .attribute("bankInstitute", defaultBill.institute)
                     .attribute("bankReference", order.billingNumber).get()
             ).get()
         asciidoctor.convertFile(File("src/main/resources/assets/bill/bill.adoc"), options)
@@ -174,9 +177,12 @@ class BillPDFCreationTest(
         val purpose = ""
         val text = ""
         val display = "Ihre Transaktion an Nentwich Verlag wird vorbereitet"
+
+        val defaultBill = config.defaultBill
+
         val data: String =
-            serviceTag + "\n" + version + "\n" + coding + "\n" + function + "\n" + config.bill.bic + "\n" +
-                config.bill.name + "\n" + config.bill.iban + "\n" + amountCurrency + "\n" + purpose + "\n" +
+            serviceTag + "\n" + version + "\n" + coding + "\n" + function + "\n" + defaultBill.bic + "\n" +
+                defaultBill.name + "\n" + defaultBill.iban + "\n" + amountCurrency + "\n" + purpose + "\n" +
                 order.billingNumber + "\n" + text + "\n" + display
 
         val hints = mapOf(

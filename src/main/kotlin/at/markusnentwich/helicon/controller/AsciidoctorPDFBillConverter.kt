@@ -47,7 +47,7 @@ class AsciidoctorPDFBillConverter(
         val file = ordersAsCSV(order)
         val pipeOut = PipedOutputStream()
         val stateId = order.identity.address.state.id
-        val billConfig = config.bill.getOrDefault(stateId, config.bill[0]!!)
+        val billConfig = config.billByStateCode.getOrDefault(stateId, config.defaultBill)
         val options = OptionsBuilder.options()
             .baseDir(Path.of(config.assets, "bill").toFile())
             .safe(SafeMode.UNSAFE)
@@ -178,7 +178,7 @@ class AsciidoctorPDFBillConverter(
      */
     private fun createQRCode(order: OrderEntity): String {
         val stateId = order.identity.address.state.id
-        val billConfig = config.bill.getOrDefault(stateId, config.bill[0]!!)
+        val billConfig = config.billByStateCode.getOrDefault(stateId, config.defaultBill)
 
         val serviceTag = "BCD"
         val version = "001"

@@ -16,7 +16,9 @@ data class HeliconConfigurationProperties(
     /** Path for the assets such as templates, score samples. */
     val assets: String = "assets",
     /** The bank account for bills. */
-    val bill: Map<Long, BillConfiguration> = mapOf(),
+    val billByStateCode: Map<Long, BillConfiguration> = mapOf(),
+    /** The fallback account for bills, use for default. */
+    val defaultBill: BillConfiguration = BillConfiguration(),
     /** The domain of the infrastructure */
     val domain: String = "markus-nentwich.at"
 ) {
